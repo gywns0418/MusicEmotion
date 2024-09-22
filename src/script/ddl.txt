@@ -1,0 +1,13 @@
+CREATE TABLE nemember (
+    grade            	VARCHAR2(20),              		-- 역할 (예: 관리자/회원)
+    memberID       VARCHAR2(20) PRIMARY KEY,  		-- 회원을 식별하는 고유 식별자
+    password        	VARCHAR2(255),             		-- 회원의 비밀번호
+    name            	VARCHAR2(100) NOT NULL,    		-- 회원의 이름
+    profile 		VARCHAR2(255),             		-- 프로필 사진
+    nickname        VARCHAR2(100),             		-- 회원의 닉네임
+    email           	VARCHAR2(100),             		-- 회원의 이메일 주소
+    phone           	VARCHAR2(20),              		-- 회원의 연락처
+    signup_date     DATE DEFAULT SYSDATE       		-- 회원 가입 날짜 (기본값: 현재 날짜)
+);
+
+
