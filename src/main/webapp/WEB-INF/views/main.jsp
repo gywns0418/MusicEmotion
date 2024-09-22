@@ -17,9 +17,7 @@
             <li><a href="/">홈</a></li>
             <li><a href="#">검색</a></li>
             <li><a href="#" id="login-link">로그인</a></li>
-            <li><a href="#">내 라이브러리</a></li>
-            <li><a href="#">플레이리스트 만들기</a></li>
-            <li><a href="#">좋아요 표시한 곡</a></li>
+            <li><a href="#" id="mypage-link">마이페이지</a></li>
         </ul>
     </div>
 
@@ -28,7 +26,7 @@
             <div class="hero-section">
                 <h1>당신만의 음악 여행을 시작하세요</h1>
                 <p>AI가 추천하는 맞춤형 플레이리스트로 새로운 음악을 발견하세요.</p>
-                <button class="cta-button">지금 시작하기</button>
+                <button class="cta-button" id="start-button">지금 시작하기</button>
             </div>
 
         <div class="recommendation-form">
@@ -104,6 +102,20 @@
                 e.preventDefault();
                 $.get('member/login.do', function(data) {
                     $('#content-area').html(data);
+                });
+            });
+            
+            $('#mypage-link').click(function(e) {
+                e.preventDefault();
+                $.get('member/myPage.do', function(data) {
+                    $('#content-area').html(data);
+                });
+            });
+            
+            $('#start-button').click(function(e) {
+                e.preventDefault();  // 기본 동작 막기
+                $.get('member/login.do', function(data) {
+                    $('#content-area').html(data);  // 로그인 페이지 내용을 동적으로 삽입
                 });
             });
 

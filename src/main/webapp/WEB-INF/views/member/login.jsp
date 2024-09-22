@@ -14,7 +14,7 @@
         <button type="submit" class="login-button">로그인</button>
     </form>
     <div class="login-links">
-        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="#">회원가입</a>
+        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="#" id="signUp-link">회원가입</a>
     </div>
 </div>
 
@@ -24,6 +24,13 @@
             e.preventDefault();
             // 여기에 로그인 처리 로직을 추가하세요
             alert('로그인 기능은 아직 구현되지 않았습니다.');
+        });
+        
+        $('#signUp-link').click(function(e) {
+            e.preventDefault();
+            $.get('member/signUp.do', function(data) {
+                $('#content-area').html(data);
+            });
         });
     });
 </script>

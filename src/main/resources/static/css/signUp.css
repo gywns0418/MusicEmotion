@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+/* 이메일 입력 필드 스타일 */
+.login-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.login-container input[type="email"]:focus {
+    border-color: #1db954;
+    outline: none;
+}
+
+/* 날짜 입력 필드 스타일 */
+.login-container input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: white;
+}
+
+.login-container input[type="date"]:focus {
+    border-color: #1db954;
+    outline: none;
+}
+
+/* 날짜 선택 아이콘 커스터마이징 */
+.login-container input[type="date"]::-webkit-calendar-picker-indicator {
+    color: #1db954;
+    font-size: 16px;
+    padding: 4px;
+}
+
+/* 입력 필드 레이블 스타일 강화 */
+.login-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 14px;
+}
+
+/* 입력 필드 그룹 간격 조정 */
+.login-container .form-group {
+    margin-bottom: 20px;
+}
+
+/* 음악 장르 옵션 스타일 */
+.genre-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.genre-options label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.genre-options input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* 체크박스 커스터마이징 */
+.genre-options input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #1db954;
+    border-radius: 3px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.genre-options input[type="checkbox"]:checked {
+    background-color: #1db954;
+    border-color: #1db954;
+}
+
+.genre-options input[type="checkbox"]:checked::before {
+    content: '\2713';
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 480px) {
+    .genre-options {
+        grid-template-columns: 1fr;
+    }
+}
