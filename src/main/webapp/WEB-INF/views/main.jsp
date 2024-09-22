@@ -18,6 +18,9 @@
             <li><a href="#">검색</a></li>
             <li><a href="#" id="login-link">로그인</a></li>
             <li><a href="#" id="mypage-link">마이페이지</a></li>
+            <li><a href="#" id="commu-link">커뮤니티</a></li>
+            <li><a href="#" id="notice-link">공지사항</a></li>
+            
         </ul>
     </div>
 
@@ -112,6 +115,20 @@
                 });
             });
             
+            $('#commu-link').click(function(e) {
+                e.preventDefault();
+                $.get('commu/commuList.do', function(data) {
+                    $('#content-area').html(data);
+                });
+            });
+            
+            $('#notice-link').click(function(e) {
+                e.preventDefault();
+                $.get('notice/noticeList.do', function(data) {
+                    $('#content-area').html(data);
+                });
+            });
+
             $('#start-button').click(function(e) {
                 e.preventDefault();  // 기본 동작 막기
                 $.get('member/login.do', function(data) {
