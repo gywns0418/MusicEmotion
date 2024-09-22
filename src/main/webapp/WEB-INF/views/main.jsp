@@ -66,12 +66,9 @@
             </form>
         </div>
 
-            <div class="section">
-                <h2>추천 플레이리스트</h2>
-                <div class="playlist-grid" id="recommendation-result">
-                    <!-- 플레이리스트 카드들이 여기에 동적으로 추가 -->
-                </div>
-            </div>
+			<div class="section" id="playlist-section">
+			    <!-- 추천 플레이리스트 섹션이 여기에 동적으로 추가됩니다 -->
+			</div>
 
             <div class="section">
             <h2>최근 인기 플레이리스트</h2>
@@ -111,25 +108,33 @@
             });
 
             document.getElementById('mood-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const recommendationResult = document.getElementById('recommendation-result');
-            recommendationResult.innerHTML = '<p>플레이리스트를 생성 중입니다...</p>';
-            
-            // 여기에 실제 AI 추천 로직을 추가하세요
-            setTimeout(() => {
-                let recommendedPlaylists = '';
-                for (let i = 0; i < 6; i++) {
-                    recommendedPlaylists += `
-                        <div class="playlist-card">
-                            <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-                            <div class="playlist-title">추천 플레이리스트 ${i+1}</div>
-                            <div class="playlist-description">AI가 추천하는 맞춤 음악</div>
-                        </div>
+                e.preventDefault();
+                
+                const playlistSection = document.getElementById('playlist-section');
+                playlistSection.innerHTML = '<p>플레이리스트를 생성 중입니다...</p>';
+                
+                // 여기에 실제 AI 추천 로직을 추가하세요
+                setTimeout(() => {
+                    let recommendationContent = `
+                        <h2>추천 플레이리스트</h2>
+                        <div class="playlist-grid" id="recommendation-result">
                     `;
-                }
-                recommendationResult.innerHTML = recommendedPlaylists;
-            }, 2000);
-        });
+                    
+                    // 6개의 추천 플레이리스트를 생성
+                    for (let i = 0; i < 6; i++) {
+                        recommendationContent += `
+                            <div class="playlist-card">
+                                <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
+                                <div class="playlist-title">추천 플레이리스트 ${i+1}</div>
+                                <div class="playlist-description">AI가 추천하는 맞춤 음악</div>
+                            </div>
+                        `;
+                    }
+                    
+                    recommendationContent += `</div>`;
+                    playlistSection.innerHTML = recommendationContent;
+                }, 2000);
+            });
         });
     </script>
 </body>

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/spotify")
+@RequestMapping("/spotify")
 public class SpotifyController {
 
     private final SpotifyService spotifyService;

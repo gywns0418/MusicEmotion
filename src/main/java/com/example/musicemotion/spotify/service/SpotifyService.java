@@ -42,14 +42,17 @@ public class SpotifyService {
         spotifyApi.setAccessToken(getAccessToken());
 
         GetRecommendationsRequest recommendationsRequest = spotifyApi.getRecommendations()
-            .limit(10) // 추천받을 트랙 수
-            .min_danceability(0.6f) // Danceability: 0.6 ~ 1.0
-            .min_energy(0.7f) // Energy: 0.7 ~ 1.0
-            .max_loudness(0f) // Loudness: -10dB ~ 0dB
+            .limit(5) // 추천받을 트랙 수
+            .max_danceability(0.8f) // Danceability
+            .min_danceability(0.5f)
+            .max_energy(1.0f) // Energy
+            .min_energy(0.7f)
+            .max_loudness(0f) // Loudness
             .min_loudness(-10f)
-            .min_tempo(100f) // Tempo: 100 ~ 140 BPM
-            .max_tempo(140f)
-            .min_valence(0.6f) // Valence: 0.6 ~ 1.0
+            .min_tempo(120f) // Tempo
+            .max_tempo(150f)
+            .max_valence(0.3f) // Valence
+            .min_valence(0.0f)
             .seed_genres("k-pop")
             .build();
 
