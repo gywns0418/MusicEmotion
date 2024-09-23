@@ -14,8 +14,8 @@ public class CommuController {
 	}
 	
 	@GetMapping("/addCommu.do")
-	public String addComm() {
-		return "commu/addComm";
+	public String addCommu() {
+		return "commu/addCommu";
 	}
 	
 	@GetMapping("/editCommu.do")

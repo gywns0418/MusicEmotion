@@ -107,12 +107,12 @@
         <div class="community-container">
             <div class="community-header">
                 <h2>커뮤니티 게시판</h2>
-                <button class="new-post-button">새 글 작성</button>
+                <button class="new-post-button" onclick="window.location.href='commu/addCommu.do'">새 글 작성</button>
             </div>
             
             <ul class="post-list">
                 <li class="post-item">
-                    <a href="#" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
+                    <a href="commu/commuContent.do" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
                     <div class="post-meta">
                         <span class="author">작성자: 음악매니아</span>
                         <span class="date">2024-09-23</span>
