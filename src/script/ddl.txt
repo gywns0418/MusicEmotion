@@ -1,13 +1,54 @@
 CREATE TABLE nemember (
     grade            	VARCHAR2(20),              		-- 역할 (예: 관리자/회원)
-    memberID       VARCHAR2(20) PRIMARY KEY,  		-- 회원을 식별하는 고유 식별자
+    member_id       VARCHAR2(20) PRIMARY KEY,  		-- 회원을 식별하는 고유 식별자
     password        	VARCHAR2(255),             		-- 회원의 비밀번호
     name            	VARCHAR2(100) NOT NULL,    		-- 회원의 이름
     profile 		VARCHAR2(255),             		-- 프로필 사진
     nickname        VARCHAR2(100),             		-- 회원의 닉네임
     email           	VARCHAR2(100),             		-- 회원의 이메일 주소
-    phone           	VARCHAR2(20),              		-- 회원의 연락처
-    signup_date     DATE DEFAULT SYSDATE       		-- 회원 가입 날짜 (기본값: 현재 날짜)
+    signup_date     DATE DEFAULT SYSDATE,       		-- 회원 가입 날짜 (기본값: 현재 날짜)
+    genre			VARCHAR2(100)
 );
 
 
+-- 커뮤니티 테이블
+CREATE TABLE Community (
+    post_id NUMBER PRIMARY KEY,         -- 게시글 고유 ID
+    member_name varchar2(25),                     -- 작성자 이름 
+    title VARCHAR2(100),                -- 게시글 제목
+    content VARCHAR2(1000),             -- 게시글 내용
+    created_at DATE DEFAULT SYSDATE                  -- 작성일
+);
+
+CREATE SEQUENCE seq_community_post_id
+START WITH 1
+INCREMENT BY 1;
+
+-- 공지사항 테이블
+CREATE TABLE Notice (
+    notice_id NUMBER PRIMARY KEY, -- 공지사항 고유 ID
+    member_name varchar2(25),		--작성자 이름 
+    title VARCHAR2(100),                -- 공지사항 제목
+    content VARCHAR2(1000),             -- 공지사항 내용
+    created_at DATE DEFAULT SYSDATE                     -- 작성일
+);
+
+
+CREATE SEQUENCE seq_notice_id
+START WITH 1
+INCREMENT BY 1;
+
+-- 댓글 게시판
+CREATE TABLE Comments (
+    comment_id NUMBER PRIMARY KEY,       -- 댓글 고유 ID
+    post_id NUMBER,                      -- 게시글 ID (Community 테이블의 post_id)
+    member_name VARCHAR2(25),            -- 작성자 이름
+    content VARCHAR2(1000),              -- 댓글 내용
+    created_at DATE DEFAULT SYSDATE,                     -- 작성일
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) REFERENCES Community(post_id)  -- Community 테이블의 post_id를 참조하는 외래키
+);
+
+CREATE SEQUENCE seq_comment_id
+START WITH 1
+INCREMENT BY 1;

@@ -12,4 +12,19 @@ public class NoticeController {
 	public String noticeList() {
 		return "notice/noticeList";
 	}
+	
+	@GetMapping("/addNotice.do")
+	public String addNotice() {
+		return "notice/addNotice";
+	}
+	
+	@GetMapping("/editNotice.do")
+	public String editNotice() {
+		return "notice/editNotice";
+	}
+	
+	@GetMapping("/noticeContent.do")
+	public String noticeContent() {
+		return "notice/noticeContent";
+	}
 }

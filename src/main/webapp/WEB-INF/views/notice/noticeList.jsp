@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 음악 추천 서비스 - 커뮤니티</title>
+    <title>MusicEmotion - 공지사항</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <style>
@@ -107,12 +107,12 @@
         <div class="community-container">
             <div class="community-header">
                 <h2>공지 게시판</h2>
-                <button class="new-post-button">새 글 작성</button>
+                <button class="new-post-button" onclick="window.location.href='notice/addnotice.do'">새 글 작성</button>
             </div>
             
             <ul class="post-list">
                 <li class="post-item">
-                    <a href="#" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
+                    <a href="notice/noticeContent.do" class="post-title">공지사항</a>
                     <div class="post-meta">
                         <span class="author">작성자: 관리자</span>
                         <span class="date">2024-09-23</span>
@@ -120,7 +120,7 @@
                     </div>
                 </li>
                 <li class="post-item">
-                    <a href="#" class="post-title">AI 추천 시스템에 대한 의견을 들려주세요</a>
+                    <a href="#" class="post-title">공지사항</a>
                     <div class="post-meta">
                         <span class="author">작성자: 관리자</span>
                         <span class="date">2024-09-22</span>
@@ -128,7 +128,7 @@
                     </div>
                 </li>
                 <li class="post-item">
-                    <a href="#" class="post-title">새로 발견한 아티스트를 소개합니다</a>
+                    <a href="#" class="post-title">공지사항</a>
                     <div class="post-meta">
                         <span class="author">작성자: 관리자</span>
                         <span class="date">2024-09-21</span>
@@ -136,7 +136,7 @@
                     </div>
                 </li>
                 <li class="post-item">
-                    <a href="#" class="post-title">플레이리스트 만들기 팁 공유</a>
+                    <a href="#" class="post-title">공지사항</a>
                     <div class="post-meta">
                         <span class="author">작성자: 관리자</span>
                         <span class="date">2024-09-20</span>
@@ -144,7 +144,7 @@
                     </div>
                 </li>
                 <li class="post-item">
-                    <a href="#" class="post-title">이 노래의 제목을 아시는 분?</a>
+                    <a href="#" class="post-title">공지사항</a>
                     <div class="post-meta">
                         <span class="author">작성자: 관리자</span>
                         <span class="date">2024-09-19</span>
