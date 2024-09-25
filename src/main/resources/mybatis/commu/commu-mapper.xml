@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="commu">
+ 	<insert id = "commuWrite" parameterType="CommuDTO">
+ 		insert into community values(seq_community_post_id.nextval,
+		#{member_name},#{title},#{content})
+ 	</insert>
+ 	
+ 	<select id="commuAll" resultType="CommuDTO">
+ 		select * from community
+ 	</select>
+ 	
+ 	<select id="getCommuId" parameterType="String" resultType="CommuDTO">
+ 		select * from community where post_id = #{post_id}
+ 	</select>
+ 	
+ 	<select id="searchCommuList" parameterType="map" resultType="CommuDTO">
+    	select *
+    	from community
+    	where 
+    	<if test="searchType == 'subject'">
+        	subject LIKE '%' || #{search} || '%'
+    	</if>
+    	<if test="searchType == 'author'">
+    	    author LIKE '%' || #{search} || '%'
+    	</if>
+    	<if test="searchType == 'all'">
+    	    (subject LIKE '%' || #{search} || '%' OR author LIKE '%' || #{search} || '%')
+    	</if>
+	</select>
+ 	
+ 	<update id="commuUpdate" parameterType="CommuDTO">
+		update community set
+		title=#{title},content=#{content} where post_id=#{post_id}
+	</update>
+ 	
+ 	<delete id="commuDelete" parameterType="int">
+		delete from community where post_id = #{post_id}
+	</delete>
+ </mapper>
