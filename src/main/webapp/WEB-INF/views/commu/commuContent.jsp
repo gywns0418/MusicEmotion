@@ -139,8 +139,8 @@
             <p>이 노래들은 각각 독특한 매력을 가지고 있어요. 여러분도 한번 들어보시고 느낌을 공유해주세요!</p>
         </div>
         <div class="post-actions">
-            <button class="post-action-btn" onclick="location.href='commuList.jsp'">글 목록</button>
-            <button class="post-action-btn" onclick="location.href='editPost.jsp?id=1'">글 수정</button>
+            <button class="post-action-btn" onclick="window.location.href='/commu/commuList.do'">글 목록</button>
+            <button class="post-action-btn" onclick="window.location.href='commu/editCommu.do'">글 수정</button>
             <button class="post-action-btn delete-btn" onclick="confirmDelete()">글 삭제</button>
         </div>
         <div class="comment-section">

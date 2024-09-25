@@ -26,7 +26,7 @@ public class CommuService {
 		return sqlSession.selectOne("commuAll");
 	}
 	 
-	 public CommuDTO getCommuId(String post_id) {
+	 public CommuDTO getCommuId(int post_id) {
 		 return sqlSession.selectOne("getCommuId",post_id);
 	 }
 	 

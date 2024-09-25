@@ -1,29 +1,29 @@
 package com.example.musicemotion.dto;
 
-public class NoticeDTO {
-	private int notice_id;        	
-	private String member_name;          //작성자 이름
-	private String title;			//게시물 제목
+public class CommentsDTO {
+	private int comment_id;        	
+	private int post_id;          
+	private String member_name;			
 	private String content;         //게시물 내용
 	private String created_at;      //작성 시간
 	
-	public int getNotice_id() {
-		return notice_id;
+	public int getComment_id() {
+		return comment_id;
 	}
-	public void setNotice_id(int notice_id) {
-		this.notice_id = notice_id;
+	public void setComment_id(int comment_id) {
+		this.comment_id = comment_id;
+	}
+	public int getPost_id() {
+		return post_id;
+	}
+	public void setPost_id(int post_id) {
+		this.post_id = post_id;
 	}
 	public String getMember_name() {
 		return member_name;
 	}
 	public void setMember_name(String member_name) {
 		this.member_name = member_name;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
 	}
 	public String getContent() {
 		return content;
@@ -37,4 +37,7 @@ public class NoticeDTO {
 	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
 	}
+	
+
+	
 }
