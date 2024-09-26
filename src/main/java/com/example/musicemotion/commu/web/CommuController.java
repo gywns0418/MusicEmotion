@@ -1,5 +1,7 @@
 package com.example.musicemotion.commu.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,12 +27,12 @@ public class CommuController {
 	public String commuList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "searchType", required = false, defaultValue = "all") String searchType) {
 		
-		CommuDTO dto = commuService.commuAll();
+		List<CommuDTO> list = commuService.commuAll();
 		
 		int pageSize = 15;
 		String pageNumStr = req.getParameter("pageNum");
 		
-		req.setAttribute("commuList", dto);
+		req.setAttribute("commuList", list);
 		
 		return "commu/commuList";
 	}
@@ -64,8 +66,9 @@ public class CommuController {
 	}
 	
 	@GetMapping("/commuContent.do")
-	public String commuContent(HttpServletRequest req) {
-		
+	public String commuContent(HttpServletRequest req,@RequestParam int post_id) {
+		CommuDTO dto = commuService.getCommuId(post_id);
+		req.setAttribute("editCommu", dto);
 		return "commu/commuContent";
 	}
 	

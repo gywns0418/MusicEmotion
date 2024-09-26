@@ -13,7 +13,7 @@
  		select * from community
  	</select>
  	
- 	<select id="getCommuId" parameterType="String" resultType="CommuDTO">
+ 	<select id="getCommuId" parameterType="integer" resultType="CommuDTO">
  		select * from community where post_id = #{post_id}
  	</select>
  	

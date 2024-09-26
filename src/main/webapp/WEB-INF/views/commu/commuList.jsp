@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -112,7 +116,7 @@
             
             <ul class="post-list">
                 <li class="post-item">
-                    <a href="commu/commuContent.do" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
+                    <a href="commu/commuContent.do?post_id=1" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
                     <div class="post-meta">
                         <span class="author">작성자: 음악매니아</span>
                         <span class="date">2024-09-23</span>
@@ -127,30 +131,16 @@
                         <span class="comments">댓글: 32</span>
                     </div>
                 </li>
-                <li class="post-item">
-                    <a href="#" class="post-title">새로 발견한 아티스트를 소개합니다</a>
-                    <div class="post-meta">
-                        <span class="author">작성자: 음악탐험가</span>
-                        <span class="date">2024-09-21</span>
-                        <span class="comments">댓글: 8</span>
-                    </div>
-                </li>
-                <li class="post-item">
-                    <a href="#" class="post-title">플레이리스트 만들기 팁 공유</a>
-                    <div class="post-meta">
-                        <span class="author">작성자: DJ킹</span>
-                        <span class="date">2024-09-20</span>
-                        <span class="comments">댓글: 24</span>
-                    </div>
-                </li>
-                <li class="post-item">
-                    <a href="#" class="post-title">이 노래의 제목을 아시는 분?</a>
-                    <div class="post-meta">
-                        <span class="author">작성자: 궁금이</span>
-                        <span class="date">2024-09-19</span>
-                        <span class="comments">댓글: 7</span>
-                    </div>
-                </li>
+                <c:forEach var="postList" items="${commuList}">
+	                <li class="post-item">
+	                    <a href="commu/commuContent.do?post_id=${postList.post_id}" class="post-title">${postList.title}</a>
+	                    <div class="post-meta">
+	                        <span class="author">작성자: ${postList.member_name} </span>
+	                        <span class="date">2024-09-22 /${postList.created_at}</span>
+	                        <span class="comments">댓글: 32</span>
+	                    </div>
+	                </li>
+                </c:forEach>
             </ul>
             <ul class="pagination">
                 <li><a href="#">&laquo;</a></li>

@@ -22,8 +22,8 @@ public class CommuService {
 		 sqlSession.insert("commuWrite", dto);
 	 }
 	 
-	 public CommuDTO commuAll() {
-		return sqlSession.selectOne("commuAll");
+	 public List<CommuDTO> commuAll() {
+		return sqlSession.selectList("commuAll");
 	}
 	 
 	 public CommuDTO getCommuId(int post_id) {
