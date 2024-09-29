@@ -8,7 +8,11 @@
     <form id="signup-form">
         <div class="form-group">
             <label for="username">사용자 이름</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="user_name" name="user_name" required>
+        </div>
+        <div class="form-group">
+            <label for="username">아이디</label>
+            <input type="text" id="user_id" name="user_id" required>
         </div>
         <div class="form-group">
             <label for="email">이메일</label>

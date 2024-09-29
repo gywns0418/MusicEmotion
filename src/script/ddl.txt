@@ -1,13 +1,12 @@
-CREATE TABLE nemember (
+CREATE TABLE Member (
     grade            	VARCHAR2(20),              		-- 역할 (예: 관리자/회원)
-    member_id       VARCHAR2(20) PRIMARY KEY,  		-- 회원을 식별하는 고유 식별자
-    password        	VARCHAR2(255),             		-- 회원의 비밀번호
-    name            	VARCHAR2(100) NOT NULL,    		-- 회원의 이름
-    profile 		VARCHAR2(255),             		-- 프로필 사진
-    nickname        VARCHAR2(100),             		-- 회원의 닉네임
-    email           	VARCHAR2(100),             		-- 회원의 이메일 주소
-    signup_date     DATE DEFAULT SYSDATE,       		-- 회원 가입 날짜 (기본값: 현재 날짜)
-    genre			VARCHAR2(100)
+    user_id 			VARCHAR2(250) PRIMARY KEY,         -- 사용자 고유 ID
+    password 			VARCHAR2(250),              -- 비밀번호
+    user_name 			VARCHAR2(100),              -- 사용자 이름
+    email 				VARCHAR2(100),                -- 이메일
+    birthdate 			DATE,						-- 생년월일
+    join_date 			DATE,                      -- 가입 일자
+    genre 				VARCHAR2(250)		--사용자가 주로 듣는 음악 종류
 );
 
 

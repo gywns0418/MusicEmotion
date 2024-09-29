@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="member">
+	<insert id="signupPro" parameterType="MemberDTO">
+ 		INSERT INTO member (grade, user_id, password, user_name, email, join_date, genre)
+    	VALUES (#{grade}, #{user_id}, #{password}, #{user_name}, #{email}, sysdate, #{genre})
+	</insert>
+	
+	<select id="findById" parameterType="String" resultType="CustomMemberDetails">
+		select user_id, grade as authority, password, name, profile from member where user_id = #{user_id}
+	</select>
+	
+	<select id="findByName" parameterType="String" resultType="MemberDTO">
+		select * from member 
+		where user_name = #{user_name}
+		AND email = #{email}
+	</select>
+ </mapper>
