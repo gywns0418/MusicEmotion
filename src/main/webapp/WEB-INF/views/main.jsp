@@ -91,7 +91,10 @@
 	            </div>
 	        </div>
 	        </div>
-
+			<a href="commu/musicDetail.do">musicDetail</a>
+			<a href="commu/playListMain.do">playListMain</a>
+			<a href="commu/resentPlay.do">resentPlay.do</a>
+			
 	
 	    <script>
 	        $(document).ready(function() {
