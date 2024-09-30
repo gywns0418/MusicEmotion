@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/commu/commuList.css">
 
 </head>
-<body>
+
+	<jsp:include page="../header.jsp" />
+	
+<main>	
     <div class="community-container">
         <div class="community-header">
             <h2>커뮤니티 게시판</h2>
@@ -90,5 +93,7 @@
             }
         }
     </script>
+    
+</main>
 </body>
 </html>

@@ -8,10 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 public class CustomMemberDetails implements UserDetails{
-	private String memberID;
+	private String user_id;
 	private String password;
-	private String name;
+	private String user_name;
 	private String profile;
 	private String authority;
 	private boolean enabled;
@@ -38,7 +39,7 @@ public class CustomMemberDetails implements UserDetails{
 	
 	@Override
 	public String getUsername() {
-		return memberID;
+		return user_id;
 	}
 	
 	
@@ -63,11 +64,11 @@ public class CustomMemberDetails implements UserDetails{
 	}
 	
 	public String getName() {
-		return name;
+		return user_name;
 	}
 
-	public void setNAME(String name) {
-		this.name = name;
+	public void setName(String name) {
+		this.user_name = name;
 	}
 	public void setAuthority(String authority) {
         this.authority = authority;

@@ -45,15 +45,15 @@ public class SpotifyService {
             .limit(5) // 추천받을 트랙 수
             .max_danceability(0.8f) // Danceability
             .min_danceability(0.5f)
-            .max_energy(1.0f) // Energy
-            .min_energy(0.7f)
-            .max_loudness(0f) // Loudness
+            .max_energy(0.7f) // Energy
+            .min_energy(0.4f)
+            .max_loudness(-3f) // Loudness
             .min_loudness(-10f)
-            .min_tempo(120f) // Tempo
-            .max_tempo(150f)
-            .max_valence(0.3f) // Valence
-            .min_valence(0.0f)
-            .seed_genres("k-pop")
+            .min_tempo(80f) // Tempo
+            .max_tempo(120f)
+            .max_valence(0.9f) // Valence
+            .min_valence(0.6f)
+            .seed_tracks("2X45nVBeYzmDlrXji9Av0Q")
             .build();
 
         return recommendationsRequest.execute();

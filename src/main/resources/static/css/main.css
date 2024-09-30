@@ -22,7 +22,11 @@
             color: var(--text-color);
             display: flex;
         }
-
+		main{
+			margin-left: 230px;
+            padding: 24px;
+            width: calc(100% - 230px);
+		}
         .sidebar {
             width: 230px;
             background-color: var(--sidebar-color);
@@ -64,11 +68,7 @@
             color: var(--highlight-color);
         }
 
-        .main-content {
-            margin-left: 230px;
-            padding: 24px;
-            width: calc(100% - 230px);
-        }
+
 
         h1, h2 {
             margin-bottom: 16px;
