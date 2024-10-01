@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지 - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <style>
         .main-content {
             padding: 20px;
@@ -76,8 +77,11 @@
         }
     </style>
 </head>
-<body>
 
+
+<jsp:include page="../header.jsp" />
+
+<main>
     <div id="content-area">
 	    <div class="hero-section">
 	        <h1>마이 뮤직</h1>
@@ -135,10 +139,11 @@
 	            <div class="playlist-card">
 	                <img src="https://via.placeholder.com/300" alt="좋아요 표시한 곡">
 	                <div class="playlist-title">좋아요 표시한 곡</div>
-	                <div class="playlist-description">총 50곡</div>
+	                <div class="playlist-description">I'm Yours</div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
+</main>
 </body>
 </html>

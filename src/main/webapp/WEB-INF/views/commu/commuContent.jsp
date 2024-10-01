@@ -140,7 +140,7 @@
         </div>
         <div class="post-actions">
             <button class="post-action-btn" onclick="window.location.href='/commu/commuList.do'">글 목록</button>
-            <button class="post-action-btn" onclick="window.location.href='commu/editCommu.do'">글 수정</button>
+            <button class="post-action-btn" onclick="window.location.href='editCommu.do?post_id=1'">글 수정</button>
             <button class="post-action-btn delete-btn" onclick="confirmDelete()">글 삭제</button>
         </div>
         <div class="comment-section">

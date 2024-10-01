@@ -25,7 +25,6 @@
 	            <li><a href="member/myPage.do" id="mypage-link">마이페이지</a></li>
 	            <li><a href="commu/commuList.do" id="commu-link">커뮤니티</a></li>
 	            <li><a href="notice/noticeList.do" id="notice-link">공지사항</a></li>
-	            
 	        </ul>
 	    </div>
 	</header>

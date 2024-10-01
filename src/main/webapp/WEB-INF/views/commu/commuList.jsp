@@ -16,18 +16,18 @@
 
 </head>
 
-	<jsp:include page="../header.jsp" />
+	<jsp:include page="../header.jsp"/>
 	
 <main>	
     <div class="community-container">
         <div class="community-header">
             <h2>커뮤니티 게시판</h2>
-            <button class="new-post-button" onclick="window.location.href='commu/addCommu.do'">새 글 작성</button>
+            <a class="new-post-button" href="addCommu.do">새 글 작성</a>
         </div>
 
         <!-- 검색 폼 -->
   		<div class="search-form-container">
-            <form class="search-form" onsubmit="event.preventDefault(); performSearch();">
+            <form class="search-form" >
                 <select id="searchType">
                     <option value="title">제목</option>
                     <option value="content">내용</option>
@@ -40,7 +40,7 @@
         
         <ul class="post-list">
             <li class="post-item">
-                <a href="commu/commuContent.do?post_id=1" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
+                <a href="commuContent.do?post_id=1" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
                 <div class="post-meta">
                     <span class="author">작성자: 음악매니아</span>
                     <span class="date">2024-09-23</span>
@@ -57,7 +57,7 @@
             </li>
             <c:forEach var="postList" items="${commuList}">
                 <li class="post-item">
-                    <a href="commu/commuContent.do?post_id=${postList.post_id}" class="post-title">${postList.title}</a>
+                    <a href="commuContent.do?post_id=${postList.post_id}" class="post-title">${postList.title}</a>
                     <div class="post-meta">
                         <span class="author">작성자: ${postList.member_name} </span>
                         <span class="date">2024-09-22 /${postList.created_at}</span>
@@ -79,7 +79,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function performSearch() {
+/*         function performSearch() {
             var searchType = document.getElementById("searchType").value;
             var searchTerm = document.getElementById("search").value.trim();
 
@@ -91,7 +91,7 @@
                 var currentURL = window.location.href.split('?')[0];
                 window.location.href = currentURL;
             }
-        }
+        } */
     </script>
     
 </main>
