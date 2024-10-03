@@ -5,12 +5,12 @@
   
  <mapper namespace="member">
 	<insert id="signupPro" parameterType="MemberDTO">
- 		INSERT INTO member (grade, user_id, password, user_name, email, join_date, genre)
-    	VALUES (#{grade}, #{user_id}, #{password}, #{user_name}, #{email}, sysdate, #{genre})
+ 		INSERT INTO member (grade, user_id, password, user_name, email, birthdate, join_date, genre)
+    	VALUES (#{grade}, #{user_id}, #{password}, #{user_name}, #{email},#{birthdate}, sysdate, #{genre})
 	</insert>
 	
 	<select id="findById" parameterType="String" resultType="CustomMemberDetails">
-		select user_id, grade as authority, password, name, profile from member where user_id = #{user_id}
+		select user_id, grade as authority, password, name from member where user_id = #{user_id}
 	</select>
 	
 	<select id="findByName" parameterType="String" resultType="MemberDTO">

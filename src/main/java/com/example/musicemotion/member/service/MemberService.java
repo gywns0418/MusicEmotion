@@ -19,7 +19,7 @@ public class MemberService {
         this.bcryptPasswordEncoder = bcryptPasswordEncoder;
     }
     
-    @Transactional
+    
     public void signupPro(MemberDTO member) {
         member.setGrade("ROLE_1");
         member.setPassword(bcryptPasswordEncoder.encode(member.getPassword()));
