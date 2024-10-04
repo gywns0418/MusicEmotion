@@ -3,7 +3,6 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,35 +17,25 @@
 <jsp:include page="../header.jsp" />
 
 <main>
-
 	<div class="login-container">
 	    <h2>로그인</h2>
-	    <form id="login-form">
-	        <div class="form-group">
-	            <label for="username">사용자 이름</label>
-	            <input type="text" id="user_name" name="user_name" required>
-	        </div>
-	        <div class="form-group">
-	            <label for="password">비밀번호</label>
-	            <input type="password" id="password" name="password" required>
-	        </div>
-	        <button type="submit" class="login-button">로그인</button>
-	    </form>
+		<form action="<c:url value='/login'/>" method="POST">
+		    <div class="form-group">
+		        <label for="user_id">아이디</label>
+		        <input type="text" id="user_id" name="user_id" required>
+		    </div>
+		    <div class="form-group">
+		        <label for="password">비밀번호</label>
+		        <input type="password" id="password" name="password" required>
+		    </div>
+		    <button type="submit" class="login-button">로그인</button>
+		</form>
 	    <div class="login-links">
 	        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="${pageContext.request.contextPath}/member/signUp.do">회원가입</a>
 	    </div>
 	</div>
-	
-	<script>
-	    $(document).ready(function() {
-	        $('#login-form').submit(function(e) {
-	            e.preventDefault();
-	            // 여기에 로그인 처리 로직을 추가하세요
-	            alert('로그인 기능은 아직 구현되지 않았습니다.');
-	        });
-	        
-	    });
-	</script>
+
+
 </main>
 </body>
 </html>

@@ -18,7 +18,7 @@ public class MemberDAO {
 		 sqlSession.insert("member.signupPro", member);
 	 }
 	 
-	 public CustomMemberDetails findById(String memberID) {
-		 return sqlSession.selectOne("member.findById", memberID);
+	 public CustomMemberDetails findById(String user_id) {
+		 return sqlSession.selectOne("member.findById", user_id);
 	 }
 }

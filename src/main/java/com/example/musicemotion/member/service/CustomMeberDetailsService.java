@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.musicemotion.dto.CustomMemberDetails;
@@ -21,16 +22,27 @@ public class CustomMeberDetailsService implements UserDetailsService{
 	@Autowired
 	private MemberDAO memberDAO;
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		CustomMemberDetails user = memberDAO.findById(username);
-
-		if(user==null) {
-			throw new UsernameNotFoundException(username);
-		}
-		
-		
-		return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+	    CustomMemberDetails member = memberDAO.findById(userId);
+	    System.out.println("Member found: " + member);
+	    
+	    if (member == null) {
+	        throw new UsernameNotFoundException("User not found with userId: " + userId);
+	    }
+	    
+	    String enteredPassword = "dd";
+	    boolean passwordMatches = bCryptPasswordEncoder.matches(enteredPassword, member.getPassword());
+	    System.out.println("Password matches: " + passwordMatches);
+	    
+	    // 여기에 비밀번호 확인 로그 추가
+	    System.out.println("Password from DB: " + member.getPassword()); // 암호화된 비밀번호 출력
+	    System.out.println("Auth from DB: " + member.getAuthorities()); 
+	    
+	    return member;
 	}
 }
+
