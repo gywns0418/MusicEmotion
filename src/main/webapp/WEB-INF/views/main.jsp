@@ -17,13 +17,6 @@
 
 <jsp:include page="header.jsp" />
 
-	<main>
-	
-        <div id="search-container" class="search-container">
-            <input type="text" id="search-input" placeholder="노래, 아티스트, 앨범 검색...">
-            <button id="search-submit">검색</button>
-        </div>
-
 	        <div id="content-area">
 	            <div class="hero-section">
 	                <h1>당신만의 음악 여행을 시작하세요</h1>
@@ -131,25 +124,7 @@
 	                    recommendationContent += `</div>`;
 	                    playlistSection.innerHTML = recommendationContent;
 	                }, 2000);
-	            });
-	            
-	            // 검색 기능 추가
-                $('.nav-menu a:contains("검색")').click(function(e) {
-                    e.preventDefault();
-                    $('#search-container').slideToggle();
-                });
-
-                $('#search-submit').click(function() {
-                    // 여기에 검색 로직 추가
-                    alert('검색 기능이 구현될 예정입니다: ' + $('#search-input').val());
-                });
-
-                // 검색창 외부 클릭 시 검색창 닫기
-                $(document).click(function(event) {
-                    if (!$(event.target).closest('#search-container, .nav-menu a:contains("검색")').length) {
-                        $('#search-container').slideUp();
-                    }
-                });
+	            });      
 
 	        });
 	    </script>

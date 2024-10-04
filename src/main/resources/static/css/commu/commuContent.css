@@ -1,0 +1,94 @@
+@charset "UTF-8";
+
+        .post-detail-container {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .post-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .post-title {
+            color: var(--highlight-color);
+            margin-bottom: 10px;
+        }
+        .post-meta {
+            font-size: 14px;
+            color: #888;
+        }
+        .post-content {
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .comment-section {
+            margin-top: 30px;
+        }
+        .comment-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .comment-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .comment-author {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .comment-date {
+            font-size: 12px;
+            color: #888;
+        }
+        .comment-form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .comment-submit {
+            background-color: var(--highlight-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .post-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .post-action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+            background-color: var(--highlight-color);
+            color: white;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .post-action-btn:hover {
+            transform: scale(1.05);
+        }

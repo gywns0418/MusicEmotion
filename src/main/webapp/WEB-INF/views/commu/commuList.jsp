@@ -3,6 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	
 <!DOCTYPE html>
 <html lang="ko">
@@ -18,7 +19,7 @@
 
 	<jsp:include page="../header.jsp"/>
 	
-<main>	
+	
     <div class="community-container">
         <div class="community-header">
             <h2>커뮤니티 게시판</h2>

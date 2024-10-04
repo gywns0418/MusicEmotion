@@ -14,14 +14,36 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+	<script>
+	    $(document).ready(function() {
+	
+	        // 검색 버튼 클릭 시 검색 창 토글
+	        $('.nav-menu a:contains("검색")').click(function(e) {
+	            e.preventDefault();
+	            $('#search-container').slideToggle();  // 검색 창 열기/닫기
+	        });
+	
+	        // 검색 버튼 클릭 시 검색 창 닫기
+	        $('#search-submit').click(function() {
+	            alert('검색 기능이 구현될 예정입니다: ' + $('#search-input').val());
+	            $('#search-container').slideUp();  // 검색 버튼 클릭 시 창 닫기
+	        });
+	
+	        // 검색 창 외부 클릭 시 검색 창 닫기
+	        $(document).click(function(event) {
+	            if (!$(event.target).closest('#search-container, .nav-menu a:contains("검색")').length) {
+	                $('#search-container').slideUp();
+	            }
+	        });
+	    });
+	</script>
 </head>
 <body>
 	<header>
 	    <div class="sidebar">
 	        <div class="logo"><a href="/">MusicEmotion</a></div>
 	        <sec:authorize access="isAuthenticated()">
-	        	<p>안녕하세요, <sec:authentication property="principal.username" />님!</p><br>
+	        	<p>안녕하세요, <sec:authentication property="principal.name" />님!</p><br>
 	       	</sec:authorize>
 	        <ul class="nav-menu">
 			    <li><a href="${pageContext.request.contextPath}/">홈</a></li>
@@ -41,5 +63,8 @@
 			</ul>
 	    </div>
 	</header>
-</body>
-</html>
+	<main>
+	     <div id="search-container" class="search-container">
+            <input type="text" id="search-input" placeholder="노래, 아티스트, 앨범 검색...">
+            <button id="search-submit">검색</button>
+        </div>

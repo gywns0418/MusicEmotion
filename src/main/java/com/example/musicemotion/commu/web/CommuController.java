@@ -19,96 +19,107 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/commu")
 public class CommuController {
-	
+
 	@Autowired
 	CommuService commuService;
-	
-    @GetMapping("/musicDetail.do")
-    public String musicDetail() {
-        return "music/musicDetail";
-    }
-    
-    @GetMapping("/playListMain.do")
-    public String playListMain() {
-        return "music/playListMain";
-    }
-    
-    @GetMapping("/resentPlay.do")
-    public String resentPlay() {
-        return "music/resentPlay";
-    }
+
+	@GetMapping("/musicDetail.do")
+	public String musicDetail() {
+		return "music/musicDetail";
+	}
+
+	@GetMapping("/playListMain.do")
+	public String playListMain() {
+		return "music/playListMain";
+	}
+
+	@GetMapping("/resentPlay.do")
+	public String resentPlay() {
+		return "music/resentPlay";
+	}
 
 	@GetMapping("/commuList.do")
 	public String commuList(HttpServletRequest req) {
-		
+
 		List<CommuDTO> list = commuService.commuAll();
 		req.setAttribute("commuList", list);
-		
+
 		/*
-		 * int pageSize = 15; // 한 페이지당 보여줄 게시물 수 String pageNumStr =
-		 * req.getParameter("pageNum"); // 현재 페이지 번호를 파라미터로 받아옴
-		 * 
-		 * int pageNum = (pageNumStr == null) ? 1 : Integer.parseInt(pageNumStr); // 현재
-		 * 페이지 번호, 기본값은 1 int totalCount;
-		 * 
-		 * if (search != null && !search.isEmpty()) { list =
-		 * commuService.searchCommuList(searchType, search); totalCount = list.size();
-		 * // 검색 결과의 전체 게시물 수 } else { totalCount = list.size(); // 전체 게시물 수 }
-		 * 
-		 * int start = (pageNum - 1) * pageSize; int end = Math.min(start + pageSize,
-		 * totalCount); List<CommuDTO> paginatedList = list.subList(start, end);
-		 * 
-		 * int pageCount = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
-		 * int pageBlock = 15; // 페이지 블록 사이즈 int startPage = (pageNum - 1) / pageBlock *
-		 * pageBlock + 1; // 시작 페이지 번호 int endPage = Math.min(startPage + pageBlock - 1,
-		 * pageCount); // 끝 페이지 번호
-		 * 
-		 * req.setAttribute("count", totalCount); req.setAttribute("commuList",
-		 * paginatedList); // 현재 페이지에 해당하는 게시판 목록 req.setAttribute("pageNum", pageNum);
-		 * // 현재 페이지 번호 req.setAttribute("pageCount", pageCount); // 전체 페이지 수
-		 * req.setAttribute("startPage", startPage); // 시작 페이지 번호
-		 * req.setAttribute("endPage", endPage); // 끝 페이지 번호 req.setAttribute("search",
-		 * search); req.setAttribute("searchType", searchType);
-		 */
-		
+		 int pageSize = 10; // 한 페이지당 보여줄 게시물 수 String 
+		 pageNumStr = req.getParameter("pageNum"); // 현재 페이지 번호를 파라미터로 받아옴
+		 
+		 int pageNum = (pageNumStr == null) ? 1 : Integer.parseInt(pageNumStr); // 현재페이지 번호, 기본값은 1 int totalCount;
+		 if (search != null && !search.isEmpty()) { 
+			 list = commuService.searchCommuList(searchType, search); totalCount = list.size();
+		 }// 검색 결과의 전체 게시물 수 } 
+		 else { 
+			 totalCount = list.size(); // 전체 게시물 수 
+		 }
+
+		 int start = (pageNum - 1) * pageSize; int end = Math.min(start + pageSize, totalCount); 
+		 List<CommuDTO> paginatedList = list.subList(start, end);
+		 
+		 int pageCount = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
+		 int pageBlock = 10; // 페이지 블록 사이즈 int startPage = (pageNum - 1) / pageBlock *
+		 pageBlock + 1; // 시작 페이지 번호 
+		 int endPage = Math.min(startPage + pageBlock - 1, pageCount); // 끝 페이지 번호
+		 
+		req.setAttribute("count", totalCount); req.setAttribute("commuList", paginatedList); // 현재 페이지에 해당하는 게시판 목록 
+		req.setAttribute("pageNum", pageNum);// 현재 페이지 번호 req.setAttribute("pageCount", pageCount); // 전체 페이지 수
+		req.setAttribute("startPage", startPage); // 시작 페이지 번호
+		req.setAttribute("endPage", endPage); // 끝 페이지 번호 
+		req.setAttribute("search", search); 
+		req.setAttribute("searchType", searchType);
+	*/
+
 		return "commu/commuList";
 	}
-	
+
 	@GetMapping("/addCommu.do")
 	public String addCommu() {
 		return "commu/addCommu";
 	}
-	
+
 	@PostMapping("/addCommu.do")
 	public String addCommu(HttpServletRequest req, CommuDTO dto) {
+
+		System.out.println("member : " + dto.getMember_name());
+		System.out.println("title : " + dto.getTitle());
+		System.out.println("content : " + dto.getContent());
+
 		commuService.commuWrite(dto);
-		
+
 		return "redirect:commuList.do";
 	}
-	
-	
+
 	@GetMapping("/editCommu.do")
-	public String editCommu(HttpServletRequest req,@RequestParam int post_id) {
+	public String editCommu(HttpServletRequest req, @RequestParam int post_id) {
 		CommuDTO dto = commuService.getCommuId(post_id);
 		req.setAttribute("editCommu", dto);
 		return "commu/editCommu";
 	}
-	
+
 	@PostMapping("/editCommu.do")
 	public String commuUpdate(@ModelAttribute CommuDTO dto) {
-		
+		System.out.println("post_id : " + dto.getPost_id());
+		System.out.println("member : " + dto.getMember_name());
+		System.out.println("title : " + dto.getTitle());
+		System.out.println("content : " + dto.getContent());
+
 		commuService.commuUpdate(dto);
+
 		return "redirect:commuList.do";
 
 	}
-	
+
 	@GetMapping("/commuContent.do")
-	public String commuContent(HttpServletRequest req,@RequestParam int post_id) {
+	public String commuContent(HttpServletRequest req, @RequestParam int post_id) {
 		CommuDTO dto = commuService.getCommuId(post_id);
-		req.setAttribute("editCommu", dto);
+		req.setAttribute("postId", dto);
+
 		return "commu/commuContent";
 	}
-	
+
 	@RequestMapping("/commuDelete.do")
 	public String commuDelete(HttpServletRequest req, int post_id) {
 		commuService.commuDelete(post_id);

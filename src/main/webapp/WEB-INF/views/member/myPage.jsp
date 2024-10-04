@@ -81,7 +81,7 @@
 
 <jsp:include page="../header.jsp" />
 
-<main>
+
     <div id="content-area">
 	    <div class="hero-section">
 	        <h1>마이 뮤직</h1>
