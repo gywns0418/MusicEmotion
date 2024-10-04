@@ -33,7 +33,7 @@ public class SpringSecurityConfig {
             	    .loginProcessingUrl("/login")
             	    .usernameParameter("user_id")
             	    .passwordParameter("password")
-            	    .failureHandler(new CustomAuthenticationFailureHandler()) 
+            	    .failureHandler(new CustomAuthenticationFailureHandler())
             	    .defaultSuccessUrl("/")
             	    .permitAll())
             .logout(logout -> logout

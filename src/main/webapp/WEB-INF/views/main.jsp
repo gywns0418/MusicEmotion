@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -17,13 +17,18 @@
 
 <jsp:include page="header.jsp" />
 
-<main>
+	<main>
+	
+        <div id="search-container" class="search-container">
+            <input type="text" id="search-input" placeholder="노래, 아티스트, 앨범 검색...">
+            <button id="search-submit">검색</button>
+        </div>
 
 	        <div id="content-area">
 	            <div class="hero-section">
 	                <h1>당신만의 음악 여행을 시작하세요</h1>
 	                <p>AI가 추천하는 맞춤형 플레이리스트로 새로운 음악을 발견하세요.</p>
-	                <button class="cta-button" id="start-button">지금 시작하기</button>
+	                <a class="cta-button" href="${pageContext.request.contextPath}/member/login.do">지금 시작하기</a>
 	            </div>
 	
 	        <div class="recommendation-form">
@@ -99,13 +104,6 @@
 	    <script>
 	        $(document).ready(function() {
 	
-	            $('#start-button').click(function(e) {
-	                e.preventDefault();  // 기본 동작 막기
-	                $.get('member/login.do', function(data) {
-	                    $('#content-area').html(data);  // 로그인 페이지 내용을 동적으로 삽입
-	                });
-	            });
-	
 	            document.getElementById('mood-form').addEventListener('submit', function(e) {
 	                e.preventDefault();
 	                
@@ -134,6 +132,25 @@
 	                    playlistSection.innerHTML = recommendationContent;
 	                }, 2000);
 	            });
+	            
+	            // 검색 기능 추가
+                $('.nav-menu a:contains("검색")').click(function(e) {
+                    e.preventDefault();
+                    $('#search-container').slideToggle();
+                });
+
+                $('#search-submit').click(function() {
+                    // 여기에 검색 로직 추가
+                    alert('검색 기능이 구현될 예정입니다: ' + $('#search-input').val());
+                });
+
+                // 검색창 외부 클릭 시 검색창 닫기
+                $(document).click(function(event) {
+                    if (!$(event.target).closest('#search-container, .nav-menu a:contains("검색")').length) {
+                        $('#search-container').slideUp();
+                    }
+                });
+
 	        });
 	    </script>
 

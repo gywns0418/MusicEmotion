@@ -16,26 +16,25 @@
 
 <jsp:include page="../header.jsp" />
 
-<main>
-	<div class="login-container">
-	    <h2>로그인</h2>
-		<form action="<c:url value='/login'/>" method="POST">
-		    <div class="form-group">
-		        <label for="user_id">아이디</label>
-		        <input type="text" id="user_id" name="user_id" required>
+	<main>
+		<div class="login-container">
+		    <h2>로그인</h2>
+			<form action="<c:url value='/login'/>" method="POST">
+			    <div class="form-group">
+			        <label for="user_id">아이디</label>
+			        <input type="text" id="user_id" name="user_id" required>
+			    </div>
+			    <div class="form-group">
+			        <label for="password">비밀번호</label>
+			        <input type="password" id="password" name="password" required>
+			    </div>
+			    <button type="submit" class="login-button">로그인</button>
+			</form>
+		    <div class="login-links">
+		        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="${pageContext.request.contextPath}/member/signUp.do">회원가입</a>
 		    </div>
-		    <div class="form-group">
-		        <label for="password">비밀번호</label>
-		        <input type="password" id="password" name="password" required>
-		    </div>
-		    <button type="submit" class="login-button">로그인</button>
-		</form>
-	    <div class="login-links">
-	        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="${pageContext.request.contextPath}/member/signUp.do">회원가입</a>
-	    </div>
-	</div>
-
-
-</main>
+		</div>
+	
+	</main>
 </body>
 </html>

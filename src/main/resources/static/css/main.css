@@ -299,3 +299,38 @@
 		    color: #1ed760;
 		    text-decoration: underline;
 		}
+		
+		.search-container {
+		    display: none;
+		    background-color: var(--sidebar-color);
+		    padding: 20px;
+		    margin-bottom: 20px;
+		    border-radius: 8px;
+		    box-shadow: 0 2px 4px var(--shadow-color);
+		}
+		
+		#search-input {
+		    width: calc(100% - 100px);
+		    padding: 10px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    font-size: 16px;
+		}
+		
+		#search-button {
+		    width: 90px;
+		    padding: 10px;
+		    background-color: var(--highlight-color);
+		    color: white;
+		    border: none;
+		    border-radius: 20px;
+		    cursor: pointer;
+		    font-size: 16px;
+		    font-weight: bold;
+		    transition: background-color 0.3s, transform 0.3s;
+		}
+		
+		#search-button:hover {
+		    background-color: #1ed760;
+		    transform: scale(1.05);
+		}
