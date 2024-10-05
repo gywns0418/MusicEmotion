@@ -1,104 +1,94 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[아티스트/앨범] - MusicEmotion</title>
+    <title>앨범 상세 - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f6f6f6;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #191414;
-        }
-        .section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .playlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .playlist-card {
-            background-color: #f7f7f7;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        .playlist-card:hover {
-            transform: translateY(-5px);
-        }
-        .playlist-card img {
-            width: 100%;
-            height: auto;
-        }
-        .playlist-title {
-            font-weight: bold;
-            padding: 10px;
-        }
-        .playlist-description {
-            font-size: 14px;
-            color: #666;
-            padding: 0 10px 10px;
-        }
-        .button {
-            background-color: #1db954;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.2s;
-        }
-        .button:hover {
-            background-color: #1ed760;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/album.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="section">
-            <h1>[아티스트/앨범]</h1>
-            <p>[설명 텍스트]</p>
-            
+<jsp:include page="../header.jsp" />
+
+
+    <div id="content-area">
+        <div class="hero-section">
+            <h1>앨범 상세 정보</h1>
+            <p>아티스트의 창작물을 자세히 살펴보세요.</p>
+        </div>
+
+        <div class="section" id="album-details">
+            <div class="album-info">
+                <img src="/api/placeholder/300/300" alt="앨범 커버" class="album-cover">
+                <div class="album-text">
+                    <h2>앨범 제목</h2>
+                    <p class="artist-name">아티스트 이름</p>
+                    <p class="release-date">발매일: 2024년 1월 1일</p>
+                    <p class="genre">장르: Pop, R&B</p>
+                    <button class="cta-button">전체 재생</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="track-list">
+            <h2>수록곡</h2>
+            <ol class="track-list">
+                <li>
+                    <div class="track-info">
+                        <span class="track-title">트랙 1</span>
+                        <span class="track-duration">3:45</span>
+                    </div>
+                    <button class="play-button">재생</button>
+                </li>
+                <li>
+                    <div class="track-info">
+                        <span class="track-title">트랙 2</span>
+                        <span class="track-duration">4:12</span>
+                    </div>
+                    <button class="play-button">재생</button>
+                </li>
+                <!-- 더 많은 트랙을 추가할 수 있습니다 -->
+            </ol>
+        </div>
+
+        <div class="section" id="album-description">
+            <h2>앨범 소개</h2>
+            <p>이 앨범에 대한 상세한 설명이 들어갑니다. 아티스트의 음악적 방향, 앨범의 주제, 작업 과정 등을 포함할 수 있습니다.</p>
+        </div>
+
+        <div class="section" id="related-albums">
+            <h2>관련 앨범</h2>
             <div class="playlist-grid">
                 <div class="playlist-card">
-                    <img src="/api/placeholder/200/200" alt="[아이템 1]">
-                    <div class="playlist-title">[아이템 제목 1]</div>
-                    <div class="playlist-description">[부제목 1]</div>
+                    <img src="/api/placeholder/200/200" alt="관련 앨범 1">
+                    <div class="playlist-title">관련 앨범 1</div>
+                    <div class="playlist-description">아티스트 이름</div>
                 </div>
                 <div class="playlist-card">
-                    <img src="/api/placeholder/200/200" alt="[아이템 2]">
-                    <div class="playlist-title">[아이템 제목 2]</div>
-                    <div class="playlist-description">[부제목 2]</div>
+                    <img src="/api/placeholder/200/200" alt="관련 앨범 2">
+                    <div class="playlist-title">관련 앨범 2</div>
+                    <div class="playlist-description">아티스트 이름</div>
                 </div>
-                <div class="playlist-card">
-                    <img src="/api/placeholder/200/200" alt="[아이템 3]">
-                    <div class="playlist-title">[아이템 제목 3]</div>
-                    <div class="playlist-description">[부제목 3]</div>
-                </div>
-                <!-- 더 많은 아이템을 추가할 수 있습니다 -->
+                <!-- 더 많은 관련 앨범을 추가할 수 있습니다 -->
             </div>
-            
-            <br>
-            <button class="button">[버튼 텍스트]</button>
         </div>
     </div>
+</main>
+
+<script>
+    $(document).ready(function() {
+        // 여기에 필요한 JavaScript 코드를 추가할 수 있습니다.
+        // 예: 트랙 재생, 전체 재생 기능 등
+    });
+</script>
+
 </body>
 </html>

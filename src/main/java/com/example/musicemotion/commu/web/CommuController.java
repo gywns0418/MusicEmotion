@@ -25,26 +25,6 @@ public class CommuController {
 	@Autowired
 	CommuService commuService;
 
-	@GetMapping("/musicDetail.do")
-	public String musicDetail() {
-		return "music/musicDetail";
-	}
-	
-	@GetMapping("/musicList.do")
-	public String musicList() {
-		return "music/musicList";
-	}
-
-	@GetMapping("/playListMain.do")
-	public String playListMain() {
-		return "music/playListMain";
-	}
-
-	@GetMapping("/resentPlay.do")
-	public String resentPlay() {
-		return "music/resentPlay";
-	}
-
 	@GetMapping("/commuList.do")
 	public String commuList(HttpServletRequest req) {
 

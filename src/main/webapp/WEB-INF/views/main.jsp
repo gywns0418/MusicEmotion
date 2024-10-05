@@ -66,11 +66,13 @@
 	            <div class="section">
 	            <h2>최근 인기 플레이리스트</h2>
 	            <div class="playlist-grid">
-	                <div class="playlist-card">
-	                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-	                    <div class="playlist-title">인기 팝 모음</div>
-	                    <div class="playlist-description">최신 팝 히트곡 모음</div>
-	                </div>
+	            	<a href="spotify/playListMain.do">
+		                <div class="playlist-card">
+		                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
+		                    <div class="playlist-title">인기 팝 모음</div>
+		                    <div class="playlist-description">최신 팝 히트곡 모음</div>
+		                </div>
+	                </a>
 	                <div class="playlist-card">
 	                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
 	                    <div class="playlist-title">집중을 위한 클래식</div>
@@ -89,10 +91,12 @@
 	            </div>
 	        </div>
 	        </div>
-			<a href="commu/musicDetail.do">musicDetail</a>
-			<a href="commu/musicList.do">musicList.do</a>
-			<a href="commu/playListMain.do">playListMain</a>
-			<a href="commu/resentPlay.do">resentPlay.do</a>
+			<a href="spotify/musicDetail.do">musicDetail</a>
+			<a href="spotify/musicList.do">musicList.do</a>
+			<a href="spotify/playListMain.do">playListMain</a>
+			<a href="spotify/resentPlay.do">resentPlay.do</a>
+			<a href="spotify/album.do">album.do</a>
+			<a href="spotify/artist.do">artist.do</a>
 			
 	
 	    <script>

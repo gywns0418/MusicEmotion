@@ -82,7 +82,7 @@
 
 <jsp:include page="../header.jsp" />
 
-<main>
+
     <div class="playlist-container">
         <div class="playlist-header">
             <img src="https://via.placeholder.com/150" alt="플레이리스트 커버" class="playlist-image">

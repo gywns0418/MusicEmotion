@@ -74,7 +74,8 @@
         }
     </style>
 </head>
-<body>
+	<jsp:include page="../header.jsp" />
+
     <div class="container">
         <div class="section">
             <h1>최근 재생</h1>
@@ -112,5 +113,6 @@
             <button class="button">전체 재생</button>
         </div>
     </div>
+    </main>
 </body>
 </html>

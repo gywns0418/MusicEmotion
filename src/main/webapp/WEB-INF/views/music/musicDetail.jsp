@@ -96,7 +96,8 @@
         }
     </style>
 </head>
-<body>
+<jsp:include page="../header.jsp" />
+
     <div class="container">
         <div class="section">
             <div class="song-header">
@@ -148,5 +149,6 @@
             <button class="button">전체 가사 보기</button>
         </div>
     </div>
+</main>
 </body>
 </html>
