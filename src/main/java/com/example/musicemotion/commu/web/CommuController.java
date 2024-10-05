@@ -3,6 +3,8 @@ package com.example.musicemotion.commu.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,7 +84,9 @@ public class CommuController {
 
 	@PostMapping("/addCommu.do")
 	public String addCommu(HttpServletRequest req, CommuDTO dto) {
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
 		System.out.println("member : " + dto.getMember_name());
 		System.out.println("title : " + dto.getTitle());
 		System.out.println("content : " + dto.getContent());
