@@ -29,6 +29,11 @@ public class CommuController {
 	public String musicDetail() {
 		return "music/musicDetail";
 	}
+	
+	@GetMapping("/musicList.do")
+	public String musicList() {
+		return "music/musicList";
+	}
 
 	@GetMapping("/playListMain.do")
 	public String playListMain() {
