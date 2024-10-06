@@ -5,11 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Album;
+import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
+import se.michaelthelin.spotify.requests.data.artists.GetArtistRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -57,5 +63,29 @@ public class SpotifyService {
             .build();
 
         return recommendationsRequest.execute();
+    }
+    
+    public Track getTrack(String trackId) throws Exception {
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetTrackRequest getTrackRequest = spotifyApi.getTrack(trackId).build();
+        return getTrackRequest.execute();
+    }
+    
+
+    // 앨범 정보 가져오기
+    public Album getAlbumDetail(String albumId) throws Exception {
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetAlbumRequest getAlbumRequest = spotifyApi.getAlbum(albumId).build();
+        return getAlbumRequest.execute();
+    }
+
+    // 아티스트 정보 가져오기
+    public Artist getArtistDetail(String artistId) throws Exception {
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetArtistRequest getArtistRequest = spotifyApi.getArtist(artistId).build();
+        return getArtistRequest.execute();
     }
 }

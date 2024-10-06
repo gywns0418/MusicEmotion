@@ -25,7 +25,8 @@
 	
 	        // 검색 버튼 클릭 시 검색 창 닫기
 	        $('#search-submit').click(function() {
-	            alert('검색 기능이 구현될 예정입니다: ' + $('#search-input').val());
+	            var searchTerm = document.getElementById("search-input").value.trim();
+	            window.location.href = "/spotify/musicList.do"; // ?search=" + encodeURIComponent(searchTerm);
 	            $('#search-container').slideUp();  // 검색 버튼 클릭 시 창 닫기
 	        });
 	

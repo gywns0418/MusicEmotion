@@ -26,16 +26,18 @@ public class CommuController {
 	CommuService commuService;
 
 	@GetMapping("/commuList.do")
-	public String commuList(HttpServletRequest req) {
+	public String commuList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "searchType", required = false, defaultValue = "all") String searchType) {
 
 		List<CommuDTO> list = commuService.commuAll();
 		req.setAttribute("commuList", list);
 
-		/*
-		 int pageSize = 10; // 한 페이지당 보여줄 게시물 수 String 
-		 pageNumStr = req.getParameter("pageNum"); // 현재 페이지 번호를 파라미터로 받아옴
+		
+		 int pageSize = 10; // 한 페이지당 보여줄 게시물 수 
+		 String pageNumStr = req.getParameter("pageNum"); // 현재 페이지 번호를 파라미터로 받아옴
 		 
-		 int pageNum = (pageNumStr == null) ? 1 : Integer.parseInt(pageNumStr); // 현재페이지 번호, 기본값은 1 int totalCount;
+		 int pageNum = (pageNumStr == null) ? 1 : Integer.parseInt(pageNumStr); // 현재페이지 번호, 기본값은 1 
+		 int totalCount;
 		 if (search != null && !search.isEmpty()) { 
 			 list = commuService.searchCommuList(searchType, search); totalCount = list.size();
 		 }// 검색 결과의 전체 게시물 수 } 
@@ -47,8 +49,8 @@ public class CommuController {
 		 List<CommuDTO> paginatedList = list.subList(start, end);
 		 
 		 int pageCount = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
-		 int pageBlock = 10; // 페이지 블록 사이즈 int startPage = (pageNum - 1) / pageBlock *
-		 pageBlock + 1; // 시작 페이지 번호 
+		 int pageBlock = 10; // 페이지 블록 사이즈 
+		 int startPage = (pageNum - 1) / pageBlock * pageBlock + 1; // 시작 페이지 번호 
 		 int endPage = Math.min(startPage + pageBlock - 1, pageCount); // 끝 페이지 번호
 		 
 		req.setAttribute("count", totalCount); req.setAttribute("commuList", paginatedList); // 현재 페이지에 해당하는 게시판 목록 
@@ -57,7 +59,7 @@ public class CommuController {
 		req.setAttribute("endPage", endPage); // 끝 페이지 번호 
 		req.setAttribute("search", search); 
 		req.setAttribute("searchType", searchType);
-	*/
+	
 
 		return "commu/commuList";
 	}

@@ -101,10 +101,10 @@
             <div class="music-list">
                 <!-- 음악 카드 예시 (실제로는 서버에서 데이터를 받아와 동적으로 생성해야 합니다) -->
                 <div class="music-card">
-                    <img src="https://via.placeholder.com/200" alt="앨범 커버">
+                    <img src="${albumImage}" alt="Album Cover" width="300px"/>
                     <div class="music-info">
-                        <h3>Dynamite</h3>
-                        <p>BTS</p>
+                        <h3>${trackName}</h3>
+                        <p>${artistName}</p>
                     </div>
                     <div class="button-group">
                         <button class="button play-button" onclick="togglePlay(this, 1)"></button>

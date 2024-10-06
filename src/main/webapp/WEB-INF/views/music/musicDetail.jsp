@@ -101,11 +101,11 @@
     <div class="container">
         <div class="section">
             <div class="song-header">
-                <img src="/api/placeholder/200/200" alt="앨범 커버" class="song-image">
+                <img src="${albumImage}" alt="Album Cover" width="200px"/>
                 <div class="song-info">
-                    <h1 class="song-title">Dynamite</h1>
-                    <div class="song-artist">BTS</div>
-                    <div class="song-album">앨범: Dynamite (Single)</div>
+                    <h1 class="song-title">${trackName}</h1>
+                    <div class="song-artist">${artistName}</div>
+                    <div class="song-album">앨범: ${albumName}</div>
                 </div>
             </div>
             
@@ -118,7 +118,7 @@
             <div class="song-details">
                 <div class="detail-item">
                     <div class="detail-label">발매일</div>
-                    <div class="detail-value">2020년 8월 21일</div>
+                    <div class="detail-value">${albumReleaseDate}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">장르</div>
