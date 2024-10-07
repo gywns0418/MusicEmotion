@@ -51,3 +51,67 @@ CREATE TABLE Comments (
 CREATE SEQUENCE seq_comment_id
 START WITH 1
 INCREMENT BY 1;
+
+-- 감정 테이블 (Emotions)
+CREATE TABLE Emotion (
+    emotion_id NUMBER PRIMARY KEY,      -- 감정 고유 ID
+    emotion_name VARCHAR2(50),          -- 감정 이름 (예: 행복, 슬픔)
+    description VARCHAR2(100),           -- 감정 설명
+	danceability	NUMBER,
+	energy		NUMBER,
+	loudness		NUMBER,
+	tempo		NUMBER,
+	valance		NUMBER
+);
+
+-- 아티스트 테이블 (Artist)
+CREATE TABLE Artist (
+    user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    artist_id VARCHAR2(250)                     -- 곡 ID (FK)
+);
+
+
+-- 앨범 테이블 (Album)
+CREATE TABLE Album (
+    user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    album_id VARCHAR2(250)                     -- 곡 ID (FK)
+);
+
+
+-- 플레이리스트 테이블 (Playlist)
+CREATE TABLE Playlist (
+    playlist_id NUMBER PRIMARY KEY,     -- 플레이리스트 고유 ID
+    user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    title VARCHAR2(100),                -- 플레이리스트 제목
+    creation_date DATE                  -- 생성일
+);
+
+CREATE SEQUENCE playlist_id_seq
+START WITH 1
+INCREMENT BY 1;
+
+-- 플레이리스트-곡 연결 테이블 (Playlist_Songs)
+CREATE TABLE Playlist_Songs (
+    playlist_id NUMBER,                 -- 플레이리스트 ID (FK)
+    song_id VARCHAR2(250)                     -- 곡 ID (FK)
+);
+
+
+-- 좋아요 테이블 (Likes)
+CREATE TABLE Likes (
+    like_id NUMBER PRIMARY KEY,         -- 좋아요 고유 ID
+    user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    song_id VARCHAR2(250)                      -- 곡 ID (FK)
+);
+
+CREATE SEQUENCE like_id_seq
+START WITH 1
+INCREMENT BY 1;
+
+
+-- 최근 재생 테이블 (Recent_Played)
+CREATE TABLE Recent_Played (
+    user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    song_id VARCHAR2(250),                     -- 곡 ID (FK)
+    played_at DATE                     -- 재생한 날짜 및 시간
+);
