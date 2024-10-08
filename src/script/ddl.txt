@@ -64,6 +64,10 @@ CREATE TABLE Emotion (
 	valance		NUMBER
 );
 
+CREATE SEQUENCE emotion_id_seq
+START WITH 1
+INCREMENT BY 1;
+
 -- 아티스트 테이블 (Artist)
 CREATE TABLE Artist (
     user_id VARCHAR2(250),                     -- 사용자 ID (FK)
