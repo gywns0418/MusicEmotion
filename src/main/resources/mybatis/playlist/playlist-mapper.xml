@@ -4,5 +4,23 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="playlist">
-
+	<insert id="addPlaylist">
+		insert into playlist
+		values(playlist_id_seq.nextval, #{user_id}, #{title}, sysdate)
+	</insert>
+	
+	<select id="playlistAll" parameterType="String" resultType="PlaylistDTO">
+		select * from playlist where user_id = #{user_id}
+	</select>
+	
+	<update id="updatePlaylist" parameterType="PlaylistDTO">
+		update playlist
+		set
+		title = #{title}
+		where playlist_id = #{playlist_id}
+	</update>
+	
+	<delete id="deletePlaylist" parameterType="int">
+		delete from playlist where playlist_id = #{playlist_id}
+	</delete>
 </mapper>
