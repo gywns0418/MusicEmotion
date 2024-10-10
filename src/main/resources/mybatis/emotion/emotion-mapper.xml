@@ -4,5 +4,29 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="emotion">
+	<insert id="addEmotion" parameterType="EmotionDTO">
+		insert into emotion
+		values(emotion_id_seq.nextval, #{emotion_name}, #{description}, 
+			#{danceability}, #{energy}, #{loudness}, #{tempo}, #{valance})
+	</insert>
+	
+	<select id="playlistAll" parameterType="int" resultType="PlaylistDTO">
+		select * from emotion where emotion_id = #{emotion_id}
+	</select>
+	
+	<update id="updateEmotion" parameterType="EmotionDTO">
+	    update emotion
+	    set
+	        danceability = #{danceability},
+	        energy = #{energy},
+	        loudness = #{loudness},
+	        tempo = #{tempo},
+	        valance = #{valance}
+	    where emotion_id = #{emotion_id}
+	</update>
 
+	
+	<delete id="deleteEmotion" parameterType="int">
+		delete from emotion where emotion_id = #{emotion_id}
+	</delete>
 </mapper>

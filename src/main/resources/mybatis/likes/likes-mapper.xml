@@ -4,5 +4,16 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="likes">
-
+	<insert id="addLikes" parameterType="LikesDTO">
+		insert into likes
+		values(like_id_seq.nextval, #{user_id}, #{song_id})
+	</insert>
+	
+	<select id="likesAll" parameterType="String" resultType="LikesDTO">
+		select * from likes where user_id = #{user_id}
+	</select>
+	
+	<delete id="deleteLikes" parameterType="int">
+		delete from likes where like_id = #{like_id}
+	</delete>
 </mapper>

@@ -4,5 +4,23 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="artist">
-
+	<insert id="addArtist" parameterType="ArtistDTO">
+		insert into artist
+		values(#{user_id}, #{artist_id})
+	</insert>
+	
+	<select id="artistAll" parameterType="String" resultType="ArtistDTO">
+		select * from artist where user_id = #{user_id}
+	</select>
+	
+	<update id="updateArtist" parameterType="ArtistDTO">
+		update artist
+		set
+		artist_id = #{artist_id}
+		where user_id = #{user_id}
+	</update>
+	
+	<delete id="deleteAlbum" parameterType="String">
+		delete from artist where artist_id = #{artist_id}
+	</delete>
 </mapper>
