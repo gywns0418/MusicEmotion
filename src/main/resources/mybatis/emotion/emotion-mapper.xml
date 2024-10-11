@@ -19,7 +19,7 @@
     </insert>
     
     <select id="emotionAll" parameterType="int" resultType="EmotionDTO">
-        select * from emotion where emotion_id = #{emotion_id}
+        select * from emotion 
     </select>
     
     <update id="updateEmotion" parameterType="EmotionDTO">

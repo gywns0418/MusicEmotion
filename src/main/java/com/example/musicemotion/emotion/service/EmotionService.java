@@ -20,8 +20,8 @@ public class EmotionService {
 		sqlSession.insert("addEmotion", dto);
 	}
 	 
-	public List<EmotionDTO> emotionAll(int emotion_id) {
-		return sqlSession.selectList("emotionAll", emotion_id);
+	public List<EmotionDTO> emotionAll() {
+		return sqlSession.selectList("emotionAll");
 	}
 	 
 	public void updateEmotion(EmotionDTO dto) {

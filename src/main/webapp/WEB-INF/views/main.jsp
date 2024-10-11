@@ -30,10 +30,9 @@
 	                <div class="form-group">
 	                    <label for="mood">현재 감정:</label>
 	                    <select id="mood" name="mood">
-	                        <option value="happy">행복</option>
-	                        <option value="sad">슬픔</option>
-	                        <option value="excited">신남</option>
-	                        <option value="relaxed">편안</option>
+	                        <c:forEach var="emotion" items="${emotion}">
+	                        	<option value="${emotion.emotion_id}">${emotion.emotion_name}</option>
+	                        </c:forEach>
 	                    </select>
 	                </div>
 	                <div class="form-group">
@@ -111,18 +110,20 @@
 	                // 여기에 실제 AI 추천 로직을 추가하세요
 	                setTimeout(() => {
 	                    let recommendationContent = `
-	                        <h2>추천 플레이리스트</h2>
+	                        <h2>추천 음악</h2>
 	                        <div class="playlist-grid" id="recommendation-result">
 	                    `;
 	                    
 	                    // 6개의 추천 플레이리스트를 생성
 	                    for (let i = 0; i < 6; i++) {
 	                        recommendationContent += `
+	                        	<a href="spotify/musicDetail.do">
 	                            <div class="playlist-card">
 	                                <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
 	                                <div class="playlist-title">추천 플레이리스트 ${i+1}</div>
 	                                <div class="playlist-description">AI가 추천하는 맞춤 음악</div>
 	                            </div>
+	                            </a>
 	                        `;
 	                    }
 	                    
