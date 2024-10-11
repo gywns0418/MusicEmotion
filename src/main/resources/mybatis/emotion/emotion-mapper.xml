@@ -4,29 +4,36 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="emotion">
-	<insert id="addEmotion" parameterType="EmotionDTO">
-		insert into emotion
-		values(emotion_id_seq.nextval, #{emotion_name}, #{description}, 
-			#{danceability}, #{energy}, #{loudness}, #{tempo}, #{valance})
-	</insert>
-	
-	<select id="emotionAll" parameterType="int" resultType="EmotionDTO">
-		select * from emotion where emotion_id = #{emotion_id}
-	</select>
-	
-	<update id="updateEmotion" parameterType="EmotionDTO">
-	    update emotion
-	    set
-	        danceability = #{danceability},
-	        energy = #{energy},
-	        loudness = #{loudness},
-	        tempo = #{tempo},
-	        valance = #{valance}
-	    where emotion_id = #{emotion_id}
-	</update>
+    <insert id="addEmotion" parameterType="EmotionDTO">
+        insert into emotion
+        values(
+            emotion_id_seq.nextval, 
+            #{emotion_name}, 
+            #{description}, 
+            #{danceability_min}, #{danceability_max}, 
+            #{energy_min}, #{energy_max}, 
+            #{loudness_min}, #{loudness_max}, 
+            #{tempo_min}, #{tempo_max}, 
+            #{valance_min}, #{valance_max}
+        )
+    </insert>
+    
+    <select id="emotionAll" parameterType="int" resultType="EmotionDTO">
+        select * from emotion where emotion_id = #{emotion_id}
+    </select>
+    
+    <update id="updateEmotion" parameterType="EmotionDTO">
+        update emotion
+        set
+            danceability_min = #{danceability_min}, danceability_max = #{danceability_max},
+            energy_min = #{energy_min}, energy_max = #{energy_max},
+            loudness_min = #{loudness_min}, loudness_max = #{loudness_max},
+            tempo_min = #{tempo_min}, tempo_max = #{tempo_max},
+            valance_min = #{valance_min}, valance_max = #{valance_max}
+        where emotion_id = #{emotion_id}
+    </update>
 
-	
-	<delete id="deleteEmotion" parameterType="int">
-		delete from emotion where emotion_id = #{emotion_id}
-	</delete>
+    <delete id="deleteEmotion" parameterType="int">
+        delete from emotion where emotion_id = #{emotion_id}
+    </delete>
 </mapper>

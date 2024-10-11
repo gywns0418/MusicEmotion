@@ -54,15 +54,21 @@ INCREMENT BY 1;
 
 -- 감정 테이블 (Emotions)
 CREATE TABLE Emotion (
-    emotion_id NUMBER PRIMARY KEY,      -- 감정 고유 ID
-    emotion_name VARCHAR2(50),          -- 감정 이름 (예: 행복, 슬픔)
-    description VARCHAR2(100),           -- 감정 설명
-	danceability	NUMBER,
-	energy		NUMBER,
-	loudness		NUMBER,
-	tempo		NUMBER,
-	valance		NUMBER
+    emotion_id NUMBER PRIMARY KEY, 
+    emotion_name VARCHAR2(50), 
+    description VARCHAR2(100), 
+    danceability_min NUMBER(3,2), 
+    danceability_max NUMBER(3,2), 
+    energy_min NUMBER(3,2), 
+    energy_max NUMBER(3,2), 
+    loudness_min NUMBER(5,2), 
+    loudness_max NUMBER(5,2), 
+    tempo_min NUMBER(5,2), 
+    tempo_max NUMBER(5,2), 
+    valance_min NUMBER(3,2), 
+    valance_max NUMBER(3,2)
 );
+
 
 CREATE SEQUENCE emotion_id_seq
 START WITH 1
