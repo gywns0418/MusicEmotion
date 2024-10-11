@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,13 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>간단한 플레이리스트</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
         .playlist-container {
             max-width: 800px;
             margin: 0 auto;
@@ -116,23 +111,33 @@
                 </div>
                 <span class="track-duration">3:56</span>
             </li>
-            <li class="track-item">
-                <span class="track-number">4</span>
-                <div class="track-info">
-                    <div class="track-title">열대야의 밤</div>
-                    <div class="track-artist">밤하늘</div>
-                </div>
-                <span class="track-duration">3:45</span>
-            </li>
-            <li class="track-item">
-                <span class="track-number">5</span>
-                <div class="track-info">
-                    <div class="track-title">아이스크림</div>
-                    <div class="track-artist">달콤한 여름</div>
-                </div>
-                <span class="track-duration">3:18</span>
-            </li>
+            
+        <c:forEach var="entry" items="${playlistTracks}">
+            <h2>Playlist: ${entry.key}</h2>
+            <ul>
+                <c:forEach var="track" items="${entry.value}">
+                    <li>
+                        <strong>Track Name:</strong> ${track.track.name} <br>
+                        <strong>Artist:</strong> 
+                        <c:forEach var="artist" items="${track.track.artists}">
+                            ${artist.name}
+                        </c:forEach>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:forEach>
+            
+            <c:forEach var="track" items="${recommendations.tracks}">
+                <li>
+                    <strong>Track:</strong> ${track.name} <br>
+                    <strong>Artist:</strong> 
+                    <c:forEach var="artist" items="${track.artists}" varStatus="status">
+                        ${artist.name}<c:if test="${!status.last}">, </c:if>
+                    </c:forEach>
+                </li>
+            </c:forEach>
         </ul>
+
     </div>
     </main>
 </body>

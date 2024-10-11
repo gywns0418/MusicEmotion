@@ -8,12 +8,18 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Album;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistRequest;
+import se.michaelthelin.spotify.requests.data.browse.GetListOfFeaturedPlaylistsRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 
@@ -87,5 +93,41 @@ public class SpotifyService {
     	
         GetArtistRequest getArtistRequest = spotifyApi.getArtist(artistId).build();
         return getArtistRequest.execute();
+    }
+    
+    //플레이 리스트 가져오기
+    public Playlist getPlaylist(String playlistId) throws Exception{
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetPlaylistRequest getPlaylistRequest = spotifyApi.getPlaylist(playlistId).build();
+        return getPlaylistRequest.execute();
+    }
+    
+    public Recommendations getRecommendations(String seedGenre, int limit) throws Exception{
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetRecommendationsRequest getRecommendationsRequest = spotifyApi.getRecommendations()
+            .limit(limit)
+            .seed_genres(seedGenre)
+            .build();
+        return getRecommendationsRequest.execute();
+    }
+    
+    public PlaylistSimplified[] getFeaturedPlaylists(int limit) throws Exception{
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetListOfFeaturedPlaylistsRequest request = spotifyApi.getListOfFeaturedPlaylists()
+            .limit(limit)
+            .build();
+        return request.execute().getPlaylists().getItems();
+    }
+    
+    public PlaylistTrack[] getPlaylistTracks(String playlistId, int limit) throws Exception{
+    	spotifyApi.setAccessToken(getAccessToken());
+    	
+        GetPlaylistsItemsRequest request = spotifyApi.getPlaylistsItems(playlistId)
+        	.limit(limit)
+            .build();
+        return request.execute().getItems();
     }
 }

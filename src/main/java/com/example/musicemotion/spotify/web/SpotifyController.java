@@ -16,11 +16,18 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Album;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/spotify")
@@ -97,7 +104,29 @@ public class SpotifyController {
 	}
 
 	@GetMapping("/playListMain.do")
-	public String playListMain() {
+	public String playListMain(HttpServletRequest req) throws Exception {	//@RequestParam String genre, @RequestParam(defaultValue = "10") int limit
+        String  genre = "pop";  // 임의의 장르 값
+        int limit = 1;  // 가져올 인기 플레이리스트 수
+        int trackLimit = 20; // 각 플레이리스트에서 가져올 트랙 수 제한
+
+        try {
+            PlaylistSimplified[] featuredPlaylists = spotifyService.getFeaturedPlaylists(limit);
+            Map<String, PlaylistTrack[]> playlistTracks = new HashMap<>();
+
+            for (PlaylistSimplified playlist : featuredPlaylists) {
+                String playlistId = playlist.getId();
+                PlaylistTrack[] tracks = spotifyService.getPlaylistTracks(playlistId, trackLimit); // 트랙 수 제한 적용
+                playlistTracks.put(playlist.getName(), tracks);
+            }
+            
+        	Recommendations recommendations = spotifyService.getRecommendations(genre, limit);
+        	
+        	req.setAttribute("playlistTracks", playlistTracks);
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
 		return "music/playListMain";
 	}
 
