@@ -1,5 +1,7 @@
 package com.example.musicemotion.artist.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,8 @@ public class ArtistService {
 		 sqlSession.insert("addArtist", dto);
 	 }
 	 
-	 public ArtistDTO artistAll(String user_id) {
-		 return  sqlSession.selectOne("artistAll", user_id);
+	 public List<ArtistDTO> artistAll(String user_id) {
+		 return  sqlSession.selectList("artistAll", user_id);
 	 }
 	 
 	 public void updateArtist(ArtistDTO dto) {

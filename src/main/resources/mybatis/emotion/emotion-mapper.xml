@@ -10,7 +10,7 @@
 			#{danceability}, #{energy}, #{loudness}, #{tempo}, #{valance})
 	</insert>
 	
-	<select id="playlistAll" parameterType="int" resultType="PlaylistDTO">
+	<select id="emotionAll" parameterType="int" resultType="EmotionDTO">
 		select * from emotion where emotion_id = #{emotion_id}
 	</select>
 	

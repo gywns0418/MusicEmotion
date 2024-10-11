@@ -1,5 +1,7 @@
 package com.example.musicemotion.comment.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,8 @@ public class CommentService {
 		 sqlSession.insert("addComments", dto);
 	 }
 	 
-	 public CommentsDTO commentsAll(String post_id) {
-		 return  sqlSession.selectOne("commentsAll", post_id);
+	 public List<CommentsDTO> commentsAll(String post_id) {
+		 return  sqlSession.selectList("commentsAll", post_id);
 	 }
 	 
 	 public void updateComments(CommentsDTO dto) {

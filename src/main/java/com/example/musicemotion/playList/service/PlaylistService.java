@@ -1,5 +1,7 @@
 package com.example.musicemotion.playList.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ public class PlaylistService {
 		 sqlSession.insert("addPlaylist", dto);
 	 }
 	 
-	 public PlaylistDTO playlistAll(String user_id) {
-		 return  sqlSession.selectOne("playlistAll", user_id);
+	 public List<PlaylistDTO> playlistAll(String user_id) {
+		 return  sqlSession.selectList("playlistAll", user_id);
 	 }
 	 
 	 public void updatePlaylist(PlaylistDTO dto) {
