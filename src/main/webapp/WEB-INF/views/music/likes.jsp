@@ -10,9 +10,85 @@
     <title>내 음악 리스트 - AI 음악 추천 서비스</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/musicList.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
 
+        .music-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .music-card {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        .music-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .music-info {
+            padding: 16px;
+        }
+        .music-info h3 {
+            margin: 0 0 8px;
+            color: var(--highlight-color);
+            font-size: 16px;
+        }
+        .music-info p {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px 16px;
+        }
+        .button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.2s;
+        }
+        .play-button {
+            color: var(--highlight-color);
+        }
+
+        .play-button::before {
+            content: '▶';
+        }
+        .play-button.active::before {
+            content: '⏸';
+        }
+        .like-button {
+            transition: color 0.3s;
+            color: #e0e0e0;
+        }
+        .like-button::before {
+            content: '♥';
+        }
+        .like-button.active {
+            color: #ff4d4d;
+        }
+        .duration {
+            font-size: 12px;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+    </style>
 </head>
 <body>
     <jsp:include page="../header.jsp" />
