@@ -66,6 +66,8 @@
 	</header>
 	<main>
 	     <div id="search-container" class="search-container">
-            <input type="text" id="search-input" placeholder="노래, 아티스트, 앨범 검색...">
-            <button id="search-submit">검색</button>
+          	<form action="${pageContext.request.contextPath}/spotify/musicList.do" method="GET">
+	            <input type="text" id="search-input" name="search" placeholder="노래, 아티스트, 앨범 검색..." required>
+	            <button id="search-submit" type="submit">검색</button>
+	        </form>
         </div>

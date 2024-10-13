@@ -1,10 +1,10 @@
 package com.example.musicemotion.spotify.web;
 
-import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Album;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
@@ -21,12 +20,11 @@ import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,13 +40,13 @@ public class SpotifyController {
 
     @GetMapping("/audio-features/{trackId}")
     public AudioFeatures getAudioFeatures(@PathVariable String trackId) 
-    		throws IOException, SpotifyWebApiException, ExecutionException, InterruptedException, ParseException {
+    		throws Exception {
         return spotifyService.getAudioFeaturesForTrack(trackId);
     }
     
     @GetMapping("/recommended-tracks")
     public Recommendations getRecommendedTracks() 
-    		throws IOException, SpotifyWebApiException, ExecutionException, InterruptedException, ParseException {
+    		throws Exception {
         return spotifyService.getRecommendedTracks();
     }
     
@@ -88,20 +86,28 @@ public class SpotifyController {
 	
 	@GetMapping("/musicList.do")
 	public String musicList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search) {
-        try {
-        	String trackId = "3n3Ppam7vgaVa1iaRUc9Lp";  
-			Track track = spotifyService.getTrack(trackId);
-			
-			req.setAttribute("trackName", track.getName());
-			req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
-			req.setAttribute("artistName", track.getArtists()[0].getName());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		return "music/musicList";
+	    try {
+	        // search 파라미터가 있는 경우 검색 수행
+	        if (search != null && !search.isEmpty()) {
+	            Track[] tracks = spotifyService.searchTracks(search);
+	            req.setAttribute("tracks", tracks);
+	        } else {
+	            // 기본 트랙 정보를 가져와서 설정
+	            String trackId = "3n3Ppam7vgaVa1iaRUc9Lp";  
+	            Track track = spotifyService.getTrack(trackId);
+
+	            req.setAttribute("trackName", track.getName());
+	            req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
+	            req.setAttribute("artistName", track.getArtists()[0].getName());
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return "music/musicList";
 	}
+
+
 
 
 
