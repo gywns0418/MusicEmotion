@@ -19,6 +19,7 @@ import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
 import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,9 +52,9 @@ public class SpotifyController {
     }
     
 	@GetMapping("/musicDetail.do")
-	public String musicDetail(HttpServletRequest req) {
+	public String musicDetail(HttpServletRequest req, String song_id) {
         try {
-            String trackId = "3n3Ppam7vgaVa1iaRUc9Lp";
+            String trackId = song_id;
             String albumId = "6akEvsycLGftJxYudPjmqK";
             String artistId = "0OdUWJ0sBjDrqHygGUXeCF";
 
@@ -84,31 +85,25 @@ public class SpotifyController {
 		return "music/musicDetail";
 	}
 	
-	@GetMapping("/musicList.do")
-	public String musicList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search) {
-	    try {
-	        // search 파라미터가 있는 경우 검색 수행
-	        if (search != null && !search.isEmpty()) {
-	            Track[] tracks = spotifyService.searchTracks(search);
-	            req.setAttribute("tracks", tracks);
-	        } else {
-	            // 기본 트랙 정보를 가져와서 설정
-	            String trackId = "3n3Ppam7vgaVa1iaRUc9Lp";  
-	            Track track = spotifyService.getTrack(trackId);
-
-	            req.setAttribute("trackName", track.getName());
-	            req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
-	            req.setAttribute("artistName", track.getArtists()[0].getName());
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    
-	    return "music/musicList";
-	}
-
-
-
+    @GetMapping("/musicList.do")
+    public String musicList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search) {
+        try {
+            if (search != null && !search.isEmpty()) {
+                // 검색어가 있는 경우 검색 수행
+                Track[] tracks = spotifyService.searchTracks(search);
+                req.setAttribute("tracks", tracks);
+            } else {
+                // 검색어가 없을 경우 랜덤한 추천 트랙 가져오기
+                Track[] recommendedTracks = spotifyService.getRandomRecommendations();
+                req.setAttribute("tracks", recommendedTracks);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", "An error occurred while fetching the tracks.");
+        }
+        
+        return "music/musicList";
+    }
 
 
 	@GetMapping("/resentPlay.do")

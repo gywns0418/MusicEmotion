@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class SpotifyService {
@@ -53,6 +54,7 @@ public class SpotifyService {
         }
     }
 
+    //검색으로 노래
     public Track[] searchTracks(String search) throws Exception {
         ensureAccessToken();
 
@@ -66,6 +68,30 @@ public class SpotifyService {
         		.market(CountryCode.KR)
         		.build();
         return searchTracksRequest.execute().getItems();
+    }
+    
+    //검색결과 없을때 랜덤 노래
+    public Track[] getRandomRecommendations() throws Exception {
+        ensureAccessToken();
+
+        try {
+            GetRecommendationsRequest recommendationsRequest = spotifyApi.getRecommendations()
+                    .limit(50) 
+                    .seed_genres("k-pop") 
+                    .build();
+
+            Recommendations recommendations = recommendationsRequest.execute();
+            
+            // TrackSimplified[]이 아닌 Track[]로 변환
+            String[] trackIds = Arrays.stream(recommendations.getTracks())
+                                      .map(TrackSimplified::getId)
+                                      .toArray(String[]::new);
+
+            return spotifyApi.getSeveralTracks(trackIds).build().execute();
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            System.err.println("Error fetching random recommendations: " + e.getMessage());
+            throw e;
+        }
     }
 
     public Track getTrack(String trackId) throws Exception {

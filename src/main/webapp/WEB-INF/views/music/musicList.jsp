@@ -55,6 +55,7 @@
                 
 				    <c:if test="${not empty tracks}">
 				        <c:forEach var="track" items="${tracks}">
+				        	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
 				            <div class="music-card">
 				                <img src="${track.album.images[0].url}" alt="앨범 커버" width="200" height="200">
 				                
@@ -74,6 +75,7 @@
 				                    <button class="button like-button" onclick="toggleLike(this, '${track.id}')"></button>
 				                </div>
 				            </div>
+				            </a>
 				        </c:forEach>
 				    </c:if>
 				    
