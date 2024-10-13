@@ -111,7 +111,7 @@ public class CommuController {
 		return "commu/commuContent";
 	}
 
-	@RequestMapping("/commuDelete.do")
+	@PostMapping("/commuDelete.do")
 	public String commuDelete(HttpServletRequest req, int post_id) {
 		commuService.commuDelete(post_id);
 		return "redirect:commuList.do";

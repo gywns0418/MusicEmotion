@@ -23,20 +23,25 @@
     <div class="community-container">
         <div class="community-header">
             <h2>공지 게시판</h2>
-            <a class="new-post-button" href="addNotice.do">새 글 작성</a>
+            <sec:authorize access="isAuthenticated() and hasRole('ROLE_2')">
+            	<a class="new-post-button" href="addNotice.do">새 글 작성</a>
+            </sec:authorize>
         </div>
 
         <!-- 검색 폼 -->
   		<div class="search-form-container">
-            <form class="search-form" >
-                <select id="searchType">
-                    <option value="title">제목</option>
-                    <option value="content">내용</option>
-                    <option value="author">작성자</option>
-                </select>
-                <input type="text" id="search" placeholder="검색어를 입력하세요">
-                <button type="submit">검색</button>
-            </form>
+			<div class="search-form">
+				<select id="searchType">
+					<option value="all"
+						<c:if test="${searchType == 'all'}">selected</c:if>>전체</option>
+					<option value="subject"
+						<c:if test="${searchType == 'subject'}">selected</c:if>>제목</option>
+					<option value="author"
+						<c:if test="${searchType == 'author'}">selected</c:if>>작성자</option>
+				</select> <input type="text" placeholder="검색어를 입력하세요" id="search"
+					value="${search}">
+				<button onclick="performSearch()">검색</button>
+			</div>
         </div>
         
         <ul class="post-list">
@@ -67,32 +72,69 @@
                 </li>
             </c:forEach>
         </ul>
-        <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li><a href="#" class="active">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
+			<c:if test="${not empty noticeList}">
+				<div class="pagination">
+
+					<%
+					int pageSize = 10;
+					int currentPage = (request.getParameter("pageNum") != null) ? Integer.parseInt(request.getParameter("pageNum")) : 1;
+					int count = (Integer) request.getAttribute("count");
+					int pageBlock = 10;
+					int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+					int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+					int endPage = startPage + pageBlock - 1;
+					if (endPage > pageCount)
+						endPage = pageCount;
+					%>
+
+					<%
+					if (startPage > pageBlock) {
+					%>
+					<a href="/notice/noticeList.do?pageNum=<%=startPage - pageBlock%>">&laquo;
+						이전</a>
+					<%
+					}
+					%>
+
+
+					<%
+					for (int i = startPage; i <= endPage; ++i) {
+					%>
+					<a href="/notice/noticeList.do?pageNum=<%=i%>"
+						class="<%=(i == currentPage) ? "active" : ""%>"><%=i%></a>
+					<%
+					}
+					%>
+
+
+					<%
+					if (endPage < pageCount) {
+					%>
+					<a href="/notice/noticeList.do?pageNum=<%=startPage + pageBlock%>">다음
+						&raquo;</a>
+					<%
+					}
+					%>
+					<br>
+				</div>
+			</c:if>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-/*         function performSearch() {
-            var searchType = document.getElementById("searchType").value;
-            var searchTerm = document.getElementById("search").value.trim();
-
-            if (searchTerm !== "") {
-                var currentURL = window.location.href.split('?')[0];
-                var queryString = "?searchType=" + searchType + "&search=" + encodeURIComponent(searchTerm);
-                window.location.href = currentURL + queryString;
-            } else if(searchTerm === "") {
-                var currentURL = window.location.href.split('?')[0];
-                window.location.href = currentURL;
-            }
-        } */
+	    function performSearch() {
+	        var searchType = document.getElementById("searchType").value;
+	        var searchTerm = document.getElementById("search").value.trim();
+	
+	        if (searchTerm !== "") {
+	            var currentURL = window.location.href.split('?')[0];
+	            var queryString = "?searchType=" + searchType + "&search=" + encodeURIComponent(searchTerm);
+	            window.location.href = currentURL + queryString;
+	        }else if(searchTerm === ""){
+	            var currentURL = window.location.href.split('?')[0];
+	            window.location.href =currentURL;
+	        }
+	    }
     </script>
     
 </main>

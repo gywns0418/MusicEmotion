@@ -142,3 +142,61 @@
         .search-form button:hover {
             background-color: #1ed760;
         }
+        
+        .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin-top: 30px;
+    padding: 0;
+}
+
+.pagination a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.pagination a:hover {
+    background-color: var(--highlight-color);
+    color: white;
+    border-color: var(--highlight-color);
+}
+
+.pagination .active {
+    background-color: var(--highlight-color);
+    color: white;
+    border-color: var(--highlight-color);
+    font-weight: bold;
+}
+
+.pagination a.prev,
+.pagination a.next {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
+.pagination a.prev:hover,
+.pagination a.next:hover {
+    background-color: var(--highlight-color);
+    color: white;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 600px) {
+    .pagination {
+        flex-wrap: wrap;
+    }
+    
+    .pagination a {
+        margin: 2px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

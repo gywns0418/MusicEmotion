@@ -33,8 +33,15 @@
     </div>
     <div class="post-actions">
         <button class="post-action-btn" onclick="window.location.href='/commu/commuList.do'">글 목록</button>
-        <button class="post-action-btn" onclick="window.location.href='editCommu.do?post_id=${postId.post_id}'">글 수정</button>
-        <button class="post-action-btn delete-btn" onclick="confirmDelete()">글 삭제</button>
+        
+        <sec:authorize access="isAuthenticated()">
+		    <sec:authentication property="principal.username" var="currentUsername"/>
+		</sec:authorize>
+
+		<c:if test="${currentUsername == postId.member_name}">
+		    <button class="post-action-btn" onclick="window.location.href='editCommu.do?post_id=${postId.post_id}'">글 수정</button>
+		    <button class="post-action-btn delete-btn" onclick="confirmDelete(${postId.post_id})">글 삭제</button>
+		</c:if>
     </div>
     <div class="comment-section">
         <h3>댓글</h3>
@@ -76,11 +83,18 @@
         postDateElement.innerText = formattedDate;
     });
 
-    function confirmDelete() {
+    function confirmDelete(postId) {
         if (confirm("정말로 이 글을 삭제하시겠습니까?")) {
-            // 여기에 삭제 로직을 추가하세요
-            alert("글이 삭제되었습니다.");
-            location.href = 'commuList.jsp';
+            fetch('/notice/commuDelete.do?post_id=' + postId, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert("글이 삭제되었습니다.");
+                        window.location.href = '${pageContext.request.contextPath}/commu/commuList.do';
+                    } else {
+                        alert("삭제에 실패하였습니다.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
     }
 </script>
