@@ -5,9 +5,10 @@
   
 <mapper namespace="playlist">
 	<insert id="addPlaylist" parameterType="PlaylistDTO">
-		insert into playlist
-		values(playlist_id_seq.nextval, #{user_id}, #{title}, sysdate)
+	    INSERT INTO playlist (playlist_id, user_id, image, title, description, creation_date)
+	    VALUES (playlist_id_seq.nextval, #{user_id}, #{image}, #{title}, #{description}, sysdate)
 	</insert>
+
 	
 	<select id="playlistAll" parameterType="String" resultType="PlaylistDTO">
 		select * from playlist where user_id = #{user_id}

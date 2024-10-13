@@ -92,7 +92,9 @@ CREATE TABLE Album (
 CREATE TABLE Playlist (
     playlist_id NUMBER PRIMARY KEY,     -- 플레이리스트 고유 ID
     user_id VARCHAR2(250),                     -- 사용자 ID (FK)
+    image VARCHAR2(150),
     title VARCHAR2(100),                -- 플레이리스트 제목
+   	description VARCHAR2(1500),			-- 플레이리스트 설명
     creation_date DATE                  -- 생성일
 );
 
