@@ -11,7 +11,7 @@
     <title>앨범 상세 - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/album.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/artist.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>

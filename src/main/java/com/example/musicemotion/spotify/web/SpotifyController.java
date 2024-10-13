@@ -135,13 +135,5 @@ public class SpotifyController {
 		return "music/resentPlay";
 	}
 	
-	@GetMapping("/album.do")
-	public String album() {
-		return "music/album";
-	}
-	
-	@GetMapping("/artist.do")
-	public String artist() {
-		return "music/artist";
-	}
+
 }

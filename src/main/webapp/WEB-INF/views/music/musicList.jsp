@@ -19,8 +19,10 @@
     
 
         <div id="content-area">
-            <h1>내 음악 리스트</h1>
-           
+            
+ 			<div class="hero-section">
+                <h1>음악 리스트</h1>
+            </div>
 
             <div class="music-list">
                 <!-- 음악 카드 예시 (실제로는 서버에서 데이터를 받아와 동적으로 생성해야 합니다) -->

@@ -10,7 +10,7 @@
     <title>간단한 플레이리스트</title>
     <style>
         .playlist-container {
-            max-width: 800px;
+            max-width: 80%;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 8px;
@@ -33,6 +33,7 @@
         }
         .playlist-info h1 {
             margin: 0 0 10px 0;
+            color: white;
         }
         .playlist-info p {
             margin: 0;
@@ -82,7 +83,7 @@
         <div class="playlist-header">
             <img src="https://via.placeholder.com/150" alt="플레이리스트 커버" class="playlist-image">
             <div class="playlist-info">
-                <h1>여름 느낌 플레이리스트</h1>
+                <h1>여름 느낌의 플레이리스트</h1>
                 <p>시원한 여름을 느낄 수 있는 음악 모음</p>
             </div>
         </div>
@@ -127,15 +128,7 @@
             </ul>
         </c:forEach>
             
-            <c:forEach var="track" items="${recommendations.tracks}">
-                <li>
-                    <strong>Track:</strong> ${track.name} <br>
-                    <strong>Artist:</strong> 
-                    <c:forEach var="artist" items="${track.artists}" varStatus="status">
-                        ${artist.name}<c:if test="${!status.last}">, </c:if>
-                    </c:forEach>
-                </li>
-            </c:forEach>
+
         </ul>
 
     </div>

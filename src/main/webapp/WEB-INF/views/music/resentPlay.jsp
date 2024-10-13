@@ -81,9 +81,11 @@
     <jsp:include page="../header.jsp" />
 
         <div class="recent-play-container">
-            <h1>최근 재생</h1>
-            <p>지난 30일 동안 들은 곡들입니다.</p>
-            
+           	<div class="hero-section">
+                <h1>최근 재생</h1>
+                <p>지난 30일 동안 들은 곡들입니다</p>
+            </div>
+
             <div class="song-list">
                 <div class="song-item">
                     <img src="/api/placeholder/60/60" alt="노래 1" class="song-image">
@@ -127,10 +129,6 @@
                 </div>
             </div>
             
-            <div class="action-buttons">
-                <button class="cta-button">전체 재생</button>
-                <button class="cta-button">플레이리스트 생성</button>
-            </div>
 
             <div class="statistics">
                 <h2>나의 청취 통계</h2>

@@ -95,7 +95,10 @@
     
 
         <div id="content-area">
-            <h1>내 음악 리스트</h1>
+        	<div class="hero-section">
+            	<h1>좋아요 표시한 음악</h1>
+            	<p>내가 좋아요 표시한 곡들입니다</p>
+            </div>
            
 
             <div class="music-list">

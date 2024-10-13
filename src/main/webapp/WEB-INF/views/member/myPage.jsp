@@ -32,21 +32,21 @@
 		                <div class="playlist-description">최근에 들은 곡들</div>
 		            </div>
 	            </a>
-	            <a href="likes/likesDetail.do">
+	            <a href="${pageContext.request.contextPath}/likes/likes.do">
 		            <div class="playlist-card">
 		                <img src="https://via.placeholder.com/300" alt="좋아요 표시한 곡">
 		                <div class="playlist-title">좋아요 표시한 곡</div>
 		                <div class="playlist-description">I'm Yours</div>
 		            </div>
 	            </a>
-	            <a href="${pageContext.request.contextPath}/spotify/artist.do">
+	            <a href="${pageContext.request.contextPath}/artist/artist.do">
 		            <div class="playlist-card">
 		                <img src="https://via.placeholder.com/300" alt="아티스트">
 		                <div class="playlist-title">아티스트</div>
 		                <div class="playlist-description">내가 팔로우한 아티스트</div>
 		            </div>
 	            </a>
-	            <a href="${pageContext.request.contextPath}/spotify/album.do">
+	            <a href="${pageContext.request.contextPath}/album/album.do">
 		            <div class="playlist-card">
 		                <img src="https://via.placeholder.com/300" alt="앨범">
 		                <div class="playlist-title">앨범</div>
