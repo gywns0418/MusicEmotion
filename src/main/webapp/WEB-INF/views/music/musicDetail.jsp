@@ -8,14 +8,9 @@
     <title>곡 상세 정보 - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f6f6f6;
-            margin: 0;
-            padding: 0;
-        }
+
         .container {
-            max-width: 1200px;
+            max-width: 80%;
             margin: 0 auto;
             padding: 20px;
         }
@@ -105,7 +100,7 @@
                 <div class="song-info">
                     <h1 class="song-title">${trackName}</h1>
                     <div class="song-artist">${artistName}</div>
-                    <div class="song-album">앨범: ${albumName}</div>
+                    <div class="song-album">앨범: ${track.album.name}</div>
                 </div>
             </div>
             
@@ -118,7 +113,7 @@
             <div class="song-details">
                 <div class="detail-item">
                     <div class="detail-label">발매일</div>
-                    <div class="detail-value">${albumReleaseDate}</div>
+                    <div class="detail-value">${releaseDate}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">장르</div>

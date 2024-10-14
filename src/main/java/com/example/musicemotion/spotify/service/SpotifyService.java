@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 public class SpotifyService {
@@ -94,6 +95,12 @@ public class SpotifyService {
         }
     }
 
+    public String getTrackArtists(Track track) {
+        return Arrays.stream(track.getArtists())
+                     .map(artist -> artist.getName())
+                     .collect(Collectors.joining(", "));
+    }
+    
     public Track getTrack(String trackId) throws Exception {
         ensureAccessToken();
 

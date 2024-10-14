@@ -52,30 +52,22 @@ public class SpotifyController {
     }
     
 	@GetMapping("/musicDetail.do")
-	public String musicDetail(HttpServletRequest req, String song_id) {
+	public String musicDetail(HttpServletRequest req,@RequestParam String song_id) {
         try {
             String trackId = song_id;
-            String albumId = "6akEvsycLGftJxYudPjmqK";
-            String artistId = "0OdUWJ0sBjDrqHygGUXeCF";
-
-            // 트랙 정보 가져오기
             Track track = spotifyService.getTrack(trackId);
+            
+            Album album = spotifyService.getAlbumDetail(track.getAlbum().getId());
+            String releaseDate = album.getReleaseDate();
+            
+
             req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
             req.setAttribute("trackName", track.getName());
-            req.setAttribute("trackDuration", track.getDurationMs());
-            req.setAttribute("trackPopularity", track.getPopularity());
+            req.setAttribute("artistName", track.getArtists()[0].getName());
+            req.setAttribute("releaseDate", releaseDate);
+            req.setAttribute("track", track);
 
-            // 앨범 정보 가져오기
-            Album album = spotifyService.getAlbumDetail(albumId);
-            req.setAttribute("albumName", album.getName());
-            req.setAttribute("albumReleaseDate", album.getReleaseDate());
-            req.setAttribute("albumTotalTracks", album.getTracks());
 
-            // 아티스트 정보 가져오기
-            Artist artist = spotifyService.getArtistDetail(artistId);
-            req.setAttribute("artistName", artist.getName());
-            req.setAttribute("artistPopularity", artist.getPopularity());
-            req.setAttribute("artistFollowers", artist.getFollowers().getTotal());
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
