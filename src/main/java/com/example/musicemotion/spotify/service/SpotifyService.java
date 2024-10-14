@@ -7,6 +7,7 @@ import com.neovisionaries.i18n.CountryCode;
 
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.special.FeaturedPlaylists;
 import se.michaelthelin.spotify.model_objects.specification.*;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
@@ -23,7 +24,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -175,17 +178,25 @@ public class SpotifyService {
         }
     }
 
-    public Playlist getPlaylist(String playlistId) throws Exception {
-        ensureAccessToken();
+    //main에서 플레이리스트 가져올때
+    public List<Playlist> getPopularPlaylists() throws Exception {
+    	ensureAccessToken();
+    	
+        GetListOfFeaturedPlaylistsRequest request = spotifyApi.getListOfFeaturedPlaylists()
+                .limit(10)
+                .build();
+        FeaturedPlaylists featuredPlaylists = request.execute();
 
-        try {
-            GetPlaylistRequest request = spotifyApi.getPlaylist(playlistId).build();
-            return request.execute();
-        } catch (SpotifyWebApiException | IOException | ParseException e) {
-            System.err.println("Error getting playlist: " + e.getMessage());
-            throw e;
+        // 각 PlaylistSimplified ID를 통해 Playlist 상세 정보를 가져옴
+        List<Playlist> playlists = new ArrayList<>();
+        for (PlaylistSimplified playlistSimplified : featuredPlaylists.getPlaylists().getItems()) {
+            Playlist playlist = spotifyApi.getPlaylist(playlistSimplified.getId()).build().execute();
+            playlists.add(playlist);
         }
+        
+        return playlists;
     }
+
 
     public Recommendations getRecommendations(String seedGenre, int limit) throws Exception {
         ensureAccessToken();

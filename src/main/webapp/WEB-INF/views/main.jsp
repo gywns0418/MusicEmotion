@@ -63,33 +63,23 @@
 				</div>
 	
 	            <div class="section">
-	            <h2>최근 인기 플레이리스트</h2>
-	            <div class="playlist-grid">
-	            	<a href="spotify/playListMain.do">
-		                <div class="playlist-card">
-		                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-		                    <div class="playlist-title">인기 팝 모음</div>
-		                    <div class="playlist-description">최신 팝 히트곡 모음</div>
-		                </div>
-	                </a>
-	                <div class="playlist-card">
-	                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-	                    <div class="playlist-title">집중을 위한 클래식</div>
-	                    <div class="playlist-description">공부와 일에 집중하기 좋은 클래식</div>
-	                </div>
-	                <div class="playlist-card">
-	                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-	                    <div class="playlist-title">운동할 때 듣기 좋은 음악</div>
-	                    <div class="playlist-description">에너지 넘치는 비트</div>
-	                </div>
-	                <div class="playlist-card">
-	                    <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-	                    <div class="playlist-title">편안한 재즈</div>
-	                    <div class="playlist-description">휴식과 함께하는 재즈 선율</div>
-	                </div>
-	            </div>
-	        </div>
-	        </div>
+		            <h2>최근 인기 플레이리스트</h2>
+		            <div class="playlist-grid">
+						
+					    <c:forEach var="playlist" items="${popularPlaylists}">
+					    <a href="playlist/playListMain.do">
+					        <div class="playlist-card">
+					            <img src="${playlist.images[0].url}" alt="플레이리스트 커버">
+					            <div class="playlist-title">${playlist.name}</div>
+					            <div class="playlist-description">${playlist.description}</div>
+					        </div>
+					  	</a>
+					    </c:forEach>
+	
+		            </div>
+ 				</div>
+	        
+	</div>
 			<a href="${pageContext.request.contextPath}/spotify/musicDetail.do">musicDetail</a>
 			<a href="${pageContext.request.contextPath}/spotify/musicList.do">musicList.do</a>
 			<a href="${pageContext.request.contextPath}/playlist/playListMain.do">playListMain</a>

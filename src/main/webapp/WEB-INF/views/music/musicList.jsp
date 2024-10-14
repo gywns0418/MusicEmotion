@@ -26,64 +26,35 @@
             </div>
 
             <div class="music-list">
-                <!-- 음악 카드 예시 (실제로는 서버에서 데이터를 받아와 동적으로 생성해야 합니다) -->
-                <div class="music-card">
-                    <img src="${albumImage}" alt="Album Cover" width="300px"/>
-                    <div class="music-info">
-                        <h3>${trackName}</h3>
-                        <p>${artistName}</p>
-                    </div>
-                    <div class="button-group">
-                        <button class="button play-button" onclick="togglePlay(this, 1)"></button>
-                        <span class="duration">3:19</span>
-                        <button class="button like-button" onclick="toggleLike(this, 1)"></button>
-                    </div>
-                </div>
-                
-                <div class="music-card">
-                    <img src="https://via.placeholder.com/200" alt="앨범 커버">
-                    <div class="music-info">
-                        <h3>눈의 꽃</h3>
-                        <p>박효신</p>
-                    </div>
-                    <div class="button-group">
-                        <button class="button play-button" onclick="togglePlay(this, 2)"></button>
-                        <span class="duration">4:05</span>
-                        <button class="button like-button" onclick="toggleLike(this, 2)"></button>
-                    </div>
-                </div>
-                
-				    <c:if test="${not empty tracks}">
-				        <c:forEach var="track" items="${tracks}">
-				        	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
-				            <div class="music-card">
-				                <img src="${track.album.images[0].url}" alt="앨범 커버" width="200" height="200">
-				                
-				                <div class="music-info">
-				                    <h3>${track.name}</h3>
-				                    <p>${track.artists[0].name}</p>
-				                </div>
-				                
-								<div class="button-group">
-				                    <button class="button play-button" onclick="togglePlay(this, '${track.id}')"></button>
-				                    <span class="duration">
-				                        <c:set var="minutes" value="${track.durationMs / 60000}" />
-				                        <c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
-				                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
-				                        <fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
-				                    </span>
-				                    <button class="button like-button" onclick="toggleLike(this, '${track.id}')"></button>
-				                </div>
-				            </div>
-				            </a>
-				        </c:forEach>
-				    </c:if>
-				    
-				    <c:if test="${empty tracks}">
-				        <p>No search results found.</p>
-				    </c:if>
+				<c:if test="${not empty tracks}">
+					<c:forEach var="track" items="${tracks}">
+						<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
+						<div class="music-card">
+							<img src="${track.album.images[0].url}" alt="앨범 커버" width="200" height="200">
+							<div class="music-info">
+								<h3>${track.name}</h3>
+								<p>${track.artists[0].name}</p>
+							</div>
+				
+							<div class="button-group">
+								<button class="button play-button" onclick="togglePlay(this, '${track.id}')"></button>
+								<span class="duration">
+									<c:set var="minutes" value="${track.durationMs / 60000}" />
+									<c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
+									<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+									<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+								</span>
+				           		<button class="button like-button" onclick="toggleLike(this, '${track.id}')"></button>
+			       			</div>
+		         		</div>
+	       				</a>
+		 			</c:forEach>  
+				</c:if>
+				  
+				<c:if test="${empty tracks}">
+				  	<p>No search results found.</p>
+				</c:if>
 
-                <!-- 추가 음악 카드들... -->
             </div>
         </div>
     </main>
