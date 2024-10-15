@@ -67,7 +67,7 @@
 		            <div class="playlist-grid">
 						
 					    <c:forEach var="playlist" items="${popularPlaylists}">
-					    <a href="playlist/playListMain.do">
+					    <a href="playlist/playListMain.do?playlist_id=${playlist.id}">
 					        <div class="playlist-card">
 					            <img src="${playlist.images[0].url}" alt="플레이리스트 커버">
 					            <div class="playlist-title">${playlist.name}</div>

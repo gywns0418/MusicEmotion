@@ -31,27 +31,15 @@ public class PlayListController {
 	PlaylistService playlistService;
 	
 	@GetMapping("/playListMain.do")
-	public String playListMain(HttpServletRequest req) throws Exception {	//@RequestParam String genre, @RequestParam(defaultValue = "10") int limit
-        String  genre = "pop";  // 임의의 장르 값
-        int limit = 1;  // 가져올 인기 플레이리스트 수
+	public String playListMain(HttpServletRequest req,String playlist_id) throws Exception {
         int trackLimit = 20; // 각 플레이리스트에서 가져올 트랙 수 제한
 
         try {
-            PlaylistSimplified[] featuredPlaylists = spotifyService.getFeaturedPlaylists(limit);
-            Map<String, PlaylistTrack[]> playlistTracks = new HashMap<>();
-
-            for (PlaylistSimplified playlist : featuredPlaylists) {
-                String playlistId = playlist.getId();
-                PlaylistTrack[] tracks = spotifyService.getPlaylistTracks(playlistId, trackLimit); // 트랙 수 제한 적용
-                playlistTracks.put(playlist.getName(), tracks);
-            }
-            
-        	Recommendations recommendations = spotifyService.getRecommendations(genre, limit);
-        	
-        	req.setAttribute("playlistTracks", playlistTracks);
-        } catch (IOException | SpotifyWebApiException e) {
+            // Spotify API를 사용하여 플레이리스트의 트랙을 가져오기
+            PlaylistTrack[] tracks = spotifyService.getPlaylistTracks(playlist_id, trackLimit);
+            req.setAttribute("tracks", tracks);
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
         
 		return "music/playListMain";

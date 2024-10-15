@@ -143,7 +143,7 @@
 		        <span class="close" onclick="closePlaylistModal()">&times;</span>
 		        <h2>새 플레이리스트 만들기</h2>
 		        <form action="${pageContext.request.contextPath}/playlist/addPlaylist.do" method="post" onsubmit="createPlaylist(); return false;"> 
-		            <input type="hidden" name="user_id" value="<sec:authentication property='principal.user_id'/>">
+		            <input type="hidden" name="user_id" value="<sec:authentication property='principal.username'/>">
 		            <label for="playlistTitle">타이틀:</label>
 		            <input type="text" id="playlistTitle" name="playlistTitle" required>
 		            

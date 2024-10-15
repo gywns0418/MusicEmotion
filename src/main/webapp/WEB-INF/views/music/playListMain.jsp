@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <!DOCTYPE html>
 <html lang="ko">
@@ -87,49 +89,33 @@
                 <p>시원한 여름을 느낄 수 있는 음악 모음</p>
             </div>
         </div>
-        <ul class="track-list">
-            <li class="track-item">
-                <span class="track-number">1</span>
-                <div class="track-info">
-                    <div class="track-title">여름 바다</div>
-                    <div class="track-artist">해변의 가수</div>
-                </div>
-                <span class="track-duration">3:24</span>
-            </li>
-            <li class="track-item">
-                <span class="track-number">2</span>
-                <div class="track-info">
-                    <div class="track-title">시원한 바람</div>
-                    <div class="track-artist">산들바람</div>
-                </div>
-                <span class="track-duration">4:12</span>
-            </li>
-            <li class="track-item">
-                <span class="track-number">3</span>
-                <div class="track-info">
-                    <div class="track-title">서핑의 추억</div>
-                    <div class="track-artist">파도타기</div>
-                </div>
-                <span class="track-duration">3:56</span>
-            </li>
-            
-        <c:forEach var="entry" items="${playlistTracks}">
-            <h2>Playlist: ${entry.key}</h2>
-            <ul>
-                <c:forEach var="track" items="${entry.value}">
-                    <li>
-                        <strong>Track Name:</strong> ${track.track.name} <br>
-                        <strong>Artist:</strong> 
-                        <c:forEach var="artist" items="${track.track.artists}">
-                            ${artist.name}
-                        </c:forEach>
-                    </li>
-                </c:forEach>
-            </ul>
-        </c:forEach>
-            
+		<ul class="track-list">
+		    <c:forEach items="${tracks}" var="track" varStatus="status">
+		        <li class="track-item">
+		            <span class="track-number">${status.index + 1}</span>
+		            <div class="track-info">
+		                <div class="track-title">${track.track.name}</div>
+		                <div class="track-artist">
+		                    <c:forEach var="artist" items="${track.track.artists}" varStatus="artistStatus">
+		                        ${artist.name}<c:if test="${!artistStatus.last}">, </c:if>
+		                    </c:forEach>
+		                </div>
+		            </div>
+		            <span class="track-duration">
+		                <c:choose>
+		                    <c:when test="${track.track.durationMs > 0}">
+		                        <c:set var="minutes" value="${track.track.durationMs / 60000}" />
+		                        <c:set var="seconds" value="${(track.track.durationMs % 60000) / 1000}" />
+		                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+								<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+		                    </c:when>
+		                    <c:otherwise>Unknown</c:otherwise>
+		                </c:choose>
+		            </span>
+		        </li>
+		    </c:forEach>
+		</ul>
 
-        </ul>
 
     </div>
     </main>
