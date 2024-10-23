@@ -9,8 +9,8 @@
 		values(like_id_seq.nextval, #{user_id}, #{song_id})
 	</insert>
 	
-	<select id="likesAll" parameterType="String" resultType="LikesDTO">
-		select * from likes where user_id = #{user_id}
+	<select id="likesAll" parameterType="String" resultType="String">
+		select song_id from likes where user_id = #{user_id}
 	</select>
 	
 	<delete id="deleteLikes" parameterType="int">

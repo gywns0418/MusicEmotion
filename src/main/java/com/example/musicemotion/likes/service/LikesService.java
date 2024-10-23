@@ -19,7 +19,7 @@ public class LikesService {
 		 sqlSession.insert("addLikes", dto);
 	 }
 	 
-	 public List<LikesDTO> likesAll(String user_id) {
+	 public List<String> likesAll(String user_id) {
 		 return  sqlSession.selectList("likesAll", user_id);
 	 }
 	 

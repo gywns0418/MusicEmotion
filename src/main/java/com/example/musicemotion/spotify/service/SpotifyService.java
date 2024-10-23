@@ -98,12 +98,8 @@ public class SpotifyService {
         }
     }
 
-    public String getTrackArtists(Track track) {
-        return Arrays.stream(track.getArtists())
-                     .map(artist -> artist.getName())
-                     .collect(Collectors.joining(", "));
-    }
-    
+
+    //트렉정보 가져오기
     public Track getTrack(String trackId) throws Exception {
         ensureAccessToken();
 
@@ -128,6 +124,7 @@ public class SpotifyService {
         }
     }
 
+    //음악 추천 가져오기
     public Recommendations getRecommendedTracks() throws Exception {
         ensureAccessToken();
 
@@ -197,38 +194,7 @@ public class SpotifyService {
         return playlists;
     }
 
-
-    public Recommendations getRecommendations(String seedGenre, int limit) throws Exception {
-        ensureAccessToken();
-
-        try {
-            GetRecommendationsRequest request = spotifyApi.getRecommendations()
-                    .limit(limit)
-                    .seed_genres(seedGenre)
-                    .build();
-
-            return request.execute();
-        } catch (SpotifyWebApiException | IOException | ParseException e) {
-            System.err.println("Error getting recommendations: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    public PlaylistSimplified[] getFeaturedPlaylists(int limit) throws Exception {
-        ensureAccessToken();
-
-        try {
-            GetListOfFeaturedPlaylistsRequest request = spotifyApi.getListOfFeaturedPlaylists()
-                    .limit(limit)
-                    .build();
-
-            return request.execute().getPlaylists().getItems();
-        } catch (SpotifyWebApiException | IOException | ParseException e) {
-            System.err.println("Error getting featured playlists: " + e.getMessage());
-            throw e;
-        }
-    }
-
+    //플레이리스트 가져오기
     public PlaylistTrack[] getPlaylistTracks(String playlistId, int limit) throws Exception {
         ensureAccessToken();
 
@@ -242,5 +208,23 @@ public class SpotifyService {
             System.err.println("Error getting playlist tracks: " + e.getMessage());
             throw e;
         }
+    }
+    
+    //좋아요 음악 가져오기
+    public List<Track> getSongsByIds(List<String> songIds) throws Exception {
+        ensureAccessToken();
+        List<Track> tracks = new ArrayList<>();
+
+        for (String songId : songIds) {
+            try {
+                GetTrackRequest getTrackRequest = spotifyApi.getTrack(songId).build();
+                Track track = getTrackRequest.execute();
+                tracks.add(track);
+            } catch (SpotifyWebApiException | IOException | ParseException e) {
+                System.err.println("Error getting song with ID: " + songId + " - " + e.getMessage());
+            }
+        }
+
+        return tracks;
     }
 }

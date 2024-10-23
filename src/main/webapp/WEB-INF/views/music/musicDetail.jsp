@@ -302,15 +302,7 @@
                 <h2>가사</h2>
                 <div class="lyrics-content">
                     <p>
-                        'Cause I, I, I'm in the stars tonight<br>
-                        So watch me bring the fire and set the night alight<br>
-                        Shoes on, get up in the morn'<br>
-                        Cup of milk, let's rock and roll<br>
-                        King Kong, kick the drum, rolling on like a Rolling Stone<br>
-                        Sing song when I'm walking home<br>
-                        Jump up to the top, LeBron<br>
-                        Ding dong, call me on my phone<br>
-                        Ice tea and a game of ping pong, huh
+                    	${lyrics}
                     </p>
                 </div>
                 <button class="lyrics-toggle">전체 가사 보기</button>

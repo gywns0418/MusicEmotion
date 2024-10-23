@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -102,19 +103,34 @@
            
 
             <div class="music-list">
-                <!-- 음악 카드 예시 (실제로는 서버에서 데이터를 받아와 동적으로 생성해야 합니다) -->
-                <div class="music-card">
-                    <img src="${albumImage}" alt="Album Cover" width="300px"/>
-                    <div class="music-info">
-                        <h3>${trackName}</h3>
-                        <p>${artistName}</p>
+                <c:forEach var="song" items="${songs}">
+                
+                    <div class="music-card">
+                    	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${song.id}">
+                        <img src="${song.album.images[0].url}" alt="앨범 커버">
+                        <div class="music-info">
+                            <h3>${song.name}</h3> <!-- 곡 제목 -->
+                            <p>
+                                <c:forEach var="artist" items="${song.artists}">
+                                    ${artist.name}
+                                    <c:if test="${!artistStatus.last}">, </c:if>
+                                </c:forEach>
+                            </p> <!-- 아티스트 이름 -->
+                        </div>
+                        </a>
+                        <div class="button-group">
+                            <button class="button play-button" onclick="togglePlay(this, '${song.id}')"></button>
+								<span class="duration">
+									<c:set var="minutes" value="${song.durationMs / 60000}" />
+									<c:set var="seconds" value="${(song.durationMs % 60000) / 1000}" />
+									<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+									<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+								</span>
+                            <button class="button like-button" onclick="toggleLike(this, '${song.id}')"></button>
+                        </div>
                     </div>
-                    <div class="button-group">
-                        <button class="button play-button" onclick="togglePlay(this, 1)"></button>
-                        <span class="duration">3:19</span>
-                        <button class="button like-button" onclick="toggleLike(this, 1)"></button>
-                    </div>
-                </div>
+                
+                </c:forEach>
                 
                 <div class="music-card">
                     <img src="https://via.placeholder.com/200" alt="앨범 커버">
@@ -161,9 +177,17 @@
 
         function toggleLike(button, musicId) {
             button.classList.toggle('active');
-            console.log('좋아요 토글: ' + musicId);
-            // 여기에 좋아요 상태를 서버에 전송하는 로직을 구현하세요
+            
+            
+            if (button.classList.contains('active')) {
+                console.log('좋아요 활성화: ' + musicId);
+                // 여기에 좋아요 상태를 서버에 전송하는 로직을 구현하세요
+            }else {
+                console.log('좋아요 비활성화: ' + musicId);
+                // 여기에 좋아요 취소 상태를 서버에 전송하는 로직을 구현하세요
+            }
         }
+
 
         function searchMusic() {
             const searchTerm = document.getElementById('search-input').value;

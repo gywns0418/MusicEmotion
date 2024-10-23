@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.musicemotion.musixmatch.service.MusixmatchService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,9 @@ import java.util.stream.Collectors;
 public class SpotifyController {
 
     private final SpotifyService spotifyService;
+    
+	@Autowired
+	MusixmatchService musixmatchService;
 
     @Autowired
     public SpotifyController(SpotifyService spotifyService) {
@@ -67,7 +71,19 @@ public class SpotifyController {
             req.setAttribute("releaseDate", releaseDate);
             req.setAttribute("track", track);
 
+            
+            String lyrics = musixmatchService.getLyricsByTrackName(track.getName(),track.getArtists()[0].getName());
 
+            System.out.println("가사 정보2: " + lyrics);
+            
+            if (lyrics != null) {
+                // "******* This Lyrics is NOT for Commercial use *******" 부분 제거
+                lyrics = lyrics.replace("******* This Lyrics is NOT for Commercial use *******", "");
+
+                // 줄바꿈 문자(\n)를 <br>로 변환
+                lyrics = lyrics.replace("\n", "<br>");
+            }
+            req.setAttribute("lyrics", lyrics);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
