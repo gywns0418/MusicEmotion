@@ -1,6 +1,8 @@
 package com.example.musicemotion.spotify.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.musicemotion.likes.service.LikesService;
 import com.example.musicemotion.musixmatch.service.MusixmatchService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import se.michaelthelin.spotify.model_objects.specification.Album;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
@@ -34,6 +38,9 @@ import java.util.stream.Collectors;
 public class SpotifyController {
 
     private final SpotifyService spotifyService;
+    
+	@Autowired
+	LikesService likesService;
     
 	@Autowired
 	MusixmatchService musixmatchService;
@@ -57,17 +64,34 @@ public class SpotifyController {
     
 	@GetMapping("/musicDetail.do")
 	public String musicDetail(HttpServletRequest req,@RequestParam String song_id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+    	List<String> likedSongIds = likesService.likesAll(username);
+    	req.setAttribute("likedSongIds", likedSongIds);
+    	
         try {
             String trackId = song_id;
             Track track = spotifyService.getTrack(trackId);
             
             Album album = spotifyService.getAlbumDetail(track.getAlbum().getId());
             String releaseDate = album.getReleaseDate();
+            ArtistSimplified[] artists = album.getArtists();
+            
+            List<String> artistNames = new ArrayList<>();
+            for (ArtistSimplified artist : artists) {
+                artistNames.add(artist.getName());
+            }
+            
+            Artist artist = spotifyService.getArtistDetail(track.getArtists()[0].getId());
+            String[] genre = artist.getGenres();
             
 
             req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
             req.setAttribute("trackName", track.getName());
             req.setAttribute("artistName", track.getArtists()[0].getName());
+            req.setAttribute("artistNames", artistNames);
+            req.setAttribute("genre", genre[0]);
             req.setAttribute("releaseDate", releaseDate);
             req.setAttribute("track", track);
 
@@ -95,6 +119,13 @@ public class SpotifyController {
 	
     @GetMapping("/musicList.do")
     public String musicList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search) {
+    	
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+    	List<String> likedSongIds = likesService.likesAll(username);
+    	req.setAttribute("likedSongIds", likedSongIds);
+    	
         try {
             if (search != null && !search.isEmpty()) {
                 // 검색어가 있는 경우 검색 수행

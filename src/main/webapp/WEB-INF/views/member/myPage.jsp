@@ -90,28 +90,28 @@
 	        <div class="playlist-grid">
 	        	<a href="${pageContext.request.contextPath}/spotify/resentPlay.do">
 		            <div class="playlist-card">
-		                <img src="https://via.placeholder.com/300" alt="최근 재생">
+		                <img src="${pageContext.request.contextPath}/images/play.jpg" alt="최근 재생" width="300" height="300">
 		                <div class="playlist-title">최근 재생</div>
 		                <div class="playlist-description">최근에 들은 곡들</div>
 		            </div>
 	            </a>
 	            <a href="${pageContext.request.contextPath}/likes/likes.do">
 		            <div class="playlist-card">
-		                <img src="https://via.placeholder.com/300" alt="좋아요 표시한 곡">
+		                <img src="${pageContext.request.contextPath}/images/likes.jpg" alt="좋아요 표시한 곡" width="300" height="300">
 		                <div class="playlist-title">좋아요 표시한 곡</div>
 		                <div class="playlist-description">I'm Yours</div>
 		            </div>
 	            </a>
 	            <a href="${pageContext.request.contextPath}/artist/artist.do">
 		            <div class="playlist-card">
-		                <img src="https://via.placeholder.com/300" alt="아티스트">
+		                <img src="${pageContext.request.contextPath}/images/artist.jpg" alt="아티스트" width="300" height="300">
 		                <div class="playlist-title">아티스트</div>
 		                <div class="playlist-description">내가 팔로우한 아티스트</div>
 		            </div>
 	            </a>
 	            <a href="${pageContext.request.contextPath}/album/album.do">
 		            <div class="playlist-card">
-		                <img src="https://via.placeholder.com/300" alt="앨범">
+		                <img src="${pageContext.request.contextPath}/images/album.jpg" alt="앨범" width="300" height="300">
 		                <div class="playlist-title">앨범</div>
 		                <div class="playlist-description">저장한 앨범 모음</div>
 		            </div>
@@ -124,11 +124,13 @@
 	        <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button>	<br><br>
 	
 	        <div class="playlist-grid">
-	            <div class="playlist-card">
-	                <img src="https://via.placeholder.com/300" alt="플레이리스트 1">
-	                <div class="playlist-title">내 플레이리스트 1</div>
-	                <div class="playlist-description">좋아하는 팝송 모음</div>
-	            </div>
+	        	<a href="${pageContext.request.contextPath}/playlist/playListMain.do">
+		            <div class="playlist-card">
+		                <img src="https://via.placeholder.com/300" alt="플레이리스트 1">
+		                <div class="playlist-title">내 플레이리스트 1</div>
+		                <div class="playlist-description">좋아하는 팝송 모음</div>
+		            </div>
+	            </a>
 	            <div class="playlist-card">
 	                <img src="https://via.placeholder.com/300" alt="플레이리스트 2">
 	                <div class="playlist-title">내 플레이리스트 2</div>

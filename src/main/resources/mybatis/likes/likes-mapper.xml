@@ -5,15 +5,20 @@
   
 <mapper namespace="likes">
 	<insert id="addLikes" parameterType="LikesDTO">
-		insert into likes
-		values(like_id_seq.nextval, #{user_id}, #{song_id})
+	    insert into likes (like_id, user_id, song_id)
+	    values (like_id_seq.nextval, #{user_id}, #{song_id})
 	</insert>
+	
+	<!-- 좋아요 중복 확인 쿼리 -->
+	<select id="isLikeExists" parameterType="LikesDTO" resultType="int">
+	    SELECT COUNT(*) FROM likes WHERE user_id = #{user_id} AND song_id = #{song_id}
+	</select>
 	
 	<select id="likesAll" parameterType="String" resultType="String">
 		select song_id from likes where user_id = #{user_id}
 	</select>
 	
-	<delete id="deleteLikes" parameterType="int">
-		delete from likes where like_id = #{like_id}
+	<delete id="deleteLikes" parameterType="LikesDTO">
+		delete from likes where user_id = #{user_id} and song_id = #{song_id}
 	</delete>
 </mapper>

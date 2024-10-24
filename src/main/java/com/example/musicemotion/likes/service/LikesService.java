@@ -16,14 +16,20 @@ public class LikesService {
 	private  SqlSession sqlSession;
 	
 	 public void addLikes(LikesDTO dto) {
-		 sqlSession.insert("addLikes", dto);
+		 int count = sqlSession.selectOne("isLikeExists",dto);
+		 
+		 if (count == 0) {
+			 sqlSession.insert("addLikes", dto);
+	     } else {
+	    	 System.out.println("이미 좋아요가 존재합니다.");
+	     }
 	 }
 	 
 	 public List<String> likesAll(String user_id) {
 		 return  sqlSession.selectList("likesAll", user_id);
 	 }
 	 
-	 public void deleteLikes(int like_id) {
-		 sqlSession.delete("deleteLikes",like_id);
+	 public void deleteLikes(LikesDTO dto) {
+		 sqlSession.delete("deleteLikes",dto);
 	 }
 }
