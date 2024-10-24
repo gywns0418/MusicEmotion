@@ -1,8 +1,11 @@
 package com.example.musicemotion.spotify.service;
 
 import org.apache.hc.core5.http.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.musicemotion.dto.EmotionDTO;
+import com.example.musicemotion.playList.service.PlaylistService;
 import com.neovisionaries.i18n.CountryCode;
 
 import se.michaelthelin.spotify.SpotifyApi;
@@ -27,6 +30,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,26 +129,34 @@ public class SpotifyService {
     }
 
     //음악 추천 가져오기
-    public Recommendations getRecommendedTracks() throws Exception {
-        ensureAccessToken();
+    public List<TrackSimplified> getRecommendedTracks(float minDanceability, float maxDanceability, 
+            float minEnergy, float maxEnergy, 
+            float minLoudness, float maxLoudness, 
+            float minTempo, float maxTempo, 
+            float minValence, float maxValence,String seed_tracks) throws Exception {
+    	
+    		ensureAccessToken();
 
+        
         try {
             GetRecommendationsRequest request = spotifyApi.getRecommendations()
                     .limit(5)
-                    .max_danceability(0.8f)
-                    .min_danceability(0.5f)
-                    .max_energy(0.7f)
-                    .min_energy(0.4f)
-                    .max_loudness(-3f)
-                    .min_loudness(-10f)
-                    .min_tempo(80f)
-                    .max_tempo(120f)
-                    .max_valence(0.9f)
-                    .min_valence(0.6f)
-                    .seed_tracks("2X45nVBeYzmDlrXji9Av0Q")
+                    .min_danceability(minDanceability)
+                    .max_danceability(maxDanceability)
+                    .min_energy(minEnergy)
+                    .max_energy(maxEnergy)
+                    .min_loudness(minLoudness)
+                    .max_loudness(maxLoudness)
+                    .min_tempo(minTempo)
+                    .max_tempo(maxTempo)
+                    .min_valence(minValence)
+                    .max_valence(maxValence)
+                    .seed_tracks(seed_tracks)
                     .build();
 
-            return request.execute();
+            Recommendations recommendations = request.execute();
+
+            return Arrays.asList(recommendations.getTracks()); 
         } catch (SpotifyWebApiException | IOException | ParseException e) {
             System.err.println("Error getting recommended tracks: " + e.getMessage());
             throw e;
@@ -207,6 +219,21 @@ public class SpotifyService {
         } catch (SpotifyWebApiException | IOException | ParseException e) {
             System.err.println("Error getting playlist tracks: " + e.getMessage());
             throw e;
+        }
+    }
+    
+    //플레이리스트 아이디로 가져오기
+    public Playlist getPlaylistById(String playlistId) throws Exception {
+        ensureAccessToken(); 
+
+        try {
+            GetPlaylistRequest request = spotifyApi.getPlaylist(playlistId)
+                    .build();
+
+            return request.execute();
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            System.err.println("Error getting playlist by id: " + e.getMessage());
+            throw e; 
         }
     }
     

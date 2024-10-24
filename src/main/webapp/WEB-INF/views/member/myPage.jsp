@@ -124,19 +124,14 @@
 	        <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button>	<br><br>
 	
 	        <div class="playlist-grid">
-	        	<a href="${pageContext.request.contextPath}/playlist/playListMain.do">
+	        	<a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=37i9dQZF1DX9tPFwDMOaN1">
 		            <div class="playlist-card">
-		                <img src="https://via.placeholder.com/300" alt="플레이리스트 1">
+		                <img src="${pageContext.request.contextPath}/images/playlist.jpg" alt="플레이리스트" width="300" height="300">
 		                <div class="playlist-title">내 플레이리스트 1</div>
 		                <div class="playlist-description">좋아하는 팝송 모음</div>
 		            </div>
 	            </a>
-	            <div class="playlist-card">
-	                <img src="https://via.placeholder.com/300" alt="플레이리스트 2">
-	                <div class="playlist-title">내 플레이리스트 2</div>
-	                <div class="playlist-description">운동할 때 듣는 음악</div>
-	            </div>
-	            <!-- 더 많은 플레이리스트 카드를 추가할 수 있습니다 -->
+
 	        </div>
 	    </div>
 	

@@ -62,60 +62,72 @@ public class SpotifyController {
         return spotifyService.getRecommendedTracks();
     }
     
-	@GetMapping("/musicDetail.do")
-	public String musicDetail(HttpServletRequest req,@RequestParam String song_id) {
+    @GetMapping("/musicDetail.do")
+    public String musicDetail(HttpServletRequest req, @RequestParam String song_id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        
-    	List<String> likedSongIds = likesService.likesAll(username);
-    	req.setAttribute("likedSongIds", likedSongIds);
-    	
+
+        List<String> likedSongIds = likesService.likesAll(username);
+        req.setAttribute("likedSongIds", likedSongIds);
+
         try {
             String trackId = song_id;
             Track track = spotifyService.getTrack(trackId);
-            
+
             Album album = spotifyService.getAlbumDetail(track.getAlbum().getId());
             String releaseDate = album.getReleaseDate();
             ArtistSimplified[] artists = album.getArtists();
-            
+
             List<String> artistNames = new ArrayList<>();
             for (ArtistSimplified artist : artists) {
                 artistNames.add(artist.getName());
             }
-            
+
             Artist artist = spotifyService.getArtistDetail(track.getArtists()[0].getId());
             String[] genre = artist.getGenres();
-            
 
-            req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
+            // 배열이 null이 아니고, 길이가 0보다 클 때만 접근
+            if (track.getAlbum().getImages() != null && track.getAlbum().getImages().length > 0) {
+                req.setAttribute("albumImage", track.getAlbum().getImages()[0].getUrl());
+            } else {
+                req.setAttribute("albumImage", "default_image_url"); // 이미지가 없을 때 기본 이미지 처리
+            }
+
             req.setAttribute("trackName", track.getName());
             req.setAttribute("artistName", track.getArtists()[0].getName());
             req.setAttribute("artistNames", artistNames);
-            req.setAttribute("genre", genre[0]);
+
+            // 장르가 존재하는지 확인한 후 처리
+            if (genre != null && genre.length > 0) {
+                req.setAttribute("genre", genre[0]);
+            } else {
+                req.setAttribute("genre", "Unknown");
+            }
+
             req.setAttribute("releaseDate", releaseDate);
             req.setAttribute("track", track);
 
-            
-            String lyrics = musixmatchService.getLyricsByTrackName(track.getName(),track.getArtists()[0].getName());
-
+            // 가사 처리
+            String lyrics = musixmatchService.getLyricsByTrackName(track.getName(), track.getArtists()[0].getName());
             System.out.println("가사 정보2: " + lyrics);
-            
+
             if (lyrics != null) {
                 // "******* This Lyrics is NOT for Commercial use *******" 부분 제거
-                lyrics = lyrics.replace("******* This Lyrics is NOT for Commercial use *******", "");
-
-                // 줄바꿈 문자(\n)를 <br>로 변환
-                lyrics = lyrics.replace("\n", "<br>");
+                lyrics = lyrics.replace("******* This Lyrics is NOT for Commercial use *******", "")
+                                .replace("\n", "<br>"); // 줄바꿈을 <br>로 변환
+            } else {
+                lyrics = "Lyrics not available.";
             }
+
             req.setAttribute("lyrics", lyrics);
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		return "music/musicDetail";
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "music/musicDetail";
+    }
+
 	
     @GetMapping("/musicList.do")
     public String musicList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search) {

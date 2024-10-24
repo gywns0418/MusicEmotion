@@ -64,6 +64,7 @@
             flex-grow: 1;
         }
         .track-title {
+            color: black;
             font-weight: bold;
             margin-bottom: 3px;
         }
@@ -83,36 +84,38 @@
 
     <div class="playlist-container">
         <div class="playlist-header">
-            <img src="https://via.placeholder.com/150" alt="플레이리스트 커버" class="playlist-image">
+            <img src="${playlistImage}" alt="플레이리스트 커버" class="playlist-image">
             <div class="playlist-info">
-                <h1>여름 느낌의 플레이리스트</h1>
-                <p>시원한 여름을 느낄 수 있는 음악 모음</p>
+                <h1>${playlistName}</h1>
+                <p>${playlistDescription}</p>
             </div>
         </div>
 		<ul class="track-list">
 		    <c:forEach items="${tracks}" var="track" varStatus="status">
-		        <li class="track-item">
-		            <span class="track-number">${status.index + 1}</span>
-		            <div class="track-info">
-		                <div class="track-title">${track.track.name}</div>
-		                <div class="track-artist">
-		                    <c:forEach var="artist" items="${track.track.artists}" varStatus="artistStatus">
-		                        ${artist.name}<c:if test="${!artistStatus.last}">, </c:if>
-		                    </c:forEach>
-		                </div>
-		            </div>
-		            <span class="track-duration">
-		                <c:choose>
-		                    <c:when test="${track.track.durationMs > 0}">
-		                        <c:set var="minutes" value="${track.track.durationMs / 60000}" />
-		                        <c:set var="seconds" value="${(track.track.durationMs % 60000) / 1000}" />
-		                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
-								<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
-		                    </c:when>
-		                    <c:otherwise>Unknown</c:otherwise>
-		                </c:choose>
-		            </span>
-		        </li>
+		    	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.track.id}">
+			        <li class="track-item">
+			            <span class="track-number">${status.index + 1}</span>
+			            <div class="track-info">
+			                <div class="track-title">${track.track.name}</div>
+			                <div class="track-artist">
+			                    <c:forEach var="artist" items="${track.track.artists}" varStatus="artistStatus">
+			                        ${artist.name}<c:if test="${!artistStatus.last}">, </c:if>
+			                    </c:forEach>
+			                </div>
+			            </div>
+			            <span class="track-duration">
+			                <c:choose>
+			                    <c:when test="${track.track.durationMs > 0}">
+			                        <c:set var="minutes" value="${track.track.durationMs / 60000}" />
+			                        <c:set var="seconds" value="${(track.track.durationMs % 60000) / 1000}" />
+			                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+									<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+			                    </c:when>
+			                    <c:otherwise>Unknown</c:otherwise>
+			                </c:choose>
+			            </span>
+			        </li>
+		        </a>
 		    </c:forEach>
 		</ul>
 

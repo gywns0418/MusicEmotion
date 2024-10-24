@@ -16,6 +16,7 @@ import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
@@ -35,6 +36,17 @@ public class PlayListController {
         int trackLimit = 20; // 각 플레이리스트에서 가져올 트랙 수 제한
 
         try {
+        	Playlist playlist = spotifyService.getPlaylistById(playlist_id);
+        	
+            // 플레이리스트 제목과 이미지를 가져오기
+            String playlistName = playlist.getName();  // 플레이리스트 제목
+            String playlistDescription = playlist.getDescription();
+            String playlistImageUrl = playlist.getImages()[0].getUrl();  // 첫 번째 이미지 URL
+            
+            req.setAttribute("playlistName", playlistName);
+            req.setAttribute("playlistDescription", playlistDescription);
+            req.setAttribute("playlistImage", playlistImageUrl);
+        	
             // Spotify API를 사용하여 플레이리스트의 트랙을 가져오기
             PlaylistTrack[] tracks = spotifyService.getPlaylistTracks(playlist_id, trackLimit);
             req.setAttribute("tracks", tracks);
