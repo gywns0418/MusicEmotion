@@ -2,16 +2,21 @@ package com.example.musicemotion.playList.web;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.musicemotion.dto.PlaylistDTO;
+import com.example.musicemotion.dto.Playlist_SongsDTO;
 import com.example.musicemotion.playList.service.PlaylistService;
+import com.example.musicemotion.playlist_songs.service.Playlist_SongsService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +35,9 @@ public class PlayListController {
 	
 	@Autowired
 	PlaylistService playlistService;
+	
+	@Autowired
+	Playlist_SongsService playlist_SongsService;
 	
 	@GetMapping("/playListMain.do")
 	public String playListMain(HttpServletRequest req,String playlist_id) throws Exception {
@@ -54,7 +62,21 @@ public class PlayListController {
             e.printStackTrace();
         }
         
-		return "music/playListMain";
+		return "playlist/playListMain";
+	}
+	
+	@GetMapping("/playListAdd.do")
+	public String playListAdd(HttpServletRequest req,String playlist_id) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+		List<PlaylistDTO> listAll = playlistService.playlistAll(username);
+
+		List<Playlist_SongsDTO> songsAll = playlist_SongsService.playlist_songsAll(((PlaylistDTO) listAll).getPlaylist_id());
+		
+		req.setAttribute("listAll", listAll);
+		req.setAttribute("songsAll", songsAll);
+		return "playlist/playListAdd";
 	}
 	
 	@PostMapping("/addPlaylist.do")

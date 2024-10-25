@@ -24,8 +24,8 @@ public class EmotionService {
 		return sqlSession.selectList("emotionAll");
 	}
 	
-	public List<EmotionDTO> emotionId(int emotion_id) {
-		return sqlSession.selectList("emotionAll",emotion_id);
+	public EmotionDTO emotionId(int emotion_id) {
+		return sqlSession.selectOne("emotionId",emotion_id);
 	}
 	 
 	public void updateEmotion(EmotionDTO dto) {

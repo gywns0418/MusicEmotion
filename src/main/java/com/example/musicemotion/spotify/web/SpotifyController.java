@@ -56,11 +56,6 @@ public class SpotifyController {
         return spotifyService.getAudioFeaturesForTrack(trackId);
     }
     
-    @GetMapping("/recommended-tracks")
-    public Recommendations getRecommendedTracks() 
-    		throws Exception {
-        return spotifyService.getRecommendedTracks();
-    }
     
     @GetMapping("/musicDetail.do")
     public String musicDetail(HttpServletRequest req, @RequestParam String song_id) {

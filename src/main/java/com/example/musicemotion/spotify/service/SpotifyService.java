@@ -17,6 +17,7 @@ import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetListOfFeaturedPlaylistsRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
+import se.michaelthelin.spotify.requests.data.browse.miscellaneous.GetAvailableGenreSeedsRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequest;
@@ -133,7 +134,7 @@ public class SpotifyService {
             float minEnergy, float maxEnergy, 
             float minLoudness, float maxLoudness, 
             float minTempo, float maxTempo, 
-            float minValence, float maxValence,String seed_tracks) throws Exception {
+            float minValence, float maxValence,String genre) throws Exception {
     	
     		ensureAccessToken();
 
@@ -151,7 +152,7 @@ public class SpotifyService {
                     .max_tempo(maxTempo)
                     .min_valence(minValence)
                     .max_valence(maxValence)
-                    .seed_tracks(seed_tracks)
+                    .seed_genres(genre)
                     .build();
 
             Recommendations recommendations = request.execute();
@@ -159,6 +160,20 @@ public class SpotifyService {
             return Arrays.asList(recommendations.getTracks()); 
         } catch (SpotifyWebApiException | IOException | ParseException e) {
             System.err.println("Error getting recommended tracks: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    //장르 값들
+    public List<String> getAvailableGenres() throws Exception {
+        ensureAccessToken();
+
+        GetAvailableGenreSeedsRequest genreRequest = spotifyApi.getAvailableGenreSeeds().build();
+        try {
+            // API 호출로 장르 목록을 가져오기
+            return Arrays.asList(genreRequest.execute());
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            System.err.println("Error getting available genres: " + e.getMessage());
             throw e;
         }
     }

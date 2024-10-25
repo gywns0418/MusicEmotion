@@ -32,6 +32,8 @@ public class MainController {
     	req.setAttribute("emotion", emotion);
     	
         try {
+        	List<String> genres = spotifyService.getAvailableGenres();
+        	req.setAttribute("genres", genres);
             // 인기 플레이리스트를 가져와서 모델에 추가
             List<Playlist> popularPlaylists = spotifyService.getPopularPlaylists();
             req.setAttribute("popularPlaylists", popularPlaylists);

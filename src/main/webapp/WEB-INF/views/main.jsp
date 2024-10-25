@@ -46,13 +46,11 @@
 	                </div>
 	                <div class="form-group">
 	                    <label for="genre">선호 장르:</label>
-	                    <select id="genre" name="genre">
-	                        <option value="pop">팝</option>
-	                        <option value="rock">록</option>
-	                        <option value="classical">클래식</option>
-	                        <option value="jazz">재즈</option>
-	                        <option value="hiphop">힙합</option>
-	                    </select>
+							<select id="genre" name="genre">
+							    <c:forEach var="genre" items="${genres}">
+							        <option value="${genre}">${genre}</option>
+							    </c:forEach>
+							</select>
 	                </div>
 	                <button type="submit">음악 추천받기</button>
 	            </form>
@@ -93,42 +91,42 @@
 				<sec:authentication property='principal.username'/>/user_id
 			</sec:authorize>
 	
-	    <script>
-	        $(document).ready(function() {
-	
-	            document.getElementById('mood-form').addEventListener('submit', function(e) {
-	                e.preventDefault();
-	                
-	                const playlistSection = document.getElementById('playlist-section');
-	                playlistSection.innerHTML = '<p>플레이리스트를 생성 중입니다...</p>';
-	                
-	                // 여기에 실제 AI 추천 로직을 추가하세요
-	                setTimeout(() => {
-	                    let recommendationContent = `
-	                        <h2>추천 음악</h2>
-	                        <div class="playlist-grid" id="recommendation-result">
-	                    `;
-	                    
-	                    // 6개의 추천 플레이리스트를 생성
-	                    for (let i = 0; i < 6; i++) {
-	                        recommendationContent += `
-	                        	<a href="spotify/musicDetail.do">
-	                            <div class="playlist-card">
-	                                <img src="https://via.placeholder.com/300" alt="플레이리스트 커버">
-	                                <div class="playlist-title">추천 플레이리스트 ${i+1}</div>
-	                                <div class="playlist-description">AI가 추천하는 맞춤 음악</div>
-	                            </div>
-	                            </a>
-	                        `;
-	                    }
-	                    
-	                    recommendationContent += `</div>`;
-	                    playlistSection.innerHTML = recommendationContent;
-	                }, 2000);
-	            });      
+		<script>
+		    $(document).ready(function() {
+		        const contextPath = "${pageContext.request.contextPath}";
+		
+		        $('#mood-form').on('submit', function(e) {
+		            e.preventDefault();
+		
+		            const mood = $('#mood').val();
+		            const genre = $('#genre').val();
+		            console.log("Selected mood:", mood);
+		            console.log("Selected genre:", genre);
+		            const playlistSection = $('#playlist-section');
+		            playlistSection.html('<p>플레이리스트를 생성 중입니다...</p>');
+		
+		            $.ajax({
+		                url: contextPath + "/emotion/recommendMusic.do",
+		                type: "POST",
+		                data: { 
+		                    emotion_id: mood,
+		                    genre: genre
+		                },
+		                success: function(response) {
+		                    // contextPath를 클라이언트 측에서 response 내용에 추가
+		                    response = response.replaceAll('href=\'/spotify', 'href=\'' + contextPath + '/spotify');
+		                    playlistSection.html(response);
+		                },
+		                error: function(jqXHR, textStatus, errorThrown) {
+		                    console.error("AJAX Error: " + textStatus + ": " + errorThrown);
+		                    console.error("Response Text: " + jqXHR.responseText);
+		                    playlistSection.html('<p>추천을 가져오는 데 실패했습니다. 다시 시도해 주세요.</p>');
+		                }
+		            });
+		        });
+		    });
+		</script>
 
-	        });
-	    </script>
 
 </main>
 </body>
