@@ -17,6 +17,10 @@
 		select artist_id from artist where user_id = #{user_id} and artist_id = #{artist_id}
 	</select>
 	
+	<select id="artistIdAll" parameterType="String" resultType="String">
+		select artist_id from artist where user_id = #{user_id}
+	</select>
+	
 	<update id="updateArtist" parameterType="ArtistDTO">
 		update artist
 		set

@@ -31,6 +31,10 @@ public class ArtistService {
     public List<String> artistId(ArtistDTO dto) {
         return sqlSession.selectList("artistId", dto);
     }
+    
+    public List<String> artistIdAll(String user_id) {
+        return sqlSession.selectList("artistIdAll", user_id);
+    }
 
     public void updateArtist(ArtistDTO dto) {
         sqlSession.update("updateArtist", dto);

@@ -2,92 +2,176 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>앨범 상세 - MusicEmotion</title>
+    <title>${artistDetail.name} - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/artist.css">
-    
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/artist.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+
 <jsp:include page="../header.jsp" />
 
-
-    <div id="content-area">
-        <div class="hero-section">
-            <h1>앨범 상세 정보</h1>
-            <p>아티스트의 창작물을 자세히 살펴보세요.</p>
-        </div>
-
-        <div class="section" id="album-details">
-            <div class="album-info">
-                <img src="/api/placeholder/300/300" alt="앨범 커버" class="album-cover">
-                <div class="album-text">
-                    <h2>앨범 제목</h2>
-                    <p class="artist-name">아티스트 이름</p>
-                    <p class="release-date">발매일: 2024년 1월 1일</p>
-                    <p class="genre">장르: Pop, R&B</p>
-                    <button class="cta-button">전체 재생</button>
+<div id="content-area">
+    <!-- 아티스트 헤더 섹션 -->
+    <div class="artist-header" style="background-image: url('${artistImageUrl}')">
+        <div class="header-overlay">
+            <div class="artist-profile">
+                <div class="artist-image-container">
+                    <img src="${artistImageUrl}" alt="${artistDetail.name}" class="artist-image">
                 </div>
-            </div>
-        </div>
-
-        <div class="section" id="track-list">
-            <h2>수록곡</h2>
-            <ol class="track-list">
-                <li>
-                    <div class="track-info">
-                        <span class="track-title">트랙 1</span>
-                        <span class="track-duration">3:45</span>
+                <div class="artist-info">
+                    <div class="artist-title">
+                        <h1>${artistDetail.name}</h1>
                     </div>
-                    <button class="play-button">재생</button>
-                </li>
-                <li>
-                    <div class="track-info">
-                        <span class="track-title">트랙 2</span>
-                        <span class="track-duration">4:12</span>
+                    <p class="artist-genre">${artistGenre}</p>
+                    <div class="artist-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">${popularity}</span>
+                            <span class="stat-label">인기도</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-value">${followers}</span>
+                            <span class="stat-label">팔로워</span>
+                        </div>
                     </div>
-                    <button class="play-button">재생</button>
-                </li>
-                <!-- 더 많은 트랙을 추가할 수 있습니다 -->
-            </ol>
-        </div>
-
-        <div class="section" id="album-description">
-            <h2>앨범 소개</h2>
-            <p>이 앨범에 대한 상세한 설명이 들어갑니다. 아티스트의 음악적 방향, 앨범의 주제, 작업 과정 등을 포함할 수 있습니다.</p>
-        </div>
-
-        <div class="section" id="related-albums">
-            <h2>관련 앨범</h2>
-            <div class="playlist-grid">
-                <div class="playlist-card">
-                    <img src="/api/placeholder/200/200" alt="관련 앨범 1">
-                    <div class="playlist-title">관련 앨범 1</div>
-                    <div class="playlist-description">아티스트 이름</div>
+                    <div class="action-buttons">
+					    <button class="button-follow ${fn:contains(followedArtistIds, artistDetail.id) ? 'active' : ''}" 
+					            onclick="toggleFollow(this, '${artistDetail.id}')">
+					        <i class="fas ${fn:contains(followedArtistIds, artistDetail.id) ? 'fa-user-check' : 'fa-user-plus'}"></i>
+					        ${fn:contains(followedArtistIds, artistDetail.id) ? '팔로잉' : '팔로우'}
+					    </button>
+					</div>
                 </div>
-                <div class="playlist-card">
-                    <img src="/api/placeholder/200/200" alt="관련 앨범 2">
-                    <div class="playlist-title">관련 앨범 2</div>
-                    <div class="playlist-description">아티스트 이름</div>
-                </div>
-                <!-- 더 많은 관련 앨범을 추가할 수 있습니다 -->
             </div>
         </div>
     </div>
-</main>
+
+    <!-- 인기 트랙 섹션 -->
+    <div class="section popular-tracks">
+        <div class="section-header">
+            <h2>인기 트랙</h2>
+        </div>
+        <div class="track-list">
+            <c:forEach items="${popularTracks}" var="track" varStatus="status">
+                <div class="track-item">
+                    <div class="track-number">${status.index + 1}</div>
+                    <img src="${track.albumCover}" alt="${track.albumName}" class="track-album-cover">
+                    <div class="track-info">
+                        <span class="track-name">${track.name}</span>
+                        <span class="track-album">${track.albumName}</span>
+                    </div>
+					<div class="track-duration">
+					    <span class="duration">
+							<c:set var="minutes" value="${track.durationMs / 60000}" />
+							<c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
+							<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+							<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+					    </span>
+					</div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+
+    <!-- 앨범 섹션 -->
+    <div class="section artist-albums">
+        <div class="section-header">
+            <h2>앨범</h2>
+            <div class="album-filters">
+                <button class="filter-button active">전체</button>
+            </div>
+        </div>
+        <div class="album-grid">
+            <c:forEach var="album" items="${albums}">
+                <div class="album-card">
+                    <div class="album-cover-container">
+                        <img src="${album.images[0].url}" alt="${album.name}" class="album-cover">
+                        <div class="album-hover-overlay">
+                            <button class="album-play-button">▶</button>
+                        </div>
+                    </div>
+                    <div class="album-info">
+                        <h3 class="album-title">${album.name}</h3>
+                        <p class="album-details">
+                            <span class="album-year">${fn:substring(album.releaseDate, 0, 4)}</span>
+                            <span class="album-type">${album.albumType}</span>
+                        </p>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</div>
 
 <script>
-    $(document).ready(function() {
-        // 여기에 필요한 JavaScript 코드를 추가할 수 있습니다.
-        // 예: 트랙 재생, 전체 재생 기능 등
+$(document).ready(function() {
+    // 팔로우 버튼 토글
+
+
+    // 앨범 필터 토글
+    $('.filter-button').click(function() {
+        $('.filter-button').removeClass('active');
+        $(this).addClass('active');
     });
+
+    // 트랙 호버 효과
+    $('.track-item').hover(
+        function() {
+            $(this).find('.play-button').fadeIn(200);
+        },
+        function() {
+            $(this).find('.play-button').fadeOut(200);
+        }
+    );
+
+    // 앨범 호버 효과
+    $('.album-card').hover(
+        function() {
+            $(this).find('.album-hover-overlay').fadeIn(200);
+        },
+        function() {
+            $(this).find('.album-hover-overlay').fadeOut(200);
+        }
+    );
+});
+
+function toggleFollow(button, artistId) {
+    button.classList.toggle('active');
+    const isFollowing = button.classList.contains('active');
+    button.innerHTML = isFollowing ? 
+        '<i class="fas fa-user-check"></i> 팔로잉' : 
+        '<i class="fas fa-user-plus"></i> 팔로우';
+    
+    fetch('${pageContext.request.contextPath}/artist/follow', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            artist_id: artistId,
+            following: isFollowing
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
+        } else {
+            console.error('팔로우 실패');
+        }
+    })
+    .catch(error => console.error('오류 발생:', error));
+}
 </script>
 
 </body>

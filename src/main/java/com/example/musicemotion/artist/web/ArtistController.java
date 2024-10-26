@@ -1,6 +1,7 @@
 package com.example.musicemotion.artist.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.musicemotion.artist.service.ArtistService;
 import com.example.musicemotion.dto.ArtistDTO;
+import com.example.musicemotion.spotify.service.SpotifyService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Artist;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 
 
@@ -25,16 +32,71 @@ public class ArtistController {
 	
     @Autowired
     ArtistService artistService;
+    
+    @Autowired
+    SpotifyService spotifyService;
 
 	@GetMapping("/artist.do")
-	public String artist() {
+	public String artist(HttpServletRequest req) throws Exception {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+
+	    // 팔로우한 아티스트 목록 조회
+	    List<String> followedArtists = artistService.artistIdAll(username);
+	    System.out.println("followedArtists : " + followedArtists);
+	    
+	    List<Artist> artistList = spotifyService.getArtistsDetails(followedArtists);
+	    System.out.println("artistList : " + artistList.get(0));
+	    req.setAttribute("artistList", artistList);
+	    
 		return "artist/artist";
 	}
 	
 	@GetMapping("/artistDetail.do")
-	public String artistDetail() {
-		return "artist/artistDetail";
+	public String artistDetail(HttpServletRequest req) {
+	    String artistId = req.getParameter("artist_id");
+
+	    try {
+	        // 아티스트 세부 정보 가져오기
+	        Artist artistDetail = spotifyService.getArtistDetail(artistId);
+	        req.setAttribute("artistDetail", artistDetail);
+
+	        // 아티스트 이미지 설정
+	        String artistImageUrl = null;
+	        if (artistDetail.getImages() != null && artistDetail.getImages().length > 0) {
+	            artistImageUrl = artistDetail.getImages()[0].getUrl();
+	        }
+	        req.setAttribute("artistImageUrl", artistImageUrl);
+
+	        // 장르 정보 설정
+	        String artistGenre = artistDetail.getGenres() != null && artistDetail.getGenres().length > 0 ? artistDetail.getGenres()[0] : "장르 정보 없음";
+	        req.setAttribute("artistGenre", artistGenre);
+
+	        // 인기도 설정
+	        int popularity = artistDetail.getPopularity();
+	        req.setAttribute("popularity", popularity);
+
+	        // 팔로워 수 설정
+	        int followers = artistDetail.getFollowers().getTotal();
+	        req.setAttribute("followers", followers);
+
+	        // 인기 트랙 목록 설정
+	        List<Map<String, Object>> popularTracks = spotifyService.getArtistTopTracks(artistId);
+	        req.setAttribute("popularTracks", popularTracks);
+
+	        // 앨범 목록 설정
+	        AlbumSimplified[] albums = spotifyService.getArtistAlbums(artistId);
+	        req.setAttribute("albums", albums);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return "artist/artistDetail";
 	}
+
+
+
 	
 
 

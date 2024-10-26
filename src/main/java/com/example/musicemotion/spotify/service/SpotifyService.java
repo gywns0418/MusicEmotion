@@ -20,6 +20,9 @@ import se.michaelthelin.spotify.model_objects.specification.*;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistRequest;
+import se.michaelthelin.spotify.requests.data.artists.GetArtistsAlbumsRequest;
+import se.michaelthelin.spotify.requests.data.artists.GetArtistsTopTracksRequest;
+import se.michaelthelin.spotify.requests.data.artists.GetSeveralArtistsRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetListOfFeaturedPlaylistsRequest;
 import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
 import se.michaelthelin.spotify.requests.data.browse.miscellaneous.GetAvailableGenreSeedsRequest;
@@ -35,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -196,6 +200,7 @@ public class SpotifyService {
         }
     }
 
+    //아티스트 정보
     public Artist getArtistDetail(String artistId) throws Exception {
         ensureAccessToken();
 
@@ -207,6 +212,78 @@ public class SpotifyService {
             throw e;
         }
     }
+    
+    //아티스트들
+    public List<Artist> getArtistsDetails(List<String> artistIds) throws Exception {
+        ensureAccessToken();
+
+        try {
+            String[] idsArray = artistIds.toArray(new String[0]); 
+            GetSeveralArtistsRequest request = spotifyApi.getSeveralArtists(idsArray).build();
+            return Arrays.asList(request.execute());
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            System.err.println("Error getting artist details: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    //아티스트로 앨범
+    public AlbumSimplified[] getArtistAlbums(String artistId) {
+        ensureAccessToken();
+        List<AlbumSimplified> albumsList = new ArrayList<>();
+
+        try {
+            GetArtistsAlbumsRequest getArtistsAlbumsRequest = spotifyApi.getArtistsAlbums(artistId)
+                .limit(9) // 원하는 만큼의 앨범 수 제한
+                .build();
+
+            Paging<AlbumSimplified> albumPaging = getArtistsAlbumsRequest.execute();
+            AlbumSimplified[] albums = albumPaging.getItems();
+            for (AlbumSimplified album : albums) {
+                albumsList.add(album);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return albumsList.toArray(new AlbumSimplified[0]);
+    }
+    
+    public List<Map<String, Object>> getArtistTopTracks(String artistId) {
+        ensureAccessToken();
+        List<Map<String, Object>> trackList = new ArrayList<>();
+
+        try {
+            GetArtistsTopTracksRequest topTracksRequest = spotifyApi.getArtistsTopTracks(artistId, CountryCode.KR).build();
+            Track[] topTracks = topTracksRequest.execute();
+
+            for (Track track : topTracks) {
+                Map<String, Object> trackInfo = new HashMap<>();
+                trackInfo.put("name", track.getName());
+                trackInfo.put("playCount", track.getPopularity());
+                
+                // 앨범 커버 URL 가져오기
+                String albumCoverUrl = null;
+                if (track.getAlbum().getImages() != null && track.getAlbum().getImages().length > 0) {
+                    albumCoverUrl = track.getAlbum().getImages()[0].getUrl();
+                }
+                trackInfo.put("albumCover", albumCoverUrl);
+
+                // 트랙 길이 (밀리초) 가져오기
+                trackInfo.put("durationMs", track.getDurationMs());
+
+                trackList.add(trackInfo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return trackList;
+    }
+
+
+
 
     //main에서 플레이리스트 가져올때
     public List<Playlist> getPopularPlaylists() throws Exception {
