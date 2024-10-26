@@ -186,6 +186,11 @@
 		    <artifactId>spring-security-core</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.example.neoheulge</groupId>
+			<artifactId>neoheulge</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

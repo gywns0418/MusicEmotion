@@ -338,6 +338,58 @@
                 transform: translateX(50%);
             }
         }
+        
+            .artist-list {
+        margin-top: 15px;
+    }
+
+    .artist-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        background-color: var(--hover-color);
+        transition: all 0.3s ease;
+    }
+
+    .artist-item:hover {
+        background-color: var(--card-color);
+        box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .button-follow {
+        background-color: transparent;
+        color: var(--text-color);
+        border: 2px solid var(--text-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .button-follow:hover {
+        background-color: var(--highlight-color);
+        color: white;
+        border-color: var(--highlight-color);
+    }
+
+    .button-follow.active {
+        background-color: var(--highlight-color);
+        color: white;
+        border-color: var(--highlight-color);
+    }
+
+    .button-follow i {
+        font-size: 14px;
+    }
+        
     </style>
 </head>
 
@@ -355,7 +407,7 @@
             </div>
             
             <div class="action-buttons">
-                <button class="button button-play">
+				<button class="button button-play">
                     <i class="fas fa-play"></i>
                     재생
                 </button>
@@ -386,10 +438,21 @@
                         <fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
                     </div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">참여 아티스트</div>
-                    <div class="detail-value">${artistNames}</div>
-                </div>
+				<div class="detail-item">
+	                <div class="detail-label">참여 아티스트</div>
+	                <div class="artist-list">
+	                    <c:forEach items="${artistNames}" var="artistName" varStatus="status">
+						    <div class="artist-item">
+						        <span>${artistName}</span>
+						        <button class="button-follow ${fn:contains(followedArtistIds, artistId) ? 'active' : ''}" 
+						                onclick="toggleFollow(this, '${artistId}')">
+						            <i class="fas ${fn:contains(followedArtistIds, artistId) ? 'fa-user-check' : 'fa-user-plus'}"></i> 
+						            ${fn:contains(followedArtistIds, artistId) ? '팔로잉' : '팔로우'}
+						        </button>
+						    </div>
+						</c:forEach>
+	                </div>
+	            </div>
             </div>
 
             <div class="lyrics-section">
@@ -402,7 +465,7 @@
 
             <div class="audio-player">
                 <audio controls>
-                    <source src="path_to_audio_file.mp3" type="audio/mpeg">
+                    <source src="${previewUrl}" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -469,6 +532,32 @@
             });
         }
 
+        function toggleFollow(button, artistId) {
+            button.classList.toggle('active');
+            const isFollowing = button.classList.contains('active');
+            button.innerHTML = isFollowing ? '<i class="fas fa-user-check"></i> 팔로잉' : '<i class="fas fa-user-plus"></i> 팔로우';
+
+            console.log('아티스트 아이디: '+artistId);
+            
+            fetch('${pageContext.request.contextPath}/artist/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    artist_id: artistId, // 아티스트 이름을 식별자로 사용
+                    following: isFollowing
+                })
+            }).then(response => response.json())
+              .then(data => {
+            	  if (data.success) {
+                      console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
+                  } else {
+                	  console.error('팔로우 실패');
+                  }
+              })
+              .catch(error => console.error('오류 발생:', error));
+        }
     </script>
     </main>
 </body>

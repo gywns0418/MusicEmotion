@@ -2,7 +2,12 @@ package com.example.musicemotion.spotify.service;
 
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.musicemotion.dto.EmotionDTO;
 import com.example.musicemotion.playList.service.PlaylistService;
@@ -31,6 +36,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -268,5 +274,21 @@ public class SpotifyService {
         }
 
         return tracks;
+    }
+    
+    //음악재생
+    public String getTrackPreviewUrl(String trackId) {
+
+        ensureAccessToken();
+        
+        String trackUrl = "https://api.spotify.com/v1/tracks/" + trackId;
+        RestTemplate restTemplate = new RestTemplate();
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(trackUrl, HttpMethod.GET, entity, Map.class);
+        return (String) response.getBody().get("preview_url");
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.musicemotion.artist.service.ArtistService;
+import com.example.musicemotion.dto.ArtistDTO;
 import com.example.musicemotion.likes.service.LikesService;
 import com.example.musicemotion.musixmatch.service.MusixmatchService;
 import com.example.musicemotion.spotify.service.SpotifyService;
@@ -41,6 +43,9 @@ public class SpotifyController {
     
 	@Autowired
 	LikesService likesService;
+	
+	@Autowired
+	ArtistService artistService;
     
 	@Autowired
 	MusixmatchService musixmatchService;
@@ -91,6 +96,7 @@ public class SpotifyController {
             req.setAttribute("trackName", track.getName());
             req.setAttribute("artistName", track.getArtists()[0].getName());
             req.setAttribute("artistNames", artistNames);
+            req.setAttribute("artistId", artist.getId());
 
             // 장르가 존재하는지 확인한 후 처리
             if (genre != null && genre.length > 0) {
@@ -116,6 +122,15 @@ public class SpotifyController {
 
             req.setAttribute("lyrics", lyrics);
 
+            String previewUrl = spotifyService.getTrackPreviewUrl(trackId);
+            req.setAttribute("previewUrl", previewUrl);
+            
+            ArtistDTO adto = new ArtistDTO();
+            adto.setArtist_id(artist.getId());
+            adto.setUser_id(username);
+            
+            List<String> followedArtistIds = artistService.artistId(adto);
+            req.setAttribute("followedArtistIds", followedArtistIds);
         } catch (Exception e) {
             e.printStackTrace();
         }
