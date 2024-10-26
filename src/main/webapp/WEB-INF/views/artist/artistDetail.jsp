@@ -63,22 +63,24 @@
         </div>
         <div class="track-list">
             <c:forEach items="${popularTracks}" var="track" varStatus="status">
-                <div class="track-item">
-                    <div class="track-number">${status.index + 1}</div>
-                    <img src="${track.albumCover}" alt="${track.albumName}" class="track-album-cover">
-                    <div class="track-info">
-                        <span class="track-name">${track.name}</span>
-                        <span class="track-album">${track.albumName}</span>
-                    </div>
-					<div class="track-duration">
-					    <span class="duration">
-							<c:set var="minutes" value="${track.durationMs / 60000}" />
-							<c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
-							<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
-							<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
-					    </span>
-					</div>
-                </div>
+            	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
+	                <div class="track-item">
+	                    <div class="track-number">${status.index + 1}</div>
+	                    <img src="${track.albumCover}" alt="${track.albumName}" class="track-album-cover">
+	                    <div class="track-info">
+	                        <span class="track-name">${track.name}</span>
+	                        <span class="track-album">${track.albumName}</span>
+	                    </div>
+						<div class="track-duration">
+						    <span class="duration">
+								<c:set var="minutes" value="${track.durationMs / 60000}" />
+								<c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
+								<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+								<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+						    </span>
+						</div>
+	                </div>
+                </a>
             </c:forEach>
         </div>
     </div>

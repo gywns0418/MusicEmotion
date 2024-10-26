@@ -76,6 +76,11 @@
             color: #999;
             font-size: 14px;
         }
+        .track-album-cover {
+		    width: 50px;
+		    height: 50px;
+		    border-radius: 4px;
+		}
     </style>
 </head>
 
@@ -95,6 +100,7 @@
 		    	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.track.id}">
 			        <li class="track-item">
 			            <span class="track-number">${status.index + 1}</span>
+						<img src="${track.track.album.images[0].url}" alt="${track.track.name}" class="track-album-cover">
 			            <div class="track-info">
 			                <div class="track-title">${track.track.name}</div>
 			                <div class="track-artist">

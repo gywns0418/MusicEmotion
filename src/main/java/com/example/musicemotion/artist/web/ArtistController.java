@@ -55,6 +55,10 @@ public class ArtistController {
 	@GetMapping("/artistDetail.do")
 	public String artistDetail(HttpServletRequest req) {
 	    String artistId = req.getParameter("artist_id");
+	    
+	    // 사용자 정보 가져오기
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
 
 	    try {
 	        // 아티스트 세부 정보 가져오기
@@ -62,23 +66,18 @@ public class ArtistController {
 	        req.setAttribute("artistDetail", artistDetail);
 
 	        // 아티스트 이미지 설정
-	        String artistImageUrl = null;
-	        if (artistDetail.getImages() != null && artistDetail.getImages().length > 0) {
-	            artistImageUrl = artistDetail.getImages()[0].getUrl();
-	        }
+	        String artistImageUrl = (artistDetail.getImages() != null && artistDetail.getImages().length > 0) ?
+	                artistDetail.getImages()[0].getUrl() : null;
 	        req.setAttribute("artistImageUrl", artistImageUrl);
 
 	        // 장르 정보 설정
-	        String artistGenre = artistDetail.getGenres() != null && artistDetail.getGenres().length > 0 ? artistDetail.getGenres()[0] : "장르 정보 없음";
+	        String artistGenre = (artistDetail.getGenres() != null && artistDetail.getGenres().length > 0) ?
+	                artistDetail.getGenres()[0] : "장르 정보 없음";
 	        req.setAttribute("artistGenre", artistGenre);
 
-	        // 인기도 설정
-	        int popularity = artistDetail.getPopularity();
-	        req.setAttribute("popularity", popularity);
-
-	        // 팔로워 수 설정
-	        int followers = artistDetail.getFollowers().getTotal();
-	        req.setAttribute("followers", followers);
+	        // 인기도 및 팔로워 수 설정
+	        req.setAttribute("popularity", artistDetail.getPopularity());
+	        req.setAttribute("followers", artistDetail.getFollowers().getTotal());
 
 	        // 인기 트랙 목록 설정
 	        List<Map<String, Object>> popularTracks = spotifyService.getArtistTopTracks(artistId);
@@ -88,12 +87,21 @@ public class ArtistController {
 	        AlbumSimplified[] albums = spotifyService.getArtistAlbums(artistId);
 	        req.setAttribute("albums", albums);
 
+	        // 사용자 팔로우 여부 설정
+	        ArtistDTO artistDTO = new ArtistDTO();
+	        artistDTO.setArtist_id(artistId);
+	        artistDTO.setUser_id(username);
+	        
+	        List<String> followedArtistIds = artistService.artistId(artistDTO);
+	        req.setAttribute("followedArtistIds", followedArtistIds);
+
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 
 	    return "artist/artistDetail";
 	}
+
 
 
 

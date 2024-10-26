@@ -168,60 +168,69 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 24px;
+            
         }
 
-        .playlist-card {
-            background-color: var(--card-color);
-            border-radius: 8px;
-            padding: 16px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 2px 4px var(--shadow-color);
-        }
+.playlist-card {
+    background-color: var(--card-color);
+    border-radius: 8px;
+    padding: 16px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    color: black;
+    height: 360px; /* 고정된 높이 설정 */
+    display: flex;
+    flex-direction: column;
+}
 
-        .playlist-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px var(--shadow-color);
-        }
+.playlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
 
-        .playlist-card img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 16px;
-        }
+.playlist-card img {
+    width: 100%;
+    height: 240px; /* 이미지 높이 고정 */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
 
-        .playlist-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--highlight-color);
-        }
+.playlist-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--highlight-color);
+    /* 제목이 길 경우 말줄임표 처리 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .playlist-description {
-            font-size: 14px;
-            opacity: 0.7;
-        }
+.playlist-description {
+    font-size: 14px;
+    opacity: 0.7;
+    /* 설명이 길 경우 2줄까지만 표시하고 말줄임표 처리 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            .playlist-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-
-            .hero-section {
-                padding: 30px;
-            }
-        }
+/* 반응형 디자인 수정 */
+@media (max-width: 768px) {
+    .playlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .playlist-card {
+        height: 320px;
+    }
+    
+    .playlist-card img {
+        height: 200px;
+    }
+}
         
                 /* 로그인 폼 스타일 추가 */
         .login-container {

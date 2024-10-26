@@ -250,6 +250,7 @@ public class SpotifyService {
         return albumsList.toArray(new AlbumSimplified[0]);
     }
     
+    //아티스트 노래
     public List<Map<String, Object>> getArtistTopTracks(String artistId) {
         ensureAccessToken();
         List<Map<String, Object>> trackList = new ArrayList<>();
@@ -260,6 +261,7 @@ public class SpotifyService {
 
             for (Track track : topTracks) {
                 Map<String, Object> trackInfo = new HashMap<>();
+                trackInfo.put("id",track.getId());
                 trackInfo.put("name", track.getName());
                 trackInfo.put("playCount", track.getPopularity());
                 
