@@ -43,10 +43,8 @@ public class ArtistController {
 
 	    // 팔로우한 아티스트 목록 조회
 	    List<String> followedArtists = artistService.artistIdAll(username);
-	    System.out.println("followedArtists : " + followedArtists);
 	    
 	    List<Artist> artistList = spotifyService.getArtistsDetails(followedArtists);
-	    System.out.println("artistList : " + artistList.get(0));
 	    req.setAttribute("artistList", artistList);
 	    
 		return "artist/artist";

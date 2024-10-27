@@ -174,6 +174,104 @@
                 padding: 30px 20px;
             }
         }
+        
+/* 검색바 스타일링 */
+.search {
+    max-width: 600px;
+    margin: 2rem auto 3rem;
+    padding: 0 1rem;
+}
+
+.search-bar {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 1rem 3.5rem 1rem 1.5rem; /* 오른쪽 패딩 증가 */
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--card-color);
+    border: 2px solid transparent;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.search-bar input::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.search-icon {
+    position: absolute;
+    right: 1.2rem; /* 왼쪽에서 오른쪽으로 위치 변경 */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    font-size: 1.1rem; /* 아이콘 크기 약간 증가 */
+    cursor: pointer; /* 클릭 가능함을 표시 */
+}
+
+.search-icon:hover {
+    opacity: 0.8;
+    color: var(--highlight-color);
+}
+
+.search-bar input:focus ~ .search-icon {
+    opacity: 1;
+    color: var(--highlight-color);
+}
+
+/* 검색 결과가 없을 때 보여줄 스타일 */
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 1.1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .search-container {
+        max-width: 100%;
+        padding: 0 1.5rem;
+    }
+    
+    .search-bar input {
+        font-size: 0.95rem;
+        padding: 0.9rem 3rem 0.9rem 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-container {
+        padding: 0 1rem;
+        margin: 1.5rem auto 2rem;
+    }
+    
+    .search-bar input {
+        font-size: 0.9rem;
+        padding: 0.8rem 2.8rem 0.8rem 1.2rem;
+    }
+    
+    .search-icon {
+        right: 1rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -185,6 +283,13 @@
 	            <p>내가 팔로우한 아티스트들을 한눈에 보세요</p>
 	        </div>
 	
+	         <div class="search">
+			    <div class="search-bar">
+			        <input type="text" id="artistSearch" placeholder="아티스트 이름으로 검색하기...">
+			        <i class="fas fa-search search-icon"></i>
+			    </div>
+			</div>
+            
 	        <div class="artist-grid">
 	            <c:forEach items="${artistList}" var="artist">
 	                <a href="${pageContext.request.contextPath}/artist/artistDetail.do?artist_id=${artist.id}">

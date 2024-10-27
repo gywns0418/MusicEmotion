@@ -19,6 +19,7 @@ import se.michaelthelin.spotify.model_objects.special.FeaturedPlaylists;
 import se.michaelthelin.spotify.model_objects.specification.*;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
+import se.michaelthelin.spotify.requests.data.albums.GetSeveralAlbumsRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistsAlbumsRequest;
 import se.michaelthelin.spotify.requests.data.artists.GetArtistsTopTracksRequest;
@@ -284,6 +285,17 @@ public class SpotifyService {
         return trackList;
     }
 
+    public List<Album> getAlbumsDetails(List<String> albumIds) throws Exception {
+        ensureAccessToken();
+
+        try {
+            String[] idsArray = albumIds.toArray(new String[0]); 
+            GetSeveralAlbumsRequest request = spotifyApi.getSeveralAlbums(idsArray).build();
+            return Arrays.asList(request.execute());
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            throw e;
+        }
+    }
 
 
 

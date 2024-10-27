@@ -1,0 +1,234 @@
+/* album.css */
+:root {
+  --primary-color: #1DB954;
+  --secondary-color: #535353;
+  --background-color: #ffffff;
+  --surface-color: #f8f8f8;
+  --surface-color-light: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #888888;
+  --spacing-unit: 1rem;
+  --gradient-start: rgba(29,185,84,0.15);
+  --card-hover: #f0f0f0;
+  --shadow-dark: rgba(0,0,0,0.1);
+  --shadow-light: rgba(0,0,0,0.05);
+}
+
+#content-area {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--background-color);
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 4rem 0;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--primary-color) 100%);
+  margin-bottom: 3rem;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--shadow-light);
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-section p {
+  color: #ffffff;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Album Details Section */
+.album-info {
+  display: flex;
+  gap: 3rem;
+  padding: 2.5rem;
+  background-color: var(--surface-color);
+  border-radius: 24px;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px var(--shadow-dark);
+  border: 1px solid var(--shadow-light);
+}
+
+.album-cover {
+  width: 350px;
+  height: 350px;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px var(--shadow-dark);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.album-text h2 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.artist-name {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.album-stats {
+  display: flex;
+  gap: 1.5rem;
+  color: var(--text-tertiary);
+  font-size: 1.1rem;
+  margin: 1rem 0;
+}
+
+/* Track List Section */
+.track-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 0.8rem;
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--shadow-light);
+}
+
+.track-list li:hover {
+  background-color: var(--card-hover);
+  transform: translateX(5px);
+}
+
+.track-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.track-duration {
+  color: var(--text-secondary);
+}
+
+.play-button {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Album Description Section */
+#album-description {
+  background-color: var(--surface-color);
+  padding: 2.5rem;
+  border-radius: 24px;
+  margin: 3rem 0;
+  box-shadow: 0 8px 24px var(--shadow-dark);
+  border: 1px solid var(--shadow-light);
+}
+
+#album-description h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+#album-description p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* Related Albums Section */
+.playlist-card {
+  background-color: var(--surface-color);
+  padding: 1.2rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px var(--shadow-dark);
+  border: 1px solid var(--shadow-light);
+}
+
+.playlist-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  background-color: var(--surface-color-light);
+  box-shadow: 0 8px 24px var(--shadow-dark);
+}
+
+.playlist-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.playlist-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.cta-button {
+  background: linear-gradient(45deg, var(--primary-color), #1ed760);
+  color: white;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(29,185,84,0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(29,185,84,0.4);
+}
+
+@media (max-width: 768px) {
+  .album-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .album-text {
+    align-items: center;
+  }
+  
+  .album-cover {
+    width: 280px;
+    height: 280px;
+  }
+  
+  .album-text h2 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-section h1 {
+    font-size: 2.8rem;
+  }
+}

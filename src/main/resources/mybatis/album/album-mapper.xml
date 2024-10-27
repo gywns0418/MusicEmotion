@@ -13,6 +13,10 @@
 		select * from album where user_id = #{user_id}
 	</select>
 	
+	<select id="albumIdAll" parameterType="String" resultType="String">
+		select album_id from album where user_id = #{user_id}
+	</select>
+	
 	<update id="updateAlbum" parameterType="AlbumDTO">
 		update album
 		set
@@ -23,4 +27,6 @@
 	<delete id="deleteAlbum" parameterType="String">
 		delete from album where album_id = #{album_id}
 	</delete>
+	
+
 </mapper>

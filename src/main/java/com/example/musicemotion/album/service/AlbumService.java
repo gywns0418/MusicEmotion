@@ -31,4 +31,8 @@ public class AlbumService {
 	public void deleteAlbum(String album_id) {
 		sqlSession.delete("deleteAlbum",album_id);
 	}
+
+	public List<String> albumIdAll(String user_id) {
+		return sqlSession.selectList("albumIdAll", user_id);
+	}
 }
