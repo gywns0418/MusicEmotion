@@ -29,6 +29,7 @@ import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
 import se.michaelthelin.spotify.requests.data.browse.miscellaneous.GetAvailableGenreSeedsRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
+import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequest;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -89,6 +91,23 @@ public class SpotifyService {
         		.build();
         return searchTracksRequest.execute().getItems();
     }
+    
+  //검색으로 앨범
+    public AlbumSimplified[] searchAlbums(String search) throws Exception {
+        ensureAccessToken();
+
+        // 검색어 유효성 검사
+        if (search == null || search.trim().isEmpty()) {
+            throw new IllegalArgumentException("Search term cannot be null or empty.");
+        }
+
+        SearchAlbumsRequest searchAlbumsRequest = spotifyApi.searchAlbums(search)
+                .limit(10)
+                .market(CountryCode.KR)
+                .build();
+        return searchAlbumsRequest.execute().getItems();
+    }
+
     
     //검색결과 없을때 랜덤 노래
     public Track[] getRandomRecommendations() throws Exception {

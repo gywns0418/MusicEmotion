@@ -19,6 +19,7 @@ import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import se.michaelthelin.spotify.model_objects.specification.Album;
+import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
@@ -154,7 +155,9 @@ public class SpotifyController {
             if (search != null && !search.isEmpty()) {
                 // 검색어가 있는 경우 검색 수행
                 Track[] tracks = spotifyService.searchTracks(search);
+                AlbumSimplified[] Album  = spotifyService.searchAlbums(search);
                 req.setAttribute("tracks", tracks);
+                req.setAttribute("Album", Album);
             } else {
                 // 검색어가 없을 경우 랜덤한 추천 트랙 가져오기
                 Track[] recommendedTracks = spotifyService.getRandomRecommendations();

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/musicList.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
 <body>
@@ -27,7 +28,9 @@
                 <h1>음악 리스트</h1>
             </div>
 
+			<h1>Track</h1>
             <div class="music-list">
+            
 				<c:if test="${not empty tracks}">
 					<c:forEach var="track" items="${tracks}">
 						
@@ -50,6 +53,43 @@
 	                            <button class="button like-button ${fn:contains(likedSongIds, track.id) ? 'active' : ''}" 
 	                                onclick="toggleLike(this, '${track.id}')">
 	                            </button>
+			       			</div>
+		         		</div>
+	       				
+		 			</c:forEach>  
+				</c:if>
+				  
+				<c:if test="${empty tracks}">
+				  	<p>No search results found.</p>
+				</c:if>
+
+            </div>
+            
+            <h1>Album</h1>
+            <div class="music-list">
+            
+				<c:if test="${not empty tracks}">
+					<c:forEach var="album" items="${Album}">
+						
+						<div class="music-card">
+						<a href="${pageContext.request.contextPath}/album/albumDetail.do?album_id=${album.id}">
+							<img src="${album.images[0].url}" alt="앨범 커버" width="200" height="200">
+							<div class="music-info">
+								<h3>${album.name}</h3>
+								<p>${album.artists[0].name}</p>
+							</div>
+						</a>
+							<div class="button-group"><br>
+								<span class="stat-value">
+									${album.getReleaseDate()}
+								</span>
+		                        <div class="action-buttons">
+		                            <button class="button-follow ${fn:contains(followedAlbumIds, album.id) ? 'active' : ''}" 
+		                                    onclick="toggleFollow(this, '${album.id}')">
+		                                <i class="fas ${fn:contains(followedAlbumIds, album.id) ? 'fa-user-check' : 'fa-user-plus'}"></i>
+		                                ${fn:contains(followedAlbumIds, album.id) ? '팔로잉' : '팔로우'}
+		                            </button>
+		                        </div>
 			       			</div>
 		         		</div>
 	       				
@@ -104,6 +144,35 @@
 	        // 여기에 검색 로직을 구현하세요
 	    }
     
+        
+        function toggleFollow(button, albumId) {
+            button.classList.toggle('active');
+            const isFollowing = button.classList.contains('active');
+            console.log('팔로우: ' + isFollowing);
+            button.innerHTML = isFollowing ? 
+                '<i class="fas fa-user-check"></i> 팔로잉' : 
+                '<i class="fas fa-user-plus"></i> 팔로우';
+            
+            fetch('${pageContext.request.contextPath}/album/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    album_id: albumId,
+                    following: isFollowing
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
+                } else {
+                    console.error('팔로우 실패');
+                }
+            })
+            .catch(error => console.error('오류 발생:', error));
+        }
     </script>
 </body>
 </html>
