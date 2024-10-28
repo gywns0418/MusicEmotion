@@ -5,7 +5,7 @@
   
 <mapper namespace="album">
 	<insert id="addAlbum" parameterType="AlbumDTO">
-		insert into album
+		insert into album (user_id, album_id)
 		values(#{user_id}, #{album_id})
 	</insert>
 	
@@ -24,8 +24,10 @@
 		where user_id = #{user_id}
 	</update>
 	
-	<delete id="deleteAlbum" parameterType="String">
-		delete from album where album_id = #{album_id}
+	<delete id="deleteAlbum" parameterType="AlbumDTO">
+		delete from album 
+		where user_id = #{user_id} 
+        and album_id = #{album_id}
 	</delete>
 	
 

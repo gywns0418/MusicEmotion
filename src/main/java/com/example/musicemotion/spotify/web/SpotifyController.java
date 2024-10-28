@@ -110,15 +110,17 @@ public class SpotifyController {
 
             // 가사 처리
             String lyrics = musixmatchService.getLyricsByTrackName(track.getName(), track.getArtists()[0].getName());
-            System.out.println("가사 정보2: " + lyrics);
-
+            
+            System.out.println(lyrics);
+            
             if (lyrics != null) {
-                // "******* This Lyrics is NOT for Commercial use *******" 부분 제거
-                lyrics = lyrics.replace("******* This Lyrics is NOT for Commercial use *******", "")
-                                .replace("\n", "<br>"); // 줄바꿈을 <br>로 변환
+                lyrics = lyrics.replaceAll("\\*{7} This Lyrics is NOT for Commercial use \\*{7}\\s*\\(\\d+\\)", "")
+                               .replace("\n", "<br>"); // 줄바꿈을 <br>로 변환
             } else {
                 lyrics = "Lyrics not available.";
             }
+
+
 
             req.setAttribute("lyrics", lyrics);
 

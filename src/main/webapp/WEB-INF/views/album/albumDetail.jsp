@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,53 +14,90 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/albumDetail.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
     <jsp:include page="../header.jsp" />
 
-    <div id="content-area">
-        <div class="hero-section">
-            <h1>${album.title}</h1>
-            <p>${album.artist}의 음악 세계로 초대합니다.</p>
-        </div>
-
-        <div class="section" id="album-details">
-            <div class="album-info">
-                <img src="${album.coverUrl}" alt="${album.title} 앨범 커버" class="album-cover">
-                <div class="album-text">
-                    <h2>${album.title}</h2>
-                    <p class="artist-name">${album.artist}</p>
-                    <p class="release-date">발매일: ${album.releaseDate}</p>
-                    <p class="genre">장르: ${album.genre}</p>
-                    <div class="album-stats">
-                        <span>총 ${album.trackCount}곡</span> • 
-                        <span>${album.duration}</span> • 
-                        <span>${album.likes} 좋아요</span>
+    <div id="content-area">             
+        <div class="artist-header" style="background-image: url('${album.coverUrl}')">
+            <div class="header-overlay">
+                <div class="artist-profile">
+                    <div class="artist-image-container">
+                        <img src="${album.coverUrl}" alt="${album.title}" class="artist-image">
                     </div>
-                    <button class="cta-button" onclick="playAll()">
-                        <i class="fas fa-play"></i> 전체 재생
-                    </button>
+                    <div class="artist-info">
+                        <div class="artist-title">
+                            <h1>${album.artist}</h1>
+                        </div>
+                        <p class="artist-genre">${album.genre}</p>
+                        <div class="artist-stats">
+                            <div class="stat-item">
+                                <span class="stat-value">${album.releaseDate}</span>
+                                <span class="stat-label">발매일</span>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <span class="stat-value">${album.trackCount}</span>
+                                <span class="stat-label">총 곡</span>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <span class="stat-value">${album.duration}</span>
+                                <span class="stat-label">전체 곡 길이</span>
+                            </div>                        
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <span class="stat-value">${album.likes}</span>
+                                <span class="stat-label">좋아요</span>
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="button-follow ${fn:contains(followedAlbumIds, albumDetail.id) ? 'active' : ''}" 
+                                    onclick="toggleFollow(this, '${albumDetail.id}')">
+                                <i class="fas ${fn:contains(followedAlbumIds, albumDetail.id) ? 'fa-user-check' : 'fa-user-plus'}"></i>
+                                ${fn:contains(followedAlbumIds, albumDetail.id) ? '팔로잉' : '팔로우'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="section" id="track-list">
             <h2>수록곡</h2>
-            <ol class="track-list">
-                <c:forEach items="${album.tracks}" var="track">
-                    <li>
-                        <div class="track-info">
-                            <span class="track-title">${track.title}</span>
-                            <span class="track-duration">${track.duration}</span>
-                        </div>
-                        <button class="play-button" onclick="playTrack('${track.id}')">
-                            재생
-                        </button>
-                    </li>
-                </c:forEach>
-            </ol>
+            <div class="track-list-container">
+                <table class="track-list-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>제목</th>
+                            <th>길이</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${album.tracks}" var="track" varStatus="loop">
+                            <tr class="track-item">
+                                <td class="track-number">${loop.index + 1}</td>
+                                <td class="track-title" data-tooltip="${track.name} - ${track.artist}">${track.name}</td>
+                                <td class="track-duration">${track.duration}</td>
+                                <td class="track-actions">
+                                    <button class="play-button" onclick="playTrack('${track.id}')">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <button class="play-all-button" onclick="playAll()">
+                    <i class="fas fa-play"></i> 전체 재생
+                </button>
+            </div>
         </div>
 
+<!--  
         <div class="section" id="album-description">
             <h2>앨범 소개</h2>
             <p>${album.description}</p>
@@ -77,6 +115,8 @@
                 </c:forEach>
             </div>
         </div>
+        
+-->
     </div>
 
     <script>
@@ -90,9 +130,58 @@
             console.log("트랙 재생:", trackId);
         }
 
-        $(document).ready(function() {
-            // 페이지 로드 시 필요한 초기화 작업
-        });
+        function toggleLike(button, trackId) {
+            button.classList.toggle('active');
+            const isLiked = button.classList.contains('active');
+            
+            fetch('${pageContext.request.contextPath}/track/like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    track_id: trackId,
+                    liked: isLiked
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('트랙 좋아요 상태가 서버에 성공적으로 반영되었습니다.');
+                } else {
+                    console.error('트랙 좋아요 실패');
+                }
+            })
+            .catch(error => console.error('오류 발생:', error));
+        }
+        
+        function toggleFollow(button, albumId) {
+            button.classList.toggle('active');
+            const isFollowing = button.classList.contains('active');
+            button.innerHTML = isFollowing ? 
+                '<i class="fas fa-user-check"></i> 팔로잉' : 
+                '<i class="fas fa-user-plus"></i> 팔로우';
+            
+            fetch('${pageContext.request.contextPath}/album/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    album_id: albumId,
+                    following: isFollowing
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
+                } else {
+                    console.error('팔로우 실패');
+                }
+            })
+            .catch(error => console.error('오류 발생:', error));
+        }
     </script>
 </main>
 </body>

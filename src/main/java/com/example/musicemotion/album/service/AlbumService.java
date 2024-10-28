@@ -16,8 +16,14 @@ public class AlbumService {
 	@Autowired
 	private  SqlSession sqlSession;
 	
-	public void addAlbum(AlbumDTO dto) {
-		sqlSession.insert("addAlbum", dto);
+	public boolean addAlbum(AlbumDTO dto) {
+        try {
+            sqlSession.insert("addAlbum", dto);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 	}
 	 
 	public List<AlbumDTO> albumAll(String user_id) {
@@ -28,9 +34,16 @@ public class AlbumService {
 		sqlSession.update("updateAlbum", dto);
 	}
 	 
-	public void deleteAlbum(String album_id) {
-		sqlSession.delete("deleteAlbum",album_id);
-	}
+	public boolean deleteAlbum(AlbumDTO dto) {
+        try {
+            sqlSession.delete("deleteArtist", dto);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
 
 	public List<String> albumIdAll(String user_id) {
 		return sqlSession.selectList("albumIdAll", user_id);

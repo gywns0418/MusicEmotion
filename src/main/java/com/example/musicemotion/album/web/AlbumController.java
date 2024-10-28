@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.musicemotion.album.service.AlbumService;
+import com.example.musicemotion.dto.AlbumDTO;
+import com.example.musicemotion.dto.ArtistDTO;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,29 +44,38 @@ public class AlbumController {
 
         // 팔로우한 앨범 목록 조회
         List<String> followedAlbums = albumService.albumIdAll(username);
-        
-        List<Album> albums = spotifyService.getAlbumsDetails(followedAlbums);
+
+        // 유효한 형식의 앨범 ID만 필터링
+        List<String> validAlbumIds = followedAlbums.stream()
+                .filter(id -> id != null && id.matches("^[A-Za-z0-9]{22}$"))
+                .collect(Collectors.toList());
+
+        // 필터링된 ID 목록으로 Spotify API 호출
+        List<Album> albums = spotifyService.getAlbumsDetails(validAlbumIds);
 
         List<Map<String, Object>> albumDetails = new ArrayList<>();
         for (Album album : albums) {
+            if (album == null) {
+                continue;  // album이 null인 경우 건너뜁니다.
+            }
             Map<String, Object> details = new HashMap<>();
             details.put("id", album.getId());
             details.put("name", album.getName());
             details.put("releaseDate", album.getReleaseDate());
-            details.put("totalTracks", album.getTracks().getTotal());  // 총 트랙 수만 전달
+            details.put("totalTracks", album.getTracks().getTotal());
             details.put("popularity", album.getPopularity());
 
             // 첫 번째 이미지와 첫 번째 아티스트만 사용
             if (album.getImages() != null && album.getImages().length > 0) {
                 details.put("imageUrl", album.getImages()[0].getUrl());
             } else {
-                details.put("imageUrl", "/images/placeholder.jpg"); // 기본 이미지 경로
+                details.put("imageUrl", "/images/placeholder.jpg");
             }
             
             if (album.getArtists() != null && album.getArtists().length > 0) {
                 details.put("artistName", album.getArtists()[0].getName());
             } else {
-                details.put("artistName", "Unknown Artist"); // 기본 아티스트 이름
+                details.put("artistName", "Unknown Artist");
             }
             
             albumDetails.add(details);
@@ -70,6 +86,7 @@ public class AlbumController {
         return "album/album";
     }
 
+
 	
     @GetMapping("/albumDetail.do")
     public String albumDetail(HttpServletRequest req) throws Exception {
@@ -79,30 +96,36 @@ public class AlbumController {
         Album album = spotifyService.getAlbumDetail(albumId);
 
         Map<String, Object> albumData = new HashMap<>();
-        albumData.put("title", album.getName()); // 앨범 제목
-        albumData.put("artist", album.getArtists().length > 0 ? album.getArtists()[0].getName() : "Unknown Artist"); // 아티스트 이름
-        albumData.put("coverUrl", album.getImages().length > 0 ? album.getImages()[0].getUrl() : "/images/placeholder.jpg"); // 앨범 커버 이미지
-        albumData.put("releaseDate", album.getReleaseDate()); // 발매일
-        albumData.put("genre", album.getGenres().length > 0 ? album.getGenres()[0] : "Unknown Genre"); // 장르
-        albumData.put("trackCount", album.getTracks().getTotal()); // 총 트랙 수
-        albumData.put("likes", 0); // 좋아요 수 (API에서 직접 제공되지 않으므로 기본값 설정)
-        
-        // 앨범의 총 재생 시간 계산
-        int totalDuration = 0;
-        for (TrackSimplified track : album.getTracks().getItems()) {
-            totalDuration += track.getDurationMs();
-        }
-        albumData.put("duration", formatDuration(totalDuration)); // 형식화된 재생 시간
+        albumData.put("title", album.getName());
+        albumData.put("artist", album.getArtists().length > 0 ? album.getArtists()[0].getName() : "Unknown Artist");
+        albumData.put("coverUrl", album.getImages().length > 0 ? album.getImages()[0].getUrl() : "/images/placeholder.jpg");
+        albumData.put("releaseDate", album.getReleaseDate());
+        albumData.put("genre", album.getGenres().length > 0 ? album.getGenres()[0] : "Unknown Genre");
+        albumData.put("trackCount", album.getTracks().getTotal());
+        albumData.put("likes", 0);
 
-        // 트랙 목록 정보
+        int totalDuration = 0;
         List<Map<String, Object>> tracks = new ArrayList<>();
+
         for (TrackSimplified track : album.getTracks().getItems()) {
             Map<String, Object> trackData = new HashMap<>();
             trackData.put("name", track.getName());
             trackData.put("duration", formatDuration(track.getDurationMs()));
+
+            // 트랙의 세부 정보를 가져와 이미지 추가 (예시: spotifyService.getTrackDetail)
+            var trackDetail = spotifyService.getTrack(track.getId()); // 새로운 메서드 필요
+            if (trackDetail.getAlbum().getImages() != null && trackDetail.getAlbum().getImages().length > 0) {
+                trackData.put("imageUrl", trackDetail.getAlbum().getImages()[0].getUrl());
+            } else {
+                trackData.put("imageUrl", "/images/placeholder.jpg");
+            }
+
+            totalDuration += track.getDurationMs();
             tracks.add(trackData);
         }
-        albumData.put("tracks", tracks); // 트랙 목록
+
+        albumData.put("duration", formatDuration(totalDuration));
+        albumData.put("tracks", tracks);
 
         req.setAttribute("album", albumData);
 
@@ -116,6 +139,31 @@ public class AlbumController {
         return String.format("%d:%02d", minutes, seconds);
     }
 
+	@PostMapping("/follow")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> followArtist(@RequestBody Map<String, Object> payload) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+
+	    String albumId = (String) payload.get("album_id");
+	    boolean following = (boolean) payload.get("following");
+
+	    AlbumDTO dto = new AlbumDTO();
+	    dto.setUser_id(username);
+	    dto.setAlbum_id(albumId);
+
+	    boolean success;
+	    try {
+	        success = following ? albumService.addAlbum(dto) : albumService.deleteAlbum(dto);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        success = false;
+	    }
+
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", success);
+	    return ResponseEntity.ok(response);
+	}
 
 
 }
