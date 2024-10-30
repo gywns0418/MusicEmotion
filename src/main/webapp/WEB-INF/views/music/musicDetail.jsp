@@ -407,7 +407,7 @@
             </div>
             
             <div class="action-buttons">
-				<button class="button button-play">
+				<button class="button button-play" onclick="addToRecentlyPlayed('${track.id}')">
                     <i class="fas fa-play"></i>
                     재생
                 </button>
@@ -558,6 +558,25 @@
               })
               .catch(error => console.error('오류 발생:', error));
         }
+        
+        function addToRecentlyPlayed(musicId) {
+            console.log("재생 중인 음악 ID:", musicId); // 음악 ID 확인용 로그
+
+            $.ajax({
+                url: '/recentPlayed/addRecentlyPlayed',
+                type: 'POST',
+                data: { musicId: musicId },
+                success: function(response) {
+                    alert('최근 재생 목록에 추가되었습니다.');
+                },
+                error: function(error) {
+                    console.error('추가 중 오류가 발생했습니다:', error);
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+            });
+        }
+
+
     </script>
     </main>
 </body>

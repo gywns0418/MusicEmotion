@@ -4,8 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="recent_played">
-	<insert id="addPlaylist" parameterType="PlaylistDTO">
-		insert into recent_played
+	<insert id="addRecent_Played" parameterType="Recent_PlayedDTO">
+		insert into recent_Played (user_id, song_id, played_at)
 		values(#{user_id}, #{song_id}, sysdate)
 	</insert>
 	

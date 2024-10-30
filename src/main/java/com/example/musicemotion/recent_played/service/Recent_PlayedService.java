@@ -16,8 +16,8 @@ public class Recent_PlayedService {
 	@Autowired
 	private  SqlSession sqlSession;
 	
-	public void addPlaylist(Recent_PlayedDTO dto) {
-		sqlSession.insert("addPlaylist", dto);
+	public void addRecent_Played(Recent_PlayedDTO dto) {
+		sqlSession.insert("addRecent_Played", dto);
 	}
 	 
 	public List<Recent_PlayedDTO> recent_playedAll(String user_id) {
