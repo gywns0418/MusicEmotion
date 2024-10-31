@@ -12,385 +12,8 @@
     <title>곡 상세 정보 - MusicEmotion</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --background-color: #ffffff;
-            --text-color: #333333;
-            --highlight-color: #1db954;
-            --card-color: #ffffff;
-            --hover-color: #f0f0f0;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --button-primary: #1db954;
-            --button-secondary: #ffffff;
-            --button-danger: #ff4d4d;
-        }
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/musicDetail.css">
 
-
-        .container {
-            max-width: 90%;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .section {
-            background-color: var(--card-color);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 10px var(--shadow-color);
-            transition: transform 0.3s ease;
-        }
-
-
-
-        .song-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .song-image {
-            width: 250px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-right: 30px;
-            box-shadow: 0 4px 10px var(--shadow-color);
-            transition: transform 0.3s ease;
-        }
-
-        .song-image:hover {
-            transform: scale(1.05);
-        }
-
-        .song-info {
-            flex-grow: 1;
-        }
-
-        .song-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        .song-artist {
-            font-size: 24px;
-            color: var(--highlight-color);
-            margin-bottom: 10px;
-        }
-
-        .song-album {
-            font-size: 18px;
-            color: #666;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            align-items: center;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .button i {
-            font-size: 18px;
-        }
-
-        .button-play {
-            background-color: var(--button-primary);
-            color: white;
-            min-width: 140px;
-        }
-
-        .button-play:hover {
-            background-color: #1ed760;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 215, 96, 0.3);
-        }
-
-        .button-playlist {
-            background-color: var(--button-secondary);
-            color: var(--text-color);
-            border: 2px solid var(--text-color);
-        }
-
-        .button-playlist:hover {
-            background-color: var(--hover-color);
-            transform: translateY(-2px);
-        }
-
-        .button-like {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 2px solid var(--text-color);
-            padding: 12px 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .button-like:hover {
-            color: var(--button-danger);
-            border-color: var(--button-danger);
-            transform: translateY(-2px);
-        }
-
-        .button-like.active {
-            background-color: #fff0f0;
-            color: var(--button-danger);
-            border-color: var(--button-danger);
-        }
-
-        .button-like i {
-            transition: transform 0.3s ease;
-        }
-
-        .button-like:hover i {
-            transform: scale(1.2);
-        }
-
-        .song-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .detail-item {
-            background-color: var(--hover-color);
-            padding: 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .detail-item:hover {
-            background-color: var(--card-color);
-            box-shadow: 0 2px 5px var(--shadow-color);
-            transform: translateY(-2px);
-        }
-
-        .detail-label {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--highlight-color);
-        }
-
-        .detail-value {
-            color: var(--text-color);
-        }
-
-        .lyrics-section {
-            background-color: var(--card-color);
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 30px;
-            position: relative;
-            box-shadow: 0 2px 8px var(--shadow-color);
-        }
-
-        .lyrics-content {
-            max-height: 200px;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            padding: 0 20px;
-            line-height: 1.8;
-        }
-
-        .lyrics-content.expanded {
-            max-height: none;
-        }
-
-        .lyrics-toggle {
-            position: absolute;
-            bottom: -15px;
-            right: 30px;
-            background-color: var(--button-secondary);
-            color: var(--text-color);
-            border: 2px solid var(--text-color);
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .lyrics-toggle:hover {
-            background-color: var(--hover-color);
-            transform: translateY(-2px);
-        }
-
-        .audio-player {
-            margin-top: 30px;
-            background-color: var(--hover-color);
-            padding: 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 8px var(--shadow-color);
-        }
-
-        .audio-player audio {
-            flex-grow: 1;
-            height: 40px;
-        }
-
-        .recommendations {
-            margin-top: 40px;
-        }
-
-        .recommendation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .recommendation-card {
-            background-color: var(--card-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px var(--shadow-color);
-            transition: all 0.3s ease;
-        }
-
-        .recommendation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px var(--shadow-color);
-        }
-
-        .recommendation-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .recommendation-info {
-            padding: 15px;
-        }
-
-        .recommendation-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .recommendation-artist {
-            font-size: 14px;
-            color: #666;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 95%;
-                padding: 20px 10px;
-            }
-
-            .song-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .song-image {
-                width: 100%;
-                height: auto;
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-
-            .song-title {
-                font-size: 28px;
-            }
-
-            .song-artist {
-                font-size: 20px;
-            }
-
-            .action-buttons {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .button {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .button-like {
-                width: auto;
-                flex: 0 0 auto;
-            }
-
-            .lyrics-toggle {
-                right: 50%;
-                transform: translateX(50%);
-            }
-        }
-        
-            .artist-list {
-        margin-top: 15px;
-    }
-
-    .artist-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        background-color: var(--hover-color);
-        transition: all 0.3s ease;
-    }
-
-    .artist-item:hover {
-        background-color: var(--card-color);
-        box-shadow: 0 2px 5px var(--shadow-color);
-    }
-
-    .button-follow {
-        background-color: transparent;
-        color: var(--text-color);
-        border: 2px solid var(--text-color);
-        padding: 8px 16px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .button-follow:hover {
-        background-color: var(--highlight-color);
-        color: white;
-        border-color: var(--highlight-color);
-    }
-
-    .button-follow.active {
-        background-color: var(--highlight-color);
-        color: white;
-        border-color: var(--highlight-color);
-    }
-
-    .button-follow i {
-        font-size: 14px;
-    }
-        
-    </style>
 </head>
 
     <jsp:include page="../header.jsp" />
@@ -471,6 +94,48 @@
             </div>
         </div>
     </div>
+
+    <h1>YouTube 비디오 재생</h1>
+    <div id="player"></div>
+    <button onclick="playVideo()">재생</button>
+    <button onclick="pauseVideo()">일시 정지</button>
+
+    <script>
+        let player;
+
+        // YouTube IFrame API가 준비되면 호출됨
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: 'dQw4w9WgXcQ', // 예시 비디오 ID 설정
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("비디오 플레이어 준비 완료");
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log('비디오가 종료되었습니다.');
+            }
+        }
+
+        function playVideo() {
+            player.playVideo();
+        }
+
+        function pauseVideo() {
+            player.pauseVideo();
+        }
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
