@@ -9,8 +9,8 @@
 		values(#{user_id}, #{song_id}, sysdate)
 	</insert>
 	
-	<select id="recent_playedAll" parameterType="String" resultType="Recent_PlayedDTO">
-	    select * from recent_played
+	<select id="recent_playedAll" parameterType="String" resultType="String">
+	    select song_id from recent_played
 	    where user_id = #{user_id}
 	    order by played_at ASC
 	</select>

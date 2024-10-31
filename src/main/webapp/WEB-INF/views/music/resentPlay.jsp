@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <style>
         .recent-play-container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             padding: 20px;
         }
@@ -86,50 +88,6 @@
                 <p>지난 30일 동안 들은 곡들입니다</p>
             </div>
 
-            <div class="song-list">
-                <div class="song-item">
-                    <img src="/api/placeholder/60/60" alt="노래 1" class="song-image">
-                    <div class="song-info">
-                        <div class="song-title">Dynamite</div>
-                        <div class="song-artist">BTS</div>
-                    </div>
-                    <div class="song-duration">3:19</div>
-                </div>
-                <div class="song-item">
-                    <img src="/api/placeholder/60/60" alt="노래 2" class="song-image">
-                    <div class="song-info">
-                        <div class="song-title">Blinding Lights</div>
-                        <div class="song-artist">The Weeknd</div>
-                    </div>
-                    <div class="song-duration">3:20</div>
-                </div>
-                <div class="song-item">
-                    <img src="/api/placeholder/60/60" alt="노래 3" class="song-image">
-                    <div class="song-info">
-                        <div class="song-title">Don't Start Now</div>
-                        <div class="song-artist">Dua Lipa</div>
-                    </div>
-                    <div class="song-duration">3:03</div>
-                </div>
-                <div class="song-item">
-                    <img src="/api/placeholder/60/60" alt="노래 4" class="song-image">
-                    <div class="song-info">
-                        <div class="song-title">Watermelon Sugar</div>
-                        <div class="song-artist">Harry Styles</div>
-                    </div>
-                    <div class="song-duration">2:54</div>
-                </div>
-                <div class="song-item">
-                    <img src="/api/placeholder/60/60" alt="노래 5" class="song-image">
-                    <div class="song-info">
-                        <div class="song-title">Dance Monkey</div>
-                        <div class="song-artist">Tones and I</div>
-                    </div>
-                    <div class="song-duration">3:29</div>
-                </div>
-            </div>
-            
-
             <div class="statistics">
                 <h2>나의 청취 통계</h2>
                 <div class="stat-item">
@@ -148,6 +106,32 @@
                     <span>이 달의 최다 재생곡</span>
                     <span>Dynamite - BTS</span>
                 </div>
+            </div>
+            
+            <br>
+            
+            <div class="song-list">
+                <c:if test="${not empty track}">
+	                <c:forEach var="track" items="${track}">
+	                	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
+			                <div class="song-item">
+			                    <img src="${track.album.images[0].url}" class="song-image" alt="앨범 커버" width="200" height="200">
+			                    <div class="song-info">
+			                        <div class="song-title">${track.name}</div>
+			                        <div class="song-artist">${track.artists[0].name}</div>
+			                    </div>
+			                    <div class="song-duration">								
+			                    	<span class="duration">
+										<c:set var="minutes" value="${track.durationMs / 60000}" />
+										<c:set var="seconds" value="${(track.durationMs % 60000) / 1000}" />
+										<fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+										<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+									</span>
+								</div>
+			                </div>
+		                </a>
+	                </c:forEach>
+                </c:if>
             </div>
         </div>
     </main>

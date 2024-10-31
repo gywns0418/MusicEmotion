@@ -88,7 +88,7 @@
 	    <div class="section">
 	        <h2>내 라이브러리</h2>
 	        <div class="playlist-grid">
-	        	<a href="${pageContext.request.contextPath}/spotify/resentPlay.do">
+	        	<a href="${pageContext.request.contextPath}/recentPlayed/resentPlay.do">
 		            <div class="playlist-card">
 		                <img src="${pageContext.request.contextPath}/images/play.jpg" alt="최근 재생" width="300" height="300">
 		                <div class="playlist-title">최근 재생</div>

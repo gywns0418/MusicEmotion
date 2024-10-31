@@ -172,10 +172,4 @@ public class SpotifyController {
     }
 
 
-	@GetMapping("/resentPlay.do")
-	public String resentPlay() {
-		return "music/resentPlay";
-	}
-	
-
 }

@@ -20,7 +20,7 @@ public class Recent_PlayedService {
 		sqlSession.insert("addRecent_Played", dto);
 	}
 	 
-	public List<Recent_PlayedDTO> recent_playedAll(String user_id) {
+	public List<String> recent_playedAll(String user_id) {
 		return sqlSession.selectList("recent_playedAll", user_id);
 	}
 	

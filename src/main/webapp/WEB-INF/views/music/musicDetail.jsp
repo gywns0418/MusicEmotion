@@ -407,9 +407,9 @@
             </div>
             
             <div class="action-buttons">
-				<button class="button button-play" onclick="addToRecentlyPlayed('${track.id}')">
+				<button class="button button-play" onclick="toggleRecentlyPlayed(this, '${track.id}')">
                     <i class="fas fa-play"></i>
-                    재생
+                    play
                 </button>
                 <button class="button button-playlist">
                     <i class="fas fa-plus"></i>
@@ -559,22 +559,44 @@
               .catch(error => console.error('오류 발생:', error));
         }
         
-        function addToRecentlyPlayed(musicId) {
-            console.log("재생 중인 음악 ID:", musicId); // 음악 ID 확인용 로그
+        function toggleRecentlyPlayed(button, musicId) {
+            // 버튼 활성화 상태 토글
+            button.classList.toggle('active');
+            const isPlaying = button.classList.contains('active');
 
-            $.ajax({
-                url: '/recentPlayed/addRecentlyPlayed',
-                type: 'POST',
-                data: { musicId: musicId },
-                success: function(response) {
-                    alert('최근 재생 목록에 추가되었습니다.');
-                },
-                error: function(error) {
-                    console.error('추가 중 오류가 발생했습니다:', error);
-                    alert('오류가 발생했습니다. 다시 시도해주세요.');
-                }
-            });
+            // 버튼 텍스트 또는 아이콘 업데이트
+            button.innerHTML = isPlaying 
+                ? '<i class="fas fa-pause"></i> pause' 
+                : '<i class="fas fa-play"></i> play';
+
+            
+
+            // 재생 상태를 서버에 전송하여 최근 재생 목록에 추가
+            if (isPlaying) {
+            	console.log('트랙 아이디: ' + musicId);
+                const formData = new URLSearchParams();
+                formData.append("musicId", musicId);
+
+                fetch('<%= request.getContextPath() %>/recentPlayed/addRecentlyPlayed', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('최근 재생 목록에 성공적으로 추가되었습니다.');
+                    } else {
+                        console.error('추가 실패');
+                    }
+                })
+                .catch(error => console.error('오류 발생:', error));
+            }
         }
+
+
 
 
     </script>

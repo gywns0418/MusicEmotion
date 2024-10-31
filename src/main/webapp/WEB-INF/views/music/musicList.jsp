@@ -35,13 +35,13 @@
 					<c:forEach var="track" items="${tracks}">
 						
 						<div class="music-card">
-						<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
-							<img src="${track.album.images[0].url}" alt="앨범 커버" width="200" height="200">
-							<div class="music-info">
-								<h3>${track.name}</h3>
-								<p>${track.artists[0].name}</p>
-							</div>
-						</a>
+							<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.id}">
+								<img src="${track.album.images[0].url}" alt="앨범 커버" width="200" height="200">
+								<div class="music-info">
+									<h3>${track.name}</h3>
+									<p>${track.artists[0].name}</p>
+								</div>
+							</a>
 							<div class="button-group"><br>
 								<span class="duration">
 									<c:set var="minutes" value="${track.durationMs / 60000}" />
@@ -64,7 +64,7 @@
 				</c:if>
 
             </div>
-            
+            <br>
             <h1>Album</h1>
             <div class="music-list">
             
@@ -80,7 +80,7 @@
 							</div>
 						</a>
 							<div class="button-group"><br>
-								<span class="stat-value">
+								<span class="duration">
 									${album.getReleaseDate()}
 								</span>
 		                        <div class="action-buttons">
