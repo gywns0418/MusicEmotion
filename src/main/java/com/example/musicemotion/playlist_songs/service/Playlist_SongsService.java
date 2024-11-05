@@ -16,9 +16,10 @@ public class Playlist_SongsService {
 	@Autowired
 	private  SqlSession sqlSession;
 	
-	public void addPlaylist_songs(Playlist_SongsDTO dto) {
-		sqlSession.insert("addPlaylist_songs", dto);
-	}
+    public boolean addPlaylist_songs(Playlist_SongsDTO dto) {
+        int result = sqlSession.insert("addPlaylist_songs", dto);
+        return result > 0;
+    }
 	 
 	public List<Playlist_SongsDTO> playlist_songsAll(int playlist_id) {
 		return sqlSession.selectList("playlist_songsAll", playlist_id);

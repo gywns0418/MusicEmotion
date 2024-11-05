@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -81,46 +81,43 @@
 
 <jsp:include page="../header.jsp" />
 
-
-    <div class="playlist-container">
-        <div class="playlist-header">
-            <img src="${listAll.}" alt="플레이리스트 커버" class="playlist-image">
-            <div class="playlist-info">
-                <h1>${playlistName}</h1>
-                <p>${playlistDescription}</p>
-            </div>
+<div class="playlist-container">
+    <div class="playlist-header">
+        <img src="" alt="플레이리스트 커버" class="playlist-image">
+        <div class="playlist-info">
+            <h1></h1>
+            <p></p>
         </div>
-		<ul class="track-list">
-		    <c:forEach items="${tracks}" var="track" varStatus="status">
-		    	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${track.track.id}">
-			        <li class="track-item">
-			            <span class="track-number">${status.index + 1}</span>
-			            <div class="track-info">
-			                <div class="track-title">${track.track.name}</div>
-			                <div class="track-artist">
-			                    <c:forEach var="artist" items="${track.track.artists}" varStatus="artistStatus">
-			                        ${artist.name}<c:if test="${!artistStatus.last}">, </c:if>
-			                    </c:forEach>
-			                </div>
-			            </div>
-			            <span class="track-duration">
-			                <c:choose>
-			                    <c:when test="${track.track.durationMs > 0}">
-			                        <c:set var="minutes" value="${track.track.durationMs / 60000}" />
-			                        <c:set var="seconds" value="${(track.track.durationMs % 60000) / 1000}" />
-			                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
-									<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
-			                    </c:when>
-			                    <c:otherwise>Unknown</c:otherwise>
-			                </c:choose>
-			            </span>
-			        </li>
-		        </a>
-		    </c:forEach>
-		</ul>
-
-
     </div>
-    </main>
+    <ul class="track-list">
+        <c:forEach items="" var="track" varStatus="status">
+            <a href="">
+                <li class="track-item">
+                    <span class="track-number"></span>
+                    <div class="track-info">
+                        <div class="track-title"></div>
+                        <div class="track-artist">
+                            <c:forEach var="artist" items="" varStatus="artistStatus">
+                                <c:if test="">, </c:if>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <span class="track-duration">
+                        <c:choose>
+                            <c:when test="">
+                                <c:set var="minutes" value="" />
+                                <c:set var="seconds" value="" />
+                                <fmt:formatNumber value="" maxFractionDigits="0" />:
+                                <fmt:formatNumber value="" maxFractionDigits="0" pattern="00" />
+                            </c:when>
+                            <c:otherwise>Unknown</c:otherwise>
+                        </c:choose>
+                    </span>
+                </li>
+            </a>
+        </c:forEach>
+    </ul>
+</div>
+</main>
 </body>
 </html>

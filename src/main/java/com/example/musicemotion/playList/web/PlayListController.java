@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.musicemotion.dto.PlaylistDTO;
 import com.example.musicemotion.dto.Playlist_SongsDTO;
@@ -65,19 +66,22 @@ public class PlayListController {
 		return "playlist/playListMain";
 	}
 	
-	@GetMapping("/playListAdd.do")
-	public String playListAdd(HttpServletRequest req,String playlist_id) throws Exception {
+    @GetMapping("/myPlayList.do")
+    public String playListAdd(HttpServletRequest req, @RequestParam("playlist_id") int playlistId) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        
-		List<PlaylistDTO> listAll = playlistService.playlistAll(username);
 
-		List<Playlist_SongsDTO> songsAll = playlist_SongsService.playlist_songsAll(((PlaylistDTO) listAll).getPlaylist_id());
-		
-		req.setAttribute("listAll", listAll);
-		req.setAttribute("songsAll", songsAll);
-		return "playlist/playListAdd";
-	}
+        // 해당 사용자에 대한 모든 플레이리스트를 가져옴
+        List<PlaylistDTO> listAll = playlistService.playlistAll(username);
+
+        // 선택한 playlist_id에 해당하는 곡 목록을 가져옴
+        List<Playlist_SongsDTO> songsAll = playlist_SongsService.playlist_songsAll(playlistId);
+        
+        req.setAttribute("listAll", listAll);
+        req.setAttribute("songsAll", songsAll);
+
+        return "playlist/myPlayList";
+    }
 	
 	@PostMapping("/addPlaylist.do")
 	public String addPlaylist(PlaylistDTO dto) {

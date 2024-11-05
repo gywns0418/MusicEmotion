@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.musicemotion.artist.service.ArtistService;
 import com.example.musicemotion.dto.ArtistDTO;
+import com.example.musicemotion.dto.PlaylistDTO;
 import com.example.musicemotion.likes.service.LikesService;
 import com.example.musicemotion.musixmatch.service.MusixmatchService;
+import com.example.musicemotion.playList.service.PlaylistService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +49,9 @@ public class SpotifyController {
 	
 	@Autowired
 	ArtistService artistService;
+	
+	@Autowired
+	PlaylistService playlistService;
     
 	@Autowired
 	MusixmatchService musixmatchService;
@@ -112,7 +117,6 @@ public class SpotifyController {
             // 가사 처리
             String lyrics = musixmatchService.getLyricsByTrackName(track.getName(), track.getArtists()[0].getName());
             
-            System.out.println(lyrics);
             
             if (lyrics != null) {
                 lyrics = lyrics.replaceAll("\\*{7} This Lyrics is NOT for Commercial use \\*{7}\\s*\\(\\d+\\)", "")
@@ -134,6 +138,9 @@ public class SpotifyController {
             
             List<String> followedArtistIds = artistService.artistId(adto);
             req.setAttribute("followedArtistIds", followedArtistIds);
+            
+            List<PlaylistDTO> userPlaylists=playlistService.playlistAll(username);
+            req.setAttribute("userPlaylists", userPlaylists);
         } catch (Exception e) {
             e.printStackTrace();
         }
