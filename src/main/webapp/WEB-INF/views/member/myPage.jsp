@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,151 +11,164 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/myPage.css">
 
-	<script>
-        function showPlaylistModal() {
-            document.getElementById('playlistModal').style.display = 'block';
-        }
-        
-        function closePlaylistModal() {
-            document.getElementById('playlistModal').style.display = 'none';
-        }
-        
-        function previewImage(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
+    <!-- jQuery 라이브러리 로드 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            reader.onload = function() {
-                const preview = document.getElementById('imagePreview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            };
+<script>
+    function showPlaylistModal() {
+        document.getElementById('playlistModal').style.display = 'block';
+    }
+    
+    function closePlaylistModal() {
+        document.getElementById('playlistModal').style.display = 'none';
+    }
+    
+    function previewImage(event) {
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = URL.createObjectURL(event.target.files[0]);
+        imagePreview.style.display = 'block';
+    }
 
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        }
+    // Ajax로 플레이리스트 생성
+	function addPlaylist() {
+	    console.log("addPlaylist 함수 호출됨");
+	    const formData = new FormData();
+	    formData.append("title", $('#playlistTitle').val());
+	    formData.append("description", $('#playlistDescription').val());
+	    formData.append("image", $('#playlistImage')[0].files[0]);
+	
+	    $.ajax({
+	        url: "${pageContext.request.contextPath}/playlist/addPlaylistAjax",
+	        type: 'POST',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        success: function(playlist) {
+	            const imageUrl = "${pageContext.request.contextPath}/images/" + playlist.image;
+	            const newCard = `
+	                <div class="playlist-card">
+	                    <a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=${playlist.playlist_id}">
+	                        <img src="/uploads/${playlist.image}" alt="${playlist.title}">
+	                        <div class="playlist-title">${playlist.title}</div>
+	                        <div class="playlist-description">${playlist.description}</div>
+	                    </a>
+	                </div>
+	            `;
+	            $('#playlistGrid').append(newCard);
+	            resetForm();
+	            closePlaylistModal();
+	        },
+	        error: function(error) {
+	            console.error(error);
+	            alert('플레이리스트 추가 실패');
+	        }
+	    });
+	}
 
-        function createPlaylist() {
-            const title = document.getElementById('playlistTitle').value;
-            const description = document.getElementById('playlistDescription').value;
-            const imagePreview = document.getElementById('imagePreview').src;
-            
-            const link = "${pageContext.request.contextPath}/playlist/playListMain.do";
 
-            if (!title || !description || !imagePreview) {
-                alert('모든 필드를 입력하세요.');
-                return;
-            }
-
-            const playlistGrid = document.querySelector('.section:nth-child(3) .playlist-grid');
-
-            // 새로운 카드 요소 생성
-            const newCard = document.createElement('div');
-            newCard.classList.add('playlist-card');
-
-            newCard.innerHTML = 
-            	'<a href="'+ link +'">'+
-                '<img src="' + imagePreview + '" alt="' + title + '">' +
-                '<div class="playlist-title">' + title + '</div>' +
-                '<div class="playlist-description">' + description + '</div>'+
-                '</a>';
-
-            // 카드 추가
-            playlistGrid.appendChild(newCard);
-
-            // 모달 닫기 및 초기화
-            closePlaylistModal();
-            document.getElementById('playlistTitle').value = '';
-            document.getElementById('playlistDescription').value = '';
-            document.getElementById('playlistImage').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
-        }
-
-    </script>
+    // 폼 및 미리보기 초기화 함수
+    function resetForm() {
+        $('#playlistTitle').val('');
+        $('#playlistDescription').val('');
+        $('#playlistImage').val('');
+        $('#imagePreview').hide();
+    }
+</script>
 
 </head>
 
-
+<body>
 <jsp:include page="../header.jsp" />
 
+<div id="content-area">
+    <div class="hero-section">
+        <h1>마이 뮤직</h1>
+        <p>나만의 음악 세계를 탐험하세요</p>
+    </div>
 
-    <div id="content-area">
-	    <div class="hero-section">
-	        <h1>마이 뮤직</h1>
-	        <p>나만의 음악 세계를 탐험하세요</p>
+    <div class="section">
+        <h2>내 라이브러리</h2>
+        <div class="playlist-grid">
+            <a href="${pageContext.request.contextPath}/recentPlayed/resentPlay.do">
+                <div class="playlist-card">
+                    <img src="${pageContext.request.contextPath}/images/play.jpg" alt="최근 재생" width="300" height="300">
+                    <div class="playlist-title">최근 재생</div>
+                    <div class="playlist-description">최근에 들은 곡들</div>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/likes/likes.do">
+                <div class="playlist-card">
+                    <img src="${pageContext.request.contextPath}/images/likes.jpg" alt="좋아요 표시한 곡" width="300" height="300">
+                    <div class="playlist-title">좋아요 표시한 곡</div>
+                    <div class="playlist-description">I'm Yours</div>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/artist/artist.do">
+                <div class="playlist-card">
+                    <img src="${pageContext.request.contextPath}/images/artist.jpg" alt="아티스트" width="300" height="300">
+                    <div class="playlist-title">아티스트</div>
+                    <div class="playlist-description">내가 팔로우한 아티스트</div>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/album/album.do">
+                <div class="playlist-card">
+                    <img src="${pageContext.request.contextPath}/images/album.jpg" alt="앨범" width="300" height="300">
+                    <div class="playlist-title">앨범</div>
+                    <div class="playlist-description">저장한 앨범 모음</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>내 플레이리스트</h2>
+        <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button><br><br>
+
+        <div id="playlistGrid" class="playlist-grid">
+            <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=1">
+                <div class="playlist-card">
+                    <img src="${pageContext.request.contextPath}/images/playlist.jpg" alt="플레이리스트" width="300" height="300">
+                    <div class="playlist-title">내 플레이리스트 1</div>
+                    <div class="playlist-description">좋아하는 팝송 모음</div>
+                </div>
+            </a>
+            
+			<c:forEach var="playlist" items="${plist}">
+			    <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=${playlist.playlist_id}">
+			        <div class="playlist-card">
+			            <img src="${pageContext.request.contextPath}/uploads/${playlist.image}" alt="${playlist.title}">
+
+			            <div class="playlist-title">${playlist.title}</div>
+			            <div class="playlist-description">${playlist.description}</div>
+			        </div>
+			    </a>
+			</c:forEach>
+
+        </div>
+    </div>
+
+	<div id="playlistModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close" onclick="closePlaylistModal()">&times;</span>
+	        <h2>새 플레이리스트 만들기</h2>
+	        <form id="playlistForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); addPlaylist();">
+	            <input type="hidden" name="user_id" value="<sec:authentication property='principal.username'/>">
+	            
+	            <label for="playlistTitle">타이틀:</label>
+	            <input type="text" id="playlistTitle" name="title" required>
+	
+	            <label for="playlistDescription">설명:</label>
+	            <textarea id="playlistDescription" name="description" required></textarea>
+	
+	            <label for="playlistImage">이미지:</label>
+	            <input type="file" id="playlistImage" name="image" accept="image/*" onchange="previewImage(event)">
+	            <img id="imagePreview" style="display:none; max-width: 300px; margin-top: 10px;">
+	
+	            <button type="button" class="button" onclick="addPlaylist()">생성</button>
+	        </form>
 	    </div>
-	
-	    <div class="section">
-	        <h2>내 라이브러리</h2>
-	        <div class="playlist-grid">
-	        	<a href="${pageContext.request.contextPath}/recentPlayed/resentPlay.do">
-		            <div class="playlist-card">
-		                <img src="${pageContext.request.contextPath}/images/play.jpg" alt="최근 재생" width="300" height="300">
-		                <div class="playlist-title">최근 재생</div>
-		                <div class="playlist-description">최근에 들은 곡들</div>
-		            </div>
-	            </a>
-	            <a href="${pageContext.request.contextPath}/likes/likes.do">
-		            <div class="playlist-card">
-		                <img src="${pageContext.request.contextPath}/images/likes.jpg" alt="좋아요 표시한 곡" width="300" height="300">
-		                <div class="playlist-title">좋아요 표시한 곡</div>
-		                <div class="playlist-description">I'm Yours</div>
-		            </div>
-	            </a>
-	            <a href="${pageContext.request.contextPath}/artist/artist.do">
-		            <div class="playlist-card">
-		                <img src="${pageContext.request.contextPath}/images/artist.jpg" alt="아티스트" width="300" height="300">
-		                <div class="playlist-title">아티스트</div>
-		                <div class="playlist-description">내가 팔로우한 아티스트</div>
-		            </div>
-	            </a>
-	            <a href="${pageContext.request.contextPath}/album/album.do">
-		            <div class="playlist-card">
-		                <img src="${pageContext.request.contextPath}/images/album.jpg" alt="앨범" width="300" height="300">
-		                <div class="playlist-title">앨범</div>
-		                <div class="playlist-description">저장한 앨범 모음</div>
-		            </div>
-	            </a>
-	        </div>
-	    </div>
-	
-	    <div class="section">
-	        <h2>내 플레이리스트</h2>
-	        <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button>	<br><br>
-	
-	        <div class="playlist-grid">
-	        	<a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=1">
-		            <div class="playlist-card">
-		                <img src="${pageContext.request.contextPath}/images/playlist.jpg" alt="플레이리스트" width="300" height="300">
-		                <div class="playlist-title">내 플레이리스트 1</div>
-		                <div class="playlist-description">좋아하는 팝송 모음</div>
-		            </div>
-	            </a>
-	        </div>
-	    </div>
-	
-		<div id="playlistModal" class="modal">
-		    <div class="modal-content">
-		        <span class="close" onclick="closePlaylistModal()">&times;</span>
-		        <h2>새 플레이리스트 만들기</h2>
-		        <form action="${pageContext.request.contextPath}/playlist/addPlaylist.do" method="post" onsubmit="createPlaylist(); return false;"> 
-		            <input type="hidden" name="user_id" value="<sec:authentication property='principal.username'/>">
-		            <label for="playlistTitle">타이틀:</label>
-		            <input type="text" id="playlistTitle" name="playlistTitle" required>
-		            
-		            <label for="playlistDescription">설명:</label>
-		            <textarea id="playlistDescription" name="playlistDescription" required></textarea>
-		
-					<label for="playlistImage">이미지:</label>
-					<input type="file" id="playlistImage" name="playlistImage" accept="image/*" onchange="previewImage(event)">
-					<img id="imagePreview" style="display:none; max-width: 300px; margin-top: 10px;">
-		
-		            <button type="submit" class="button">생성</button>
-		        </form>
-		    </div>
-		</div>
-		
 	</div>
-</main>
+
+</div>
 </body>
 </html>

@@ -5,7 +5,7 @@ public class PlaylistDTO {
     private String user_id;
     private String title;
     private String description; 
-    private String image;       
+    private String image;       // 이미지 파일 이름만 저장
     private String creation_date;
 
     public int getPlaylist_id() {

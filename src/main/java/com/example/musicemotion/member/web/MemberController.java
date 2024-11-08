@@ -1,13 +1,19 @@
 package com.example.musicemotion.member.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.musicemotion.dto.MemberDTO;
+import com.example.musicemotion.dto.PlaylistDTO;
 import com.example.musicemotion.member.service.MemberService;
+import com.example.musicemotion.playList.service.PlaylistService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -18,8 +24,16 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 	
+	@Autowired
+	PlaylistService playlistService;
+	
 	@GetMapping("/myPage.do")
-	public String myPage() {
+	public String myPage(HttpServletRequest req) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+		
+        List<PlaylistDTO> plist = playlistService.playlistAll(username);
+        req.setAttribute("plist", plist);
 		return "member/myPage";
 	}
 	
@@ -36,6 +50,7 @@ public class MemberController {
 	
 	@PostMapping("/signUpPro.do")
 	public String signUpFin(MemberDTO member) {
+
 		memberService.signupPro(member);
 		return "redirect:/member/login.do";
 	}

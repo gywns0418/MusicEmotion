@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.musicemotion.config.FileUploadUtil;
 import com.example.musicemotion.dto.PlaylistDTO;
 import com.example.musicemotion.dto.Playlist_SongsDTO;
 import com.example.musicemotion.playList.service.PlaylistService;
@@ -83,10 +88,33 @@ public class PlayListController {
         return "playlist/myPlayList";
     }
 	
-	@PostMapping("/addPlaylist.do")
-	public String addPlaylist(PlaylistDTO dto) {
-		
-		playlistService.addPlaylist(dto);
-		return "redirect:/member/myPage.do";
-	}
+    @PostMapping("/addPlaylistAjax")
+    public ResponseEntity<PlaylistDTO> addPlaylistAjax(
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        PlaylistDTO dto = new PlaylistDTO();
+        dto.setTitle(title);
+        dto.setDescription(description);
+        dto.setUser_id(username);
+
+        try {
+            if (image != null && !image.isEmpty()) {
+                String imagePath = FileUploadUtil.uploadImage(image); // 파일 경로만 가져옴
+                dto.setImage(imagePath); // 경로를 DTO에 설정
+            }
+            
+            playlistService.addPlaylist(dto); // 데이터베이스에 DTO 저장
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build(); // 예외 발생 시 오류 응답
+        }
+
+        return ResponseEntity.ok(dto); // 성공 시 DTO 반환
+    }
+
 }
