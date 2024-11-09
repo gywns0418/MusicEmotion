@@ -31,6 +31,7 @@ import se.michaelthelin.spotify.model_objects.specification.Playlist;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Recommendations;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 @Controller
 @RequestMapping("/playlist")
@@ -77,14 +78,18 @@ public class PlayListController {
         String username = authentication.getName();
 
         // 해당 사용자에 대한 모든 플레이리스트를 가져옴
-        List<PlaylistDTO> listAll = playlistService.playlistAll(username);
-
-        // 선택한 playlist_id에 해당하는 곡 목록을 가져옴
-        List<Playlist_SongsDTO> songsAll = playlist_SongsService.playlist_songsAll(playlistId);
+        PlaylistDTO listId = playlistService.playlistId(playlistId);
+        req.setAttribute("listId", listId);
         
-        req.setAttribute("listAll", listAll);
+        
+        // 선택한 playlist_id에 해당하는 곡 목록을 가져옴
+        List<String> songsAll = playlist_SongsService.playlist_songsAll(playlistId);
         req.setAttribute("songsAll", songsAll);
 
+        //트랙 정보 가져오기
+        List<Track> tracks = spotifyService.getTracks(songsAll);
+        req.setAttribute("tracks", tracks);
+        
         return "playlist/myPlayList";
     }
 	

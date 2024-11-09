@@ -146,6 +146,23 @@ public class SpotifyService {
             throw e;
         }
     }
+    
+    //여러 트랙
+    public List<Track> getTracks(List<String> trackIds) throws Exception {
+        ensureAccessToken();
+        List<Track> tracks = new ArrayList<>();
+
+        for (String trackId : trackIds) {
+            try {
+                GetTrackRequest getTrackRequest = spotifyApi.getTrack(trackId).build();
+                Track track = getTrackRequest.execute();
+                tracks.add(track);
+            } catch (SpotifyWebApiException | IOException | ParseException e) {
+                System.err.println("Error getting track with ID " + trackId + ": " + e.getMessage());
+            }
+        }
+        return tracks;
+    }
 
     public AudioFeatures getAudioFeaturesForTrack(String trackId) throws Exception {
         ensureAccessToken();

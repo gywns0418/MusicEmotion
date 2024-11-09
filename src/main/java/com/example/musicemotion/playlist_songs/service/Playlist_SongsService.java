@@ -21,7 +21,7 @@ public class Playlist_SongsService {
         return result > 0;
     }
 	 
-	public List<Playlist_SongsDTO> playlist_songsAll(int playlist_id) {
+	public List<String> playlist_songsAll(int playlist_id) {
 		return sqlSession.selectList("playlist_songsAll", playlist_id);
 	}
 	 

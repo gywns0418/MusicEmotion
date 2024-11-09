@@ -9,8 +9,8 @@
 		values(#{playlist_id}, #{song_id})
 	</insert>
 	
-	<select id="playlist_songsAll" parameterType="int" resultType="Playlist_SongsDTO">
-		select * from playlist_songs where playlist_id = #{playlist_id}
+	<select id="playlist_songsAll" parameterType="int" resultType="String">
+		select song_id from playlist_songs where playlist_id = #{playlist_id}
 	</select>
 	
 	<delete id="deletePlaylist_songs" parameterType="String">

@@ -14,6 +14,10 @@
 		select * from playlist where user_id = #{user_id}
 	</select>
 	
+	<select id="playlistId" parameterType="int" resultType="PlaylistDTO">
+		select * from playlist where playlist_id = #{playlist_id}
+	</select>
+	
 	<update id="updatePlaylist" parameterType="PlaylistDTO">
 		update playlist
 		set

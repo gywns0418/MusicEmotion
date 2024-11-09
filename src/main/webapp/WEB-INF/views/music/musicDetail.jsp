@@ -220,7 +220,7 @@
                         <c:forEach items="${userPlaylists}" var="playlist">
                             <div class="playlist-item" data-playlist-id="${playlist.playlist_id}">
                                 <div class="playlist-info">
-                                    <img src="${playlist.image != null ? playlist.image : '/images/playlist.jpg'}" 
+                                    <img src="${pageContext.request.contextPath}/uploads/${playlist.image != null ? playlist.image : '/images/playlist.jpg'}" 
                                          alt="Playlist Cover" class="playlist-cover">
                                     <div class="playlist-details">
                                         <h3>${playlist.title}</h3>

@@ -24,6 +24,10 @@ public class PlaylistService {
 		 return  sqlSession.selectList("playlistAll", user_id);
 	 }
 	 
+	 public PlaylistDTO playlistId(int playlist_id) {
+		 return  sqlSession.selectOne("playlistId", playlist_id);
+	 }
+	 
 	 public void updatePlaylist(PlaylistDTO dto) {
 		 sqlSession.update("updatePlaylist", dto);
 	 }

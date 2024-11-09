@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUploadUtil {
-    private static final String UPLOAD_DIR = "src/main/resources/static/images";
+    private static final String UPLOAD_DIR = "src/main/resources/static/images/playlist";
 
     public static String uploadImage(MultipartFile file) throws IOException {
         // 파일 이름을 고유하게 생성

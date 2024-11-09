@@ -76,48 +76,56 @@
             color: #999;
             font-size: 14px;
         }
+        .track-album-cover {
+		    width: 50px;
+		    height: 50px;
+		    border-radius: 4px;
+		}
     </style>
 </head>
 
 <jsp:include page="../header.jsp" />
 
-<div class="playlist-container">
-    <div class="playlist-header">
-        <img src="" alt="플레이리스트 커버" class="playlist-image">
-        <div class="playlist-info">
-            <h1></h1>
-            <p></p>
+    <div class="playlist-container">
+        <div class="playlist-header">
+            <img src="${pageContext.request.contextPath}/uploads/${listId.image}" alt="플레이리스트 커버" class="playlist-image">
+            <div class="playlist-info">
+                <h1>${listId.title}</h1>
+                <p>${listId.description}</p>
+            </div>
         </div>
+		<ul class="track-list">
+		    <c:forEach items="${tracks}" var="tracks" varStatus="status">
+		    	<a href="${pageContext.request.contextPath}/spotify/musicDetail.do?song_id=${tracks.id}">
+			        <li class="track-item">
+			            <span class="track-number">${status.index + 1}</span>
+						<img src="${tracks.album.images[0].url}" alt="${tracks.name}" class="track-album-cover">
+			            <div class="track-info">
+			                <div class="track-title">${tracks.name}</div>
+			                <div class="track-artist">
+			                    <c:forEach var="artist" items="${tracks.artists}" varStatus="artistStatus">
+			                        ${artist.name}<c:if test="${!artistStatus.last}">, </c:if>
+			                    </c:forEach>
+			                </div>
+			            </div>
+			            <span class="track-duration">
+			                <c:choose>
+			                    <c:when test="${tracks.durationMs > 0}">
+			                        <c:set var="minutes" value="${tracks.durationMs / 60000}" />
+			                        <c:set var="seconds" value="${(tracks.durationMs % 60000) / 1000}" />
+			                        <fmt:formatNumber value="${minutes}" maxFractionDigits="0" />:
+									<fmt:formatNumber value="${seconds}" maxFractionDigits="0" pattern="00" />
+			                    </c:when>
+			                    <c:otherwise>Unknown</c:otherwise>
+			                </c:choose>
+			            </span>
+			        </li>
+		        </a>
+		    </c:forEach>
+		</ul>
+
+
     </div>
-    <ul class="track-list">
-        <c:forEach items="" var="track" varStatus="status">
-            <a href="">
-                <li class="track-item">
-                    <span class="track-number"></span>
-                    <div class="track-info">
-                        <div class="track-title"></div>
-                        <div class="track-artist">
-                            <c:forEach var="artist" items="" varStatus="artistStatus">
-                                <c:if test="">, </c:if>
-                            </c:forEach>
-                        </div>
-                    </div>
-                    <span class="track-duration">
-                        <c:choose>
-                            <c:when test="">
-                                <c:set var="minutes" value="" />
-                                <c:set var="seconds" value="" />
-                                <fmt:formatNumber value="" maxFractionDigits="0" />:
-                                <fmt:formatNumber value="" maxFractionDigits="0" pattern="00" />
-                            </c:when>
-                            <c:otherwise>Unknown</c:otherwise>
-                        </c:choose>
-                    </span>
-                </li>
-            </a>
-        </c:forEach>
-    </ul>
-</div>
 </main>
 </body>
 </html>
