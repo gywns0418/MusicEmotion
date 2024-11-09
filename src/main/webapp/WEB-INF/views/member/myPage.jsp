@@ -44,16 +44,15 @@
 	        processData: false,
 	        contentType: false,
 	        success: function(playlist) {
-	            const imageUrl = "${pageContext.request.contextPath}/images/" + playlist.image;
-	            const newCard = `
-	                <div class="playlist-card">
-	                    <a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=${playlist.playlist_id}">
-	                        <img src="/uploads/${playlist.image}" alt="${playlist.title}">
-	                        <div class="playlist-title">${playlist.title}</div>
-	                        <div class="playlist-description">${playlist.description}</div>
-	                    </a>
-	                </div>
-	            `;
+	        	console.log("playlist", playlist)
+	            const newCard = 
+	                '<div class="playlist-card" data-playlist-id="' + playlist.playlist_id + '">' +
+	                    '<a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=' + playlist.playlist_id + '">' +
+	                        '<img src="${pageContext.request.contextPath}/uploads/' + playlist.image + '" alt="' + playlist.title + '">' +
+	                        '<div class="playlist-title">' + playlist.title + '</div>' +
+	                        '<div class="playlist-description">' + playlist.description + '</div>' +
+	                    '</a>' +
+	                '</div>';
 	            $('#playlistGrid').append(newCard);
 	            resetForm();
 	            closePlaylistModal();

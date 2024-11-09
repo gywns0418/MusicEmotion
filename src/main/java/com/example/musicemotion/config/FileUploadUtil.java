@@ -11,8 +11,8 @@ public class FileUploadUtil {
 
     public static String uploadImage(MultipartFile file) throws IOException {
         // 파일 이름을 고유하게 생성
-        String fileName = java.util.UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        
+        String fileName =  file.getOriginalFilename();
+        //java.util.UUID.randomUUID().toString() + "_" +
         // 파일 경로 생성
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
