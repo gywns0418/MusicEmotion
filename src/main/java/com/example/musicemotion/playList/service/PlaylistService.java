@@ -28,6 +28,10 @@ public class PlaylistService {
 		 return  sqlSession.selectOne("playlistId", playlist_id);
 	 }
 	 
+	 public int playId(String user_id) {
+		 return  sqlSession.selectOne("playId", user_id);
+	 }
+	 
 	 public void updatePlaylist(PlaylistDTO dto) {
 		 sqlSession.update("updatePlaylist", dto);
 	 }

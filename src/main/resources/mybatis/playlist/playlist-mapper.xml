@@ -18,6 +18,18 @@
 		select * from playlist where playlist_id = #{playlist_id}
 	</select>
 	
+	<select id="playId" parameterType="String" resultType="int">
+	    select playlist_id 
+	    from (
+	        select playlist_id 
+	        from playlist 
+	        where user_id = #{user_id}
+	        order by created_date desc
+	    )
+	    where ROWNUM = 1
+	</select>
+
+	
 	<update id="updatePlaylist" parameterType="PlaylistDTO">
 		update playlist
 		set

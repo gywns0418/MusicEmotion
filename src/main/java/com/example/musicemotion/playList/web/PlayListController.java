@@ -114,6 +114,7 @@ public class PlayListController {
             }
             
             playlistService.addPlaylist(dto); // 데이터베이스에 DTO 저장
+            dto.setPlaylist_id(playlistService.playId(username));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build(); // 예외 발생 시 오류 응답
