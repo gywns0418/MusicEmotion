@@ -86,7 +86,7 @@ public class SpotifyService {
         }
 
         SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(search)
-        		.limit(50)
+        		.limit(30)
         		.market(CountryCode.KR)
         		.build();
         return searchTracksRequest.execute().getItems();
@@ -102,7 +102,7 @@ public class SpotifyService {
         }
 
         SearchAlbumsRequest searchAlbumsRequest = spotifyApi.searchAlbums(search)
-                .limit(10)
+                .limit(6)
                 .market(CountryCode.KR)
                 .build();
         return searchAlbumsRequest.execute().getItems();
@@ -115,7 +115,7 @@ public class SpotifyService {
 
         try {
             GetRecommendationsRequest recommendationsRequest = spotifyApi.getRecommendations()
-                    .limit(50) 
+                    .limit(36) 
                     .seed_genres("k-pop") 
                     .build();
 
@@ -340,7 +340,7 @@ public class SpotifyService {
     	ensureAccessToken();
     	
         GetListOfFeaturedPlaylistsRequest request = spotifyApi.getListOfFeaturedPlaylists()
-                .limit(10)
+                .limit(6)
                 .build();
         FeaturedPlaylists featuredPlaylists = request.execute();
 
