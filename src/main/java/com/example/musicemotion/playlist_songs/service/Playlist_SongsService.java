@@ -20,7 +20,11 @@ public class Playlist_SongsService {
         int result = sqlSession.insert("addPlaylist_songs", dto);
         return result > 0;
     }
-	 
+    
+	public int countPlaylistSongs(int playlist_id) {
+		return sqlSession.selectOne("countPlaylistSongs", playlist_id);
+	}
+    
 	public List<String> playlist_songsAll(int playlist_id) {
 		return sqlSession.selectList("playlist_songsAll", playlist_id);
 	}

@@ -13,6 +13,10 @@
 		select song_id from playlist_songs where playlist_id = #{playlist_id}
 	</select>
 	
+	<select id="countPlaylistSongs" parameterType="int" resultType="int">
+	    select COUNT(song_id) from playlist_songs where playlist_id = #{playlist_id}
+	</select>
+	
 	<delete id="deletePlaylist_songs" parameterType="String">
 		delete from playlist_songs where song_id = #{song_id}
 	</delete>

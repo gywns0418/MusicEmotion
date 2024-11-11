@@ -124,14 +124,6 @@
         <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button><br><br>
 
         <div id="playlistGrid" class="playlist-grid">
-            <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=1">
-                <div class="playlist-card">
-                    <img src="${pageContext.request.contextPath}/images/playlist.jpg" alt="플레이리스트" width="300" height="300">
-                    <div class="playlist-title">내 플레이리스트 1</div>
-                    <div class="playlist-description">좋아하는 팝송 모음</div>
-                </div>
-            </a>
-            
 			<c:forEach var="playlist" items="${plist}">
 			    <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=${playlist.playlist_id}">
 			        <div class="playlist-card">
@@ -142,7 +134,6 @@
 			        </div>
 			    </a>
 			</c:forEach>
-
         </div>
     </div>
 

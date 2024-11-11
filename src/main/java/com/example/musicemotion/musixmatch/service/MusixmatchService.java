@@ -48,7 +48,7 @@ public class MusixmatchService {
         JsonNode lyricsNode = rootNode.path("message").path("body").path("lyrics").path("lyrics_body");
 
         if (lyricsNode.isMissingNode() || lyricsNode.asText().isEmpty()) {
-            return "가사를 찾을 수 없습니다.";
+            return "제공되지 않는 가사 정보입니다.";
         } else {
             return lyricsNode.asText();
         }

@@ -17,6 +17,7 @@ import com.example.musicemotion.dto.PlaylistDTO;
 import com.example.musicemotion.likes.service.LikesService;
 import com.example.musicemotion.musixmatch.service.MusixmatchService;
 import com.example.musicemotion.playList.service.PlaylistService;
+import com.example.musicemotion.playlist_songs.service.Playlist_SongsService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,6 +53,9 @@ public class SpotifyController {
 	
 	@Autowired
 	PlaylistService playlistService;
+	
+	@Autowired
+	Playlist_SongsService playlist_SongsService;
     
 	@Autowired
 	MusixmatchService musixmatchService;
@@ -140,6 +144,13 @@ public class SpotifyController {
             req.setAttribute("followedArtistIds", followedArtistIds);
             
             List<PlaylistDTO> userPlaylists=playlistService.playlistAll(username);
+            
+            
+            for (PlaylistDTO playlist : userPlaylists) {
+                int songCount = playlist_SongsService.countPlaylistSongs(playlist.getPlaylist_id());  // 각 플레이리스트의 곡 수 가져오기
+                playlist.setSongCount(songCount);  // 곡 수 설정
+            }
+            
             req.setAttribute("userPlaylists", userPlaylists);
         } catch (Exception e) {
             e.printStackTrace();

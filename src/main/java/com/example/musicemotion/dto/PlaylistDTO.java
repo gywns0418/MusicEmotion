@@ -7,6 +7,7 @@ public class PlaylistDTO {
     private String description; 
     private String image;       // 이미지 파일 이름만 저장
     private String creation_date;
+    private int songCount;
 
     public int getPlaylist_id() {
         return playlist_id;
@@ -55,4 +56,12 @@ public class PlaylistDTO {
     public void setCreation_date(String creation_date) {
         this.creation_date = creation_date;
     }
+
+	public int getSongCount() {
+		return songCount;
+	}
+
+	public void setSongCount(int songCount) {
+		this.songCount = songCount;
+	}
 }

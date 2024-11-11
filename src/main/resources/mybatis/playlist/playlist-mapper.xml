@@ -24,7 +24,7 @@
 	        select playlist_id 
 	        from playlist 
 	        where user_id = #{user_id}
-	        order by created_date desc
+	        order by creation_date desc
 	    )
 	    where ROWNUM = 1
 	</select>

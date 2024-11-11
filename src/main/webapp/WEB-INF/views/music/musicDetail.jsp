@@ -124,6 +124,26 @@
         .add-to-playlist-btn:hover {
             background-color: #1ed760;
         }
+        
+		.youtube-section {
+		    margin: 30px 0;
+		    border-radius: 12px;
+		    overflow: hidden;
+		    background-color: #f5f5f5;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    position: relative;
+		    padding-top: 56.25%; /* 16:9 비율 */
+		    width: 100%;
+		}
+		
+		.youtube-section iframe {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    border: none;
+		}
     </style>
 </head>
 
@@ -197,12 +217,9 @@
                 <button class="lyrics-toggle">전체 가사 보기</button>
             </div>
 
-            <div class="audio-player">
-                <audio controls>
-                    <source src="${previewUrl}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
+			<div class="youtube-section">
+			    <div id="youtubePlayer"></div>
+			</div>
         </div>
 
         <!-- 플레이리스트 모달 -->
@@ -224,7 +241,7 @@
                                          alt="Playlist Cover" class="playlist-cover">
                                     <div class="playlist-details">
                                         <h3>${playlist.title}</h3>
-                                        <p>총 곡</p>
+                                        <p>총 ${playlist.songCount}곡</p>
                                     </div>
                                 </div>
                                 <button class="add-to-playlist-btn" onclick="addToPlaylist('${playlist.playlist_id}', '${track.id}')">
@@ -237,225 +254,248 @@
             </div>
         </div>
     </div>
+    
+	<!-- YouTube IFrame API 추가 -->
+	<script src="https://www.youtube.com/iframe_api"></script>
+	
+	<!-- jQuery 추가 (이미 있다면 생략) -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script>
+	    const songTitle = "${trackName}";  // 노래 제목
+	    const artistName = "${artistName}";     // 가수 이름
+	    let youtubePlayer; // 전역 변수로 YouTube 플레이어 선언
+	
+	    function searchYouTubeAndPlay() {
+	        const query = songTitle + " " + artistName;
+	        const encodedQuery = encodeURIComponent(query);
+	        const apiUrl = '/youtube/search?query=' + encodedQuery;
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 가사 토글 기능
-            const lyricsContent = document.querySelector('.lyrics-content');
-            const lyricsToggle = document.querySelector('.lyrics-toggle');
-            
-            lyricsToggle.addEventListener('click', function() {
-                lyricsContent.classList.toggle('expanded');
-                lyricsToggle.textContent = lyricsContent.classList.contains('expanded') ? '가사 접기' : '전체 가사 보기';
-            });
+	        console.log("Query:", query);
+	        console.log("API 요청 URL:", apiUrl);
 
-            // 재생 버튼 클릭 이벤트
-            const playButton = document.querySelector('.button-play');
-            
-            playButton.addEventListener('click', function() {
-                const audio = document.querySelector('audio');
-                if (audio.paused) {
-                    audio.play();
-                    this.querySelector('i').classList.replace('fa-play', 'fa-pause');
-                } else {
-                    audio.pause();
-                    this.querySelector('i').classList.replace('fa-pause', 'fa-play');
-                }
-            });
+	        $.getJSON(apiUrl, function(response) {
+	            console.log("API 응답:", response);
 
-            // 플레이리스트 모달 관련
-            const modal = document.getElementById('playlistModal');
-            const playlistButton = document.querySelector('.button-playlist');
-            const closeButton = document.querySelector('.close-button');
-            const searchInput = document.getElementById('playlistSearch');
-            
-            // 플레이리스트 버튼 클릭 시 모달 열기
-            playlistButton.addEventListener('click', function() {
-                modal.style.display = 'block';
-            });
-            
-            // 닫기 버튼 클릭 시 모달 닫기
-            closeButton.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-            
-            // 모달 외부 클릭 시 닫기
-            window.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-            
-            // 플레이리스트 검색 기능
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const playlistItems = document.querySelectorAll('.playlist-item');
-                
-                playlistItems.forEach(item => {
-                    const playlistName = item.querySelector('h3').textContent.toLowerCase();
-                    if (playlistName.includes(searchTerm)) {
-                        item.style.display = 'flex';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // 좋아요 버튼 토글 기능
-        function toggleLike(button, musicId) {
-            button.classList.toggle('active');
-            console.log('좋아요 토글: ' + musicId);
-
-            let isLiked = button.classList.contains('active');
-            let userId = "${sessionScope.user_id}";
-
-            fetch('${pageContext.request.contextPath}/likes/addLike', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    song_id: musicId,
-                    liked: isLiked
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('좋아요 상태가 서버에 성공적으로 반영되었습니다.');
-                } else {
-                    console.log('서버 처리 중 오류 발생');
-                }
-            })
-            .catch(error => {
-                console.error('오류 발생:', error);
-            });
-        }
-
-        // 팔로우 버튼 토글 기능
-        function toggleFollow(button, artistId) {
-            button.classList.toggle('active');
-            const isFollowing = button.classList.contains('active');
-            button.innerHTML = isFollowing ? '<i class="fas fa-user-check"></i> 팔로잉' : '<i class="fas fa-user-plus"></i> 팔로우';
-
-            console.log('아티스트 아이디: '+artistId);
-            
-            fetch('${pageContext.request.contextPath}/artist/follow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    artist_id: artistId,
-                    following: isFollowing
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
-                } else {
-                    console.error('팔로우 실패');
-                }
-            })
-            .catch(error => console.error('오류 발생:', error));
-        }
-        
-        // 최근 재생 목록 추가 기능
-        function toggleRecentlyPlayed(button, musicId) {
-            button.classList.toggle('active');
-            const isPlaying = button.classList.contains('active');
-
-            button.innerHTML = isPlaying 
-                ? '<i class="fas fa-pause"></i> pause' 
-                : '<i class="fas fa-play"></i> play';
-
-            if (isPlaying) {
-                console.log('트랙 아이디: ' + musicId);
-                const formData = new URLSearchParams();
-                formData.append("musicId", musicId);
-
-                fetch('<%= request.getContextPath() %>/recentPlayed/addRecentlyPlayed', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('최근 재생 목록에 성공적으로 추가되었습니다.');
-                    } else {
-                        console.error('추가 실패');
-                    }
-                })
-                .catch(error => console.error('오류 발생:', error));
-            }
-        }
-
-        // 플레이리스트에 곡 추가하는 함수
-        function addToPlaylist(playlistId, trackId) {
-            fetch('${pageContext.request.contextPath}/playlistSong/addTrack', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    playlist_id: playlistId,
-                    track_id: trackId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('플레이리스트에 곡이 추가되었습니다.');
-                    document.getElementById('playlistModal').style.display = 'none';
-                } else {
-                    alert('곡 추가에 실패했습니다.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('오류가 발생했습니다.');
-            });
-        }
-
-        // YouTube 관련 기능
-        let player;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '360',
-                width: '640',
-                videoId: 'dQw4w9WgXcQ',
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            console.log("비디오 플레이어 준비 완료");
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
-                console.log('비디오가 종료되었습니다.');
-            }
-        }
-
-        function playVideo() {
-            player.playVideo();
-        }
-
-        function pauseVideo() {
-            player.pauseVideo();
-        }
-    </script>
+	            if (response.items && response.items.length > 0) {
+	                const videoId = response.items[0].id.videoId;
+	                // YouTube 플레이어 생성
+	                youtubePlayer = new YT.Player('youtubePlayer', {
+	                    videoId: videoId,
+	                    playerVars: {
+	                        'autoplay': 0,
+	                        'controls': 1,
+	                        'rel': 0,  // 관련 동영상 표시하지 않음
+	                        'modestbranding': 1  // YouTube 로고 최소화
+	                    },
+	                    events: {
+	                        'onStateChange': onPlayerStateChange
+	                    }
+	                });
+	            } else {
+	                alert("YouTube에서 해당 곡을 찾을 수 없습니다.");
+	            }
+	        }).fail(function(jqXHR, textStatus, errorThrown) {
+	            console.error("YouTube API 요청 실패:", textStatus, errorThrown);
+	            alert("YouTube API 요청 중 문제가 발생했습니다. 나중에 다시 시도해 주세요.");
+	        });
+	    }
+	
+	    // 플레이어 상태 변경 이벤트 핸들러
+	    function onPlayerStateChange(event) {
+	        const playButton = document.querySelector('.button-play');
+	        if (event.data === YT.PlayerState.PLAYING) {
+	            playButton.innerHTML = '<i class="fas fa-pause"></i> pause';
+	            playButton.classList.add('active');
+	        } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+	            playButton.innerHTML = '<i class="fas fa-play"></i> play';
+	            playButton.classList.remove('active');
+	        }
+	    }
+	
+	    // 재생/일시정지 토글 및 최근 재생 목록 추가 함수
+	    function toggleRecentlyPlayed(button, musicId) {
+	        if (!youtubePlayer) return;
+	
+	        if (youtubePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+	            youtubePlayer.pauseVideo();
+	        } else {
+	            youtubePlayer.playVideo();
+	            
+	            // 최근 재생 목록에 추가하는 로직
+	            const formData = new URLSearchParams();
+	            formData.append("musicId", musicId);
+	
+	            fetch('<%= request.getContextPath() %>/recentPlayed/addRecentlyPlayed', {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'application/x-www-form-urlencoded'
+	                },
+	                body: formData
+	            })
+	            .then(response => response.json())
+	            .then(data => {
+	                if (data.success) {
+	                    console.log('최근 재생 목록에 성공적으로 추가되었습니다.');
+	                } else {
+	                    console.error('추가 실패');
+	                }
+	            })
+	            .catch(error => console.error('오류 발생:', error));
+	        }
+	    }
+	
+	    // YouTube API 준비 완료 시 실행
+	    function onYouTubeIframeAPIReady() {
+	        searchYouTubeAndPlay();
+	    }
+	
+	    // DOM 로드 완료 시 실행되는 함수들
+	    document.addEventListener('DOMContentLoaded', function() {
+	        // 가사 토글 기능
+	        const lyricsContent = document.querySelector('.lyrics-content');
+	        const lyricsToggle = document.querySelector('.lyrics-toggle');
+	        
+	        lyricsToggle.addEventListener('click', function() {
+	            lyricsContent.classList.toggle('expanded');
+	            lyricsToggle.textContent = lyricsContent.classList.contains('expanded') ? '가사 접기' : '전체 가사 보기';
+	        });
+	
+	        // 플레이리스트 모달 관련
+	        const modal = document.getElementById('playlistModal');
+	        const playlistButton = document.querySelector('.button-playlist');
+	        const closeButton = document.querySelector('.close-button');
+	        const searchInput = document.getElementById('playlistSearch');
+	        
+	        // 플레이리스트 버튼 클릭 시 모달 열기
+	        playlistButton.addEventListener('click', function() {
+	            modal.style.display = 'block';
+	        });
+	        
+	        // 닫기 버튼 클릭 시 모달 닫기
+	        closeButton.addEventListener('click', function() {
+	            modal.style.display = 'none';
+	        });
+	        
+	        // 모달 외부 클릭 시 닫기
+	        window.addEventListener('click', function(event) {
+	            if (event.target === modal) {
+	                modal.style.display = 'none';
+	            }
+	        });
+	        
+	        // 플레이리스트 검색 기능
+	        searchInput.addEventListener('input', function() {
+	            const searchTerm = this.value.toLowerCase();
+	            const playlistItems = document.querySelectorAll('.playlist-item');
+	            
+	            playlistItems.forEach(item => {
+	                const playlistName = item.querySelector('h3').textContent.toLowerCase();
+	                if (playlistName.includes(searchTerm)) {
+	                    item.style.display = 'flex';
+	                } else {
+	                    item.style.display = 'none';
+	                }
+	            });
+	        });
+	    });
+	
+	    // 좋아요 버튼 토글 기능
+	    function toggleLike(button, musicId) {
+	        button.classList.toggle('active');
+	        console.log('좋아요 토글: ' + musicId);
+	
+	        let isLiked = button.classList.contains('active');
+	        let userId = "${sessionScope.user_id}";
+	
+	        fetch('${pageContext.request.contextPath}/likes/addLike', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	                song_id: musicId,
+	                liked: isLiked
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                console.log('좋아요 상태가 서버에 성공적으로 반영되었습니다.');
+	            } else {
+	                console.log('서버 처리 중 오류 발생');
+	            }
+	        })
+	        .catch(error => {
+	            console.error('오류 발생:', error);
+	        });
+	    }
+	
+	    // 팔로우 버튼 토글 기능
+	    function toggleFollow(button, artistId) {
+	        button.classList.toggle('active');
+	        const isFollowing = button.classList.contains('active');
+	        button.innerHTML = isFollowing ? '<i class="fas fa-user-check"></i> 팔로잉' : '<i class="fas fa-user-plus"></i> 팔로우';
+	        
+	        console.log('아티스트 아이디: '+artistId);
+	        
+	        fetch('${pageContext.request.contextPath}/artist/follow', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	                artist_id: artistId,
+	                following: isFollowing
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                console.log('팔로우 상태가 서버에 성공적으로 반영되었습니다.');
+	            } else {
+	                console.error('팔로우 실패');
+	            }
+	        })
+	        .catch(error => console.error('오류 발생:', error));
+	    }
+	
+	    // 플레이리스트에 곡 추가하는 함수
+	    function addToPlaylist(playlistId, trackId) {
+	        fetch('${pageContext.request.contextPath}/playlistSong/addTrack', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	                playlist_id: playlistId,
+	                track_id: trackId
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                alert('플레이리스트에 곡이 추가되었습니다.');
+	                document.getElementById('playlistModal').style.display = 'none';
+	                location.reload();
+	            } else {
+	                alert('곡 추가에 실패했습니다.');
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	            alert('오류가 발생했습니다.');
+	        });
+	    }
+	
+	    // 페이지 로드 시 실행
+	    $(document).ready(function() {
+	        // YouTube API가 이미 로드된 경우를 위한 처리
+	        if (typeof YT !== 'undefined' && YT.loaded) {
+	            searchYouTubeAndPlay();
+	        }
+	    });
+	</script>
 </main>
 </body>
 </html>
