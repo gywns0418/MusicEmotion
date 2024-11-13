@@ -143,4 +143,21 @@
 		.modal-content .button:hover {
 		    background-color: #1ed760;
 		}
+		
+		.edit-profile-btn {
+	      background-color: #1db954;
+	      color: white;
+	      border: none;
+	      padding: 10px 20px;
+	      border-radius: 20px;
+	      cursor: pointer;
+	      font-size: 16px;
+	      transition: background-color 0.2s;
+	      display: block;
+	      margin: 0 auto;
+	    }
+	    
+	    .edit-profile-btn:hover {
+	      background-color: #1ed760;
+	    }
         

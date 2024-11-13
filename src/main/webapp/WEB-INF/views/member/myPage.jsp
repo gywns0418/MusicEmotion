@@ -76,13 +76,14 @@
 
 </head>
 
-<body>
+
 <jsp:include page="../header.jsp" />
 
 <div id="content-area">
     <div class="hero-section">
         <h1>마이 뮤직</h1>
         <p>나만의 음악 세계를 탐험하세요</p>
+        <button class="edit-profile-btn">내 정보 수정</button>
     </div>
 
     <div class="section">
@@ -128,7 +129,6 @@
 			    <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=${playlist.playlist_id}">
 			        <div class="playlist-card">
 			            <img src="${pageContext.request.contextPath}/uploads/${playlist.image}" alt="${playlist.title}">
-
 			            <div class="playlist-title">${playlist.title}</div>
 			            <div class="playlist-description">${playlist.description}</div>
 			        </div>
