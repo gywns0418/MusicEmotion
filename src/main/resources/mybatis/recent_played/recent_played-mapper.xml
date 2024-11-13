@@ -9,13 +9,20 @@
 		values(#{user_id}, #{song_id}, sysdate)
 	</insert>
 	
-	<select id="recent_playedAll" parameterType="String" resultType="String">
-	    select song_id from recent_played
-	    where user_id = #{user_id}
-	    order by played_at ASC
-	</select>
+<select id="recent_playedAll" parameterType="String" resultType="String">
+    SELECT song_id
+    FROM (
+        SELECT song_id,
+               played_at,
+               ROW_NUMBER() OVER (PARTITION BY song_id ORDER BY played_at DESC) AS rn
+        FROM recent_played
+        WHERE user_id = #{user_id}
+    )
+    WHERE rn = 1
+    ORDER BY played_at DESC
+</select>
 	
-    <select id="getTopPlayedSongs" resultType="map">
+    <select id="getTopPlayedSongs" parameterType="String" resultType="map">
         SELECT song_id, COUNT(*) AS play_count
         FROM Recent_Played
         WHERE user_id = #{user_id}
@@ -24,10 +31,19 @@
         FETCH FIRST 7 ROWS ONLY
     </select>
     
-	<select id="getMonthlyPlayCount" resultType="int">
+	<select id="getMonthlyPlayCount" parameterType="String" resultType="int">
         SELECT COUNT(*) AS play_count
         FROM Recent_Played
         WHERE played_at >= ADD_MONTHS(SYSDATE, -1)
         AND user_id = #{user_id}
+    </select>
+    
+    <select id="getMostPlayedSongId" parameterType="String" resultType="String">
+        SELECT song_id
+        FROM Recent_Played
+        WHERE user_id = #{user_id}
+        GROUP BY song_id
+        ORDER BY COUNT(*) DESC
+        FETCH FIRST 1 ROWS ONLY
     </select>
 </mapper>

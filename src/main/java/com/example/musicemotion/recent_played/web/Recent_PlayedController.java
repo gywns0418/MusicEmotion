@@ -20,6 +20,7 @@ import com.example.musicemotion.recent_played.service.Recent_PlayedService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 @Controller
@@ -61,9 +62,17 @@ public class Recent_PlayedController {
         
         int song_count = recent_PlayedService.getMonthlyPlayCount(username);
         req.setAttribute("song_count", song_count);
+        
+        String most_song = recent_PlayedService.getMostPlayedSongId(username);
+
         try {
 			List<Track> track = spotifyService.getSongsByIds(rlist);
 	        req.setAttribute("track", track);
+	        
+	        Track most_track = spotifyService.getTrack(most_song);
+	        Artist artist = spotifyService.getArtistDetail(most_track.getArtists()[0].getId());
+	        req.setAttribute("most_genre", artist.getGenres()[0]);
+	        req.setAttribute("most_artist", most_track.getArtists()[0].getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,8 +87,8 @@ public class Recent_PlayedController {
         String username = authentication.getName();
 
         List<Map<String, Object>> topSongs = recent_PlayedService.getTopPlayedSongs(username);
-        
         System.out.println(topSongs);
+        
         return ResponseEntity.ok(topSongs);
     }
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -64,9 +65,9 @@
 					
 					<c:choose>
 					    <c:when test="${totalMinutes >= 60}">
-					        <c:set var="hours" value="${totalMinutes / 60}" />
-					        <c:set var="minutes" value="${totalMinutes % 60}" />
-					        <p>${hours}시간 ${minutes}분</p>
+					        <c:set var="hours" value="${totalMinutes div 60}" />
+							<c:set var="minutes" value="${totalMinutes % 60}" />
+							<p><fmt:formatNumber value="${hours}" type="number" maxFractionDigits="0"/>시간 ${minutes}분</p>
 					    </c:when>
 					    <c:otherwise>
 					        <p>${totalMinutes}분</p>
@@ -79,11 +80,11 @@
                 </div>
                 <div class="stat-card">
                     <h3>가장 많이 들은 장르</h3>
-                    <p>Pop</p>
+                    <p>${most_genre}</p>
                 </div>
                 <div class="stat-card">
                     <h3>가장 많이 들은 아티스트</h3>
-                    <p>BTS</p>
+                    <p>${most_artist}</p>
                 </div>
             </div>
 
@@ -142,7 +143,7 @@
 	            console.log("topSongsData",topSongsData)
 	
 	            // song_id와 play_count를 배열로 나눔
-	            const labels = topSongsData.map(item => item.SONG_ID);
+	            const labels = topSongsData.map(item => item.trackname);
 	            const data = topSongsData.map(item => item.PLAY_COUNT);
 	
 	            console.log("labels : ",labels)

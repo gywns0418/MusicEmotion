@@ -81,7 +81,7 @@
 
 <div id="content-area">
     <div class="hero-section">
-        <h1>마이 뮤직</h1>
+        <h1>My Music</h1>
         <p>나만의 음악 세계를 탐험하세요</p>
         <button class="edit-profile-btn">내 정보 수정</button>
     </div>
