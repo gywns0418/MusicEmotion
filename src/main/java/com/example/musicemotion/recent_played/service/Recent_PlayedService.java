@@ -1,6 +1,7 @@
 package com.example.musicemotion.recent_played.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,12 @@ public class Recent_PlayedService {
 		return sqlSession.selectList("recent_playedAll", user_id);
 	}
 	
+	public List<Map<String, Object>> getTopPlayedSongs(String user_id){
+		return sqlSession.selectList("getTopPlayedSongs",user_id);
+	}
+	
+	public int getMonthlyPlayCount(String user_id) {
+		return sqlSession.selectOne("getMonthlyPlayCount",user_id);
+	}
 }
 

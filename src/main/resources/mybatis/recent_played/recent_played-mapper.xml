@@ -15,4 +15,19 @@
 	    order by played_at ASC
 	</select>
 	
+    <select id="getTopPlayedSongs" resultType="map">
+        SELECT song_id, COUNT(*) AS play_count
+        FROM Recent_Played
+        WHERE user_id = #{user_id}
+        GROUP BY song_id
+        ORDER BY play_count DESC
+        FETCH FIRST 7 ROWS ONLY
+    </select>
+    
+	<select id="getMonthlyPlayCount" resultType="int">
+        SELECT COUNT(*) AS play_count
+        FROM Recent_Played
+        WHERE played_at >= ADD_MONTHS(SYSDATE, -1)
+        AND user_id = #{user_id}
+    </select>
 </mapper>

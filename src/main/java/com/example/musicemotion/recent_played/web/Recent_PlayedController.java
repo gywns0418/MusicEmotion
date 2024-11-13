@@ -59,6 +59,8 @@ public class Recent_PlayedController {
         
         List<String> rlist = recent_PlayedService.recent_playedAll(username);
         
+        int song_count = recent_PlayedService.getMonthlyPlayCount(username);
+        req.setAttribute("song_count", song_count);
         try {
 			List<Track> track = spotifyService.getSongsByIds(rlist);
 	        req.setAttribute("track", track);
@@ -66,8 +68,18 @@ public class Recent_PlayedController {
 			e.printStackTrace();
 		}
         
-
-        
 		return "music/resentPlay";
 	}
+	
+	@GetMapping("/topSongs.do")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> getTopPlayedSongs() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        List<Map<String, Object>> topSongs = recent_PlayedService.getTopPlayedSongs(username);
+        
+        System.out.println(topSongs);
+        return ResponseEntity.ok(topSongs);
+    }
 }
