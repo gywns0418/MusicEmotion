@@ -50,4 +50,12 @@ public class MemberService implements UserDetailsService{
 
 	    return member;
     }
+    
+    public boolean isPasswordMatching(String userId, String inputPassword) {
+        // DB에서 암호화된 비밀번호를 가져옴
+        String encodedPassword = memberDAO.findPasswordByUserId(userId);
+
+        // 입력된 비밀번호와 암호화된 비밀번호 비교
+        return bcryptPasswordEncoder.matches(inputPassword, encodedPassword);
+    }
 }

@@ -204,7 +204,7 @@
 
     <div class="album-container">
         <div class="hero-section">
-            <h1>팔로우한 앨범</h1>
+            <h1>Followed Album</h1>
             <p>내가 팔로우한 앨범들을 한눈에 보세요</p>
         </div>
 

@@ -83,7 +83,7 @@
     <div class="hero-section">
         <h1>My Music</h1>
         <p>나만의 음악 세계를 탐험하세요</p>
-        <button class="edit-profile-btn">내 정보 수정</button>
+        <button class="edit-profile-btn" onclick="location.href='${pageContext.request.contextPath}/member/myEdit.do'">내 정보 수정</button>
     </div>
 
     <div class="section">

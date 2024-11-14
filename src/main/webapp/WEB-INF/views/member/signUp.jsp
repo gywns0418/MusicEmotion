@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signUp.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/signUp.css">
 </head>
 
 <jsp:include page="../header.jsp" />

@@ -279,7 +279,7 @@
 
 	    <div class="artist-container">
 	        <div class="hero-section">
-	            <h1>팔로우한 아티스트</h1>
+	            <h1>Followed Artist</h1>
 	            <p>내가 팔로우한 아티스트들을 한눈에 보세요</p>
 	        </div>
 	

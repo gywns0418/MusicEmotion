@@ -18,4 +18,14 @@
 		where user_name = #{user_name}
 		AND email = #{email}
 	</select>
+	
+	<select id="findEdit" parameterType="String" resultType="MemberDTO">
+		select * from member 
+		where user_id = #{user_id}
+	</select>
+
+	<select id="findPasswordByUserId" parameterType="String" resultType="String">
+		select password from member 
+		where user_id = #{user_id}
+	</select>
  </mapper>

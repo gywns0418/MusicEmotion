@@ -33,7 +33,7 @@
         <div id="content-area">
             
  			<div class="hero-section">
-                <h1>음악 리스트</h1>
+                <h1>Music List</h1>
             </div>
 
 			<h1>Track</h1>
@@ -73,10 +73,9 @@
 
             </div>
             <br>
-            <h1>Album</h1>
-            <div class="music-list">
-            
-				<c:if test="${not empty tracks}">
+            <c:if test="${not empty Album}">
+            	<h1>Album</h1>
+            	<div class="music-list">
 					<c:forEach var="album" items="${Album}">
 						
 						<div class="music-card">
@@ -102,13 +101,14 @@
 		         		</div>
 	       				
 		 			</c:forEach>  
+		 			</div>
 				</c:if>
 				  
 				<c:if test="${empty tracks}">
 				  	<p>No search results found.</p>
 				</c:if>
 
-            </div>
+            
         </div>
     </main>
 

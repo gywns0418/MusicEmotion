@@ -21,4 +21,12 @@ public class MemberDAO {
 	 public CustomMemberDetails findById(String user_id) {
 		 return sqlSession.selectOne("member.findById", user_id);
 	 }
+	 
+	 public MemberDTO findEdit(String user_id){
+		 return sqlSession.selectOne("findEdit", user_id);
+	 }
+	 
+	 public String findPasswordByUserId(String user_id){
+		 return sqlSession.selectOne("findPasswordByUserId", user_id);
+	 }
 }

@@ -78,13 +78,7 @@
  				</div>
 	        
 	</div>
-			<a href="${pageContext.request.contextPath}/spotify/musicDetail.do">musicDetail</a>
-			<a href="${pageContext.request.contextPath}/spotify/musicList.do">musicList.do</a>
-			<a href="${pageContext.request.contextPath}/playlist/playListMain.do">playListMain</a>
-			<a href="${pageContext.request.contextPath}/recentPlayed/resentPlay.do">resentPlay.do</a>
-			<a href="${pageContext.request.contextPath}/album/album.do">album.do</a>
-			<a href="${pageContext.request.contextPath}/artist/artist.do">artist.do</a>
-			<br>
+
 			<sec:authorize access="isAuthenticated()">
 				<sec:authentication property='principal.name'/>/user_name`
 				<br>
