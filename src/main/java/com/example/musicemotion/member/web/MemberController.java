@@ -1,6 +1,7 @@
 package com.example.musicemotion.member.web;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import com.example.musicemotion.member.service.MemberService;
 import com.example.musicemotion.playList.service.PlaylistService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
@@ -84,5 +86,46 @@ public class MemberController {
                                      @RequestParam("inputPassword") String inputPassword) {
         boolean encryptedPassword = memberService.isPasswordMatching(userId,inputPassword);
         return encryptedPassword;
+    }
+    
+	/*
+	 * @GetMapping("/findid.do") public String findId(HttpServletRequest req) {
+	 * return "member/findid"; }
+	 * 
+	 * @PostMapping("/findid.do") public String findIdPro(HttpServletRequest
+	 * req,MemberDTO member) { MemberDTO dto =
+	 * memberService.findByName(member.getName()); req.setAttribute("member", dto);
+	 * 
+	 * return "member/findid_result"; }
+	 * 
+	 * @GetMapping("/updatepw.do") public String updatepw() { return
+	 * "member/updatepw"; }
+	 * 
+	 * @PostMapping("/updatepw.do") public String updatepwView(HttpServletRequest
+	 * req, MemberDTO member) { MemberDTO dto = memberService.findByIdName(member);
+	 * req.setAttribute("member", dto); return "member/updatePro"; }
+	 * 
+	 * @PostMapping("/updatepwPro.do") public String updatePwPro(MemberDTO member) {
+	 * memberservice.updatePw(member); return "redirect:/index.do"; }
+	 */
+    
+    @PostMapping("/mail.do")
+    public String sendMail(String email,String id, HttpServletRequest req) {
+        // 6자리 랜덤 숫자 생성
+        Random rand = new Random();
+        int randomNum = rand.nextInt(900000) + 100000;  // 100000(최소값)부터 999999(최대값) 사이의 숫자
+        
+        HttpSession session = req.getSession();
+
+        // 세션에 랜덤 숫자 저장
+        session.setAttribute("randomNum", randomNum);
+        session.setAttribute("email",email);
+        session.setAttribute("id",id);
+        session.setAttribute("timestamp", System.currentTimeMillis()); // 현재 시간을 밀리초 단위로 저장
+
+
+        // 이메일 전송
+        memberService.sendSimpleEmail(email, "인증번호", "인증번호 : " + randomNum + "입니다.");
+        return "checkMe";
     }
 }

@@ -3,6 +3,8 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -53,6 +55,17 @@
                 <span class="comment-date">2024-09-23 16:45</span>
                 <p>The Weeknd의 노래들이 두 곡이나 있네요. 역시 인기가 많아요!</p>
             </li>
+            <c:forEach>
+	            <li class="comment-item">
+	                <span class="comment-author">${member_name}</span>
+	                <span class="comment-date">
+	                	<c:set var="dateString" value="${created_at}" />
+	                	<fmt:parseDate value="${dateString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+						<fmt:formatDate value="${parseDate}" pattern="yyyy-MM-dd HH:mm" />
+					</span>
+	                <p>The Weeknd의 노래들이 두 곡이나 있네요. 역시 인기가 많아요!</p>
+	            </li>
+            </c:forEach>
         </ul>
         <form action="${pageContext.request.contextPath}/comment/addComment.do" method="post">
          	<input type="hidden" name="redirectUrl" value="${request.getRequestURI()}">

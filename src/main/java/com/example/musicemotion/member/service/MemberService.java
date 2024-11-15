@@ -1,6 +1,8 @@
 package com.example.musicemotion.member.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +15,9 @@ import com.example.musicemotion.dto.MemberDTO;
 
 @Service
 public class MemberService implements UserDetailsService{
+	
+    @Autowired
+    private JavaMailSender mailSender;
     
     private final MemberDAO memberDAO; // MemberDAO 필드 추가
     private final PasswordEncoder bcryptPasswordEncoder;
@@ -57,5 +62,15 @@ public class MemberService implements UserDetailsService{
 
         // 입력된 비밀번호와 암호화된 비밀번호 비교
         return bcryptPasswordEncoder.matches(inputPassword, encodedPassword);
+    }
+    
+    public void sendSimpleEmail(String toEmail, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("your-email@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
     }
 }
