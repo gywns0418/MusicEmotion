@@ -54,9 +54,11 @@
                 <p>The Weeknd의 노래들이 두 곡이나 있네요. 역시 인기가 많아요!</p>
             </li>
         </ul>
-        <form class="comment-form">
-            <textarea class="comment-input" placeholder="댓글을 입력하세요" rows="3"></textarea>
-            <button type="submit" class="comment-submit">댓글 작성</button>
+        <form action="${pageContext.request.contextPath}/comment/addComment.do" method="post">
+         	<input type="hidden" name="redirectUrl" value="${request.getRequestURI()}">
+            <input type="hidden" name="userId" value="<sec:authentication property='principal.username'/>">
+            <textarea name="comment" placeholder="댓글을 입력하세요"></textarea>
+            <button type="submit">댓글 작성</button>
         </form>
     </div>
 </div>

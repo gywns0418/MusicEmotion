@@ -31,7 +31,9 @@
 			    <button type="submit" class="login-button">로그인</button>
 			</form>
 		    <div class="login-links">
-		        <a href="#">비밀번호를 잊으셨나요?</a> | <a href="${pageContext.request.contextPath}/member/signUp.do">회원가입</a>
+		    	<a href="#">아이디 찾기</a> |
+		        <a href="#">비밀번호 찾기</a> | 
+		        <a href="${pageContext.request.contextPath}/member/signUp.do">회원가입</a>
 		    </div>
 		</div>
 	

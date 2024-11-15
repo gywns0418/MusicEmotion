@@ -25,7 +25,7 @@
 		    <input type="hidden" name="userId" value="${member.user_id}">
 		    <div class="form-group">
 		        <label for="inputPassword">비밀번호 확인</label>
-		        <input type="password" id="inputPassword" name="inputPassword" required>
+		        <input type="password" id="inputPassword" name="inputPassword" required placeholder="비밀번호를 입력해주세요">
 		        <button type="button" id="checkPasswordBtn">확인</button>
 		    </div>
 		    <p id="password-check-result" style="color:red;"></p>
@@ -54,9 +54,9 @@
 	                <label><input type="checkbox" name="genre" value="hiphop" <c:if test="${fn:contains(member.genre, 'hiphop')}">checked</c:if> > 힙합</label>
 	                <label><input type="checkbox" name="genre" value="jazz" <c:if test="${fn:contains(member.genre, 'jazz')}">checked</c:if> > 재즈</label>
 	                <label><input type="checkbox" name="genre" value="classical" <c:if test="${fn:contains(member.genre, 'classical')}">checked</c:if> > 클래식</label>
-	                <label><input type="checkbox" name="genre" value="electronic" <c:if test="${fn:contains(member.genre, 'electronic')}">checked</c:if> > 일렉트로닉</label>
+	                <label><input type="checkbox" name="genre" value="blues" <c:if test="${fn:contains(member.genre, ' blues')}">checked</c:if> > 브루스</label>
 	                <label><input type="checkbox" name="genre" value="rnb" <c:if test="${fn:contains(member.genre, 'rnb')}">checked</c:if> > R&B</label>
-	                <label><input type="checkbox" name="genre" value="country" <c:if test="${fn:contains(member.genre, 'country')}">checked</c:if> > 컨트리</label>
+	                <label><input type="checkbox" name="genre" value="acoustic" <c:if test="${fn:contains(member.genre, 'acoustic')}">checked</c:if> > 어쿠스틱</label>
 	            </div>
 	        </div>
 		    <button type="submit" class="login-button">정보 수정</button>

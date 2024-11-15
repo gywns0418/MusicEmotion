@@ -54,15 +54,15 @@
                     <label><input type="checkbox" name="genre" value="hiphop"> 힙합</label>
                     <label><input type="checkbox" name="genre" value="jazz"> 재즈</label>
                     <label><input type="checkbox" name="genre" value="classical"> 클래식</label>
-                    <label><input type="checkbox" name="genre" value="electronic"> 일렉트로닉</label>
+                    <label><input type="checkbox" name="genre" value="blues"> 브루스</label>
                     <label><input type="checkbox" name="genre" value="rnb"> R&B</label>
-                    <label><input type="checkbox" name="genre" value="country"> 컨트리</label>
+                    <label><input type="checkbox" name="genre" value="acoustic"> 어쿠스틱</label>
                 </div>
             </div>
             <button type="submit" class="login-button">가입하기</button>
         </form>
         <div class="login-links">
-            <a href="<c:url value='/login.do' />" id="login-link">이미 계정이 있으신가요? 로그인</a>
+            <a href="<c:url value='${pageContext.request.contextPath}/member/login.do' />" id="login-link">이미 계정이 있으신가요? 로그인</a>
         </div>
     </div>
 
