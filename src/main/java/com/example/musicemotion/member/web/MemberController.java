@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -88,19 +90,21 @@ public class MemberController {
         return encryptedPassword;
     }
     
-	/*
-	 * @GetMapping("/findid.do") public String findId(HttpServletRequest req) {
-	 * return "member/findid"; }
-	 * 
+	
+	 @GetMapping("/findId.do") public String findId(HttpServletRequest req) {
+	 return "member/findId"; }
+	/* 
 	 * @PostMapping("/findid.do") public String findIdPro(HttpServletRequest
 	 * req,MemberDTO member) { MemberDTO dto =
 	 * memberService.findByName(member.getName()); req.setAttribute("member", dto);
 	 * 
 	 * return "member/findid_result"; }
-	 * 
-	 * @GetMapping("/updatepw.do") public String updatepw() { return
-	 * "member/updatepw"; }
-	 * 
+	 */
+	 @GetMapping("/updatePw.do") 
+	 public String updatepw() { 
+		 return "member/updatepw"; 
+	 }
+	 /* 
 	 * @PostMapping("/updatepw.do") public String updatepwView(HttpServletRequest
 	 * req, MemberDTO member) { MemberDTO dto = memberService.findByIdName(member);
 	 * req.setAttribute("member", dto); return "member/updatePro"; }
@@ -126,6 +130,34 @@ public class MemberController {
 
         // 이메일 전송
         memberService.sendSimpleEmail(email, "인증번호", "인증번호 : " + randomNum + "입니다.");
-        return "checkMe";
+        return "member/checkMe";
+    }
+    
+    @PostMapping("/confirmCheckNumber.do")
+    public ResponseEntity<String> confirmCheckNumber(@RequestParam int checkNumber, HttpServletRequest req) {
+    	HttpSession session = req.getSession();
+        Integer sessionCheckNumber = (Integer) session.getAttribute("randomNum"); // Integer로 가져오기
+        Long timestamp = (Long) session.getAttribute("timestamp"); // 타임스탬프 가져오기
+        
+        if (sessionCheckNumber == null || timestamp == null) {
+            return new ResponseEntity<>("failure", HttpStatus.OK); // 인증번호나 타임스탬프가 없는 경우 실패
+        }
+        
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - timestamp; // 현재 시간과 저장된 시간의 차이
+        
+        
+        if (sessionCheckNumber == checkNumber) {
+        	if (elapsedTime > 180000) { // 3분이 경과한 경우
+        		return new ResponseEntity<>("over", HttpStatus.OK); // 인증번호가 만료됨
+        	}else {
+        		session.removeAttribute("randomNum");
+                session.removeAttribute("timestamp");
+        		return new ResponseEntity<>("success", HttpStatus.OK); // 인증 성공
+        	}
+        } else {
+            return new ResponseEntity<>("failure", HttpStatus.OK); // 인증 실패
+        }
+        
     }
 }

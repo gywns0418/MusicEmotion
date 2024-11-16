@@ -84,7 +84,7 @@
 				<br>
 				<sec:authentication property='principal.username'/>/user_id
 			</sec:authorize>
-	
+			<a href="${pageContext.request.contextPath}/member/findId.do">findId</a>
 		<script>
 		    $(document).ready(function() {
 		        const contextPath = "${pageContext.request.contextPath}";
