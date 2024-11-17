@@ -276,6 +276,7 @@
                     <div class="input-wrapper">
                         <input type="text" id="id" name="id" class="form-input" placeholder="가입하신 아이디를 입력하세요" required>
                     </div>
+                    <br>
                     <label for="email" class="form-label">이메일</label>
                     <div class="input-wrapper">
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
