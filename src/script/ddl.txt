@@ -127,3 +127,12 @@ CREATE TABLE Recent_Played (
     song_id VARCHAR2(250),                     -- 곡 ID (FK)
     played_at DATE                     -- 재생한 날짜 및 시간
 );
+
+INSERT INTO EMOTION (EMOTION_ID, EMOTION_NAME, DESCRIPTION, DANCEABILITY_MIN, DANCEABILITY_MAX, ENERGY_MIN, ENERGY_MAX, LOUDNESS_MIN, LOUDNESS_MAX, TEMPO_MIN, TEMPO_MAX, VALANCE_MIN, VALANCE_MAX) 
+VALUES 
+(1, '기쁨', '활기차고 밝은 기분을 나타내는 감정', 0.7, 1, 0.8, 1, -8, 0, 120, 180, 0.7, 1),
+(2, '슬픔', '차분하고 우울한 기분을 나타내는 감정', 0.2, 0.5, 0.1, 0.4, -20, -10, 60, 90, 0, 0.3),
+(3, '평온', '안정적이고 조용한 기분을 나타내는 감정', 0.3, 0.6, 0.2, 0.5, -15, -5, 70, 110, 0.4, 0.7),
+(4, '분노', '격렬하고 공격적인 기분을 나타내는 감정', 0.5, 0.8, 0.8, 1, -12, -3, 140, 200, 0.2, 0.5),
+(5, '불안', '불안하고 긴장감 있는 기분을 나타내는 감정', 0.3, 0.6, 0.5, 0.7, -10, -3, 100, 140, 0.1, 0.4),
+(6, '사랑', '따뜻하고 감미로운 기분을 나타내는 감정', 0.5, 0.8, 0.4, 0.7, -10, -3, 80, 120, 0.6, 0.9);
