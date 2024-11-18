@@ -91,8 +91,10 @@ public class MemberController {
     }
     
 	
-	 @GetMapping("/findId.do") public String findId(HttpServletRequest req) {
-	 return "member/findId"; }
+	 @GetMapping("/findId.do") 
+	 public String findId(HttpServletRequest req) {
+		 return "member/findid"; 
+	 }
 	/* 
 	 * @PostMapping("/findid.do") public String findIdPro(HttpServletRequest
 	 * req,MemberDTO member) { MemberDTO dto =
