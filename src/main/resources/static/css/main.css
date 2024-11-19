@@ -133,7 +133,7 @@
             font-weight: bold;
         }
 
-        select, input[type="text"] {
+        select {
             width: 100%;
             padding: 10px;
             background-color: var(--background-color);

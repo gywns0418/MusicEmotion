@@ -7,17 +7,6 @@
     <title>아이디 찾기</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
 
         .find-id-container {
             background-color: #ffffff;
@@ -81,6 +70,40 @@
             box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.1);
         }
 
+        .verification-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .timer {
+            color: #dc2626;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .verification-group {
+            position: relative;
+        }
+
+        .resend-button {
+            background: none;
+            border: none;
+            color: #1db954;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 5px;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            display: none;
+        }
+
+        .resend-button:hover {
+            text-decoration: underline;
+        }
+
         .error-message {
             color: #dc2626;
             background-color: #fef2f2;
@@ -114,17 +137,6 @@
             background-color: #9CA3AF;
             cursor: not-allowed;
             transform: none;
-        }
-
-        .loading-spinner {
-            display: none;
-            margin-right: 8px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .success-message {
@@ -161,47 +173,79 @@
             color: #1ed760;
             text-decoration: underline;
         }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
     </style>
 </head>
-<body>
 
 <jsp:include page="../header.jsp" />
 
-<main>
     <div class="find-id-container">
         <h2>아이디 찾기</h2>
-        <p class="description">가입 시 등록한 이메일로 아이디를 찾을 수 있습니다.</p>
+        <p class="description">이름과 이메일로 아이디를 찾을 수 있습니다.</p>
 
-        <form id="findIdForm" action="findId.do" method="POST">
-            <div class="form-group">
-                <label for="email" class="form-label">이메일</label>
-                <div class="input-wrapper">
-                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="가입하신 이메일을 입력하세요" required>
+        <form id="findIdForm">
+            <!-- Step 1: 이름과 이메일 입력 -->
+            <div id="step1" class="step active">
+                <div class="form-group">
+                    <label for="name" class="form-label">이름</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="이름을 입력하세요" required>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">이메일</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="가입하신 이메일을 입력하세요" required>
+                    </div>
+                </div>
+
+                <button type="button" id="sendVerificationButton" class="submit-button">인증번호 받기</button>
             </div>
 
-            <div id="errorMessage" class="error-message">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span id="errorText"></span>
-            </div>
+            <!-- Step 2: 인증번호 확인 -->
+            <div id="step2" class="step">
+                <div class="form-group verification-group">
+                    <label for="verificationCode" class="form-label">인증번호</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="text" id="verificationCode" name="verificationCode" class="form-input" placeholder="인증번호 6자리를 입력하세요" maxlength="6" required>
+                    </div>
+                    <button type="button" id="resendButton" class="resend-button">재발송</button>
+                    <div id="timer" class="timer"></div>
+                </div>
 
-            <button type="submit" id="submitButton" class="submit-button">
-                <span id="loadingSpinner" class="loading-spinner">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                </span>
-                이메일로 아이디 받기
-            </button>
+                <button type="button" id="verifyCodeButton" class="submit-button">인증번호 확인</button>
+            </div>
         </form>
+
+		<br>
+        <div id="errorMessage" class="error-message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorText"></span>
+        </div>
 
         <div id="successMessage" class="success-message">
             <div class="success-icon">
@@ -209,7 +253,7 @@
                     <path d="M20 6L9 17l-5-5"></path>
                 </svg>
             </div>
-            <h3>이메일이 발송되었습니다!</h3>
+            <h3>인증이 완료되었습니다!</h3>
             <p>입력하신 이메일로 아이디 정보를 발송했습니다.<br>이메일을 확인해주세요.</p>
         </div>
 
@@ -219,46 +263,153 @@
     </div>
 </main>
 
-<script>
-    document.getElementById('findIdForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        const submitButton = document.getElementById('submitButton');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const successMessage = document.getElementById('successMessage');
-        
-        // 이메일 유효성 검사
-        if (!email) {
-            errorMessage.style.display = 'block';
-            errorText.textContent = '이메일을 입력해주세요.';
-            return;
-        }
-        
-        if (!email.includes('@')) {
-            errorMessage.style.display = 'block';
-            errorText.textContent = '올바른 이메일 형식이 아닙니다.';
-            return;
-        }
+<!DOCTYPE html>
+<!-- 이전 HTML 헤더와 스타일은 동일하게 유지 -->
 
-        // 로딩 상태 표시
-        errorMessage.style.display = 'none';
-        submitButton.disabled = true;
-        loadingSpinner.style.display = 'inline-block';
+<script>
+let timerInterval;
+let timeLeft; // timeLeft를 전역 변수로 선언
+const VERIFICATION_TIME = 300; // 5분 (300초)
+
+function startTimer() {
+    clearInterval(timerInterval); // 기존 타이머가 있다면 제거
+    
+    timeLeft = VERIFICATION_TIME; // timeLeft 초기화
+    const timerElement = document.getElementById('timer');
+    const resendButton = document.getElementById('resendButton');
+    
+    
+    // 타이머 초기화
+    updateTimerDisplay();
+    
+    // 재발송 버튼 숨기기
+    resendButton.style.display = 'none';
+    
+    timerInterval = setInterval(() => {
+        timeLeft--;
         
-        // 여기에 실제 서버 요청 코드를 작성하세요
-        // 예시: form.submit();
-        
-        // 데모를 위한 타이머 (실제 구현시에는 제거)
-        setTimeout(function() {
-            submitButton.disabled = false;
-            loadingSpinner.style.display = 'none';
-            document.querySelector('form').style.display = 'none';
-            successMessage.style.display = 'block';
-        }, 1500);
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerElement.textContent = '인증시간 만료';
+            resendButton.style.display = 'block'; // 재발송 버튼 표시
+            document.getElementById('verificationCode').disabled = true;
+            document.getElementById('verifyCodeButton').disabled = true;
+        } else {
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const timerElement = document.getElementById('timer');
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+document.getElementById('sendVerificationButton').addEventListener('click', function() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    
+    // 입력 검증
+    if (!name) {
+        showError('이름을 입력해주세요.');
+        return;
+    }
+
+    if (!email) {
+        showError('이메일을 입력해주세요.');
+        return;
+    }
+
+    if (!email.includes('@')) {
+        showError('올바른 이메일 형식이 아닙니다.');
+        return;
+    }
+
+    // 서버 확인 시뮬레이션
+    simulateServerCheck(name, email).then(isValid => {
+        if (isValid) {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('verificationCode').disabled = false;
+            document.getElementById('verifyCodeButton').disabled = false;
+            startTimer(); // 타이머 시작
+            showError('인증번호가 이메일로 발송되었습니다.', 'success');
+        } else {
+            showError('입력하신 정보와 일치하는 계정이 없습니다.');
+        }
     });
+});
+
+// 나머지 이벤트 리스너들은 그대로 유지
+document.getElementById('resendButton').addEventListener('click', function() {
+    document.getElementById('verificationCode').disabled = false;
+    document.getElementById('verifyCodeButton').disabled = false;
+    document.getElementById('verificationCode').value = '';
+    startTimer();
+    showError('인증번호가 재발송되었습니다.', 'success');
+});
+
+document.getElementById('verifyCodeButton').addEventListener('click', function() {
+    const code = document.getElementById('verificationCode').value;
+
+    if (!code) {
+        showError('인증번호를 입력해주세요.');
+        return;
+    }
+
+    if (code.length !== 6) {
+        showError('인증번호는 6자리여야 합니다.');
+        return;
+    }
+
+    verifyCode(code).then(isValid => {
+        if (isValid) {
+            clearInterval(timerInterval);
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        } else {
+            showError('잘못된 인증번호입니다.');
+        }
+    });
+});
+
+function showError(message, type = 'error') {
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+    
+    errorMessage.style.display = 'block';
+    errorText.textContent = message;
+    
+    if (type === 'success') {
+        errorMessage.style.backgroundColor = '#ecfdf5';
+        errorMessage.style.borderColor = '#6ee7b7';
+        errorMessage.style.color = '#047857';
+    } else {
+        errorMessage.style.backgroundColor = '#fef2f2';
+        errorMessage.style.borderColor = '#fee2e2';
+        errorMessage.style.color = '#dc2626';
+    }
+}
+
+// 서버 통신 시뮬레이션 함수들
+function simulateServerCheck(name, email) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(true);
+        }, 1000);
+    });
+}
+
+function verifyCode(code) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(code === '123456');
+        }, 1000);
+    });
+}
 </script>
 
 </body>
