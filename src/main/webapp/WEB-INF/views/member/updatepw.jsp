@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script>
-    const pageContextPath ="${pageContext.request.contextPath}";
+    const pageContextPath ="";
 </script>
 
 
@@ -274,6 +274,10 @@
                 <div class="form-group">
                     <label for="email" class="form-label">아이디</label>
                     <div class="input-wrapper">
+                    	<svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
                         <input type="text" id="id" name="id" class="form-input" placeholder="가입하신 아이디를 입력하세요" required>
                     </div>
                     <br>
@@ -286,7 +290,6 @@
                         <input type="email" id="email" name="email" class="form-input" placeholder="가입하신 이메일을 입력하세요" required>
                     </div>
                 </div>
-
                 <button type="submit" class="submit-button">인증번호 받기</button>
             </form>
         </div>
@@ -472,7 +475,7 @@ function validatePassword(password) {
         length: password.length >= 8,
         upper: /[A-Z]/.test(password),
         number: /[0-9]/.test(password),
-        special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        special: /[!@#$%^&*(),.?:{}|<>]/.test(password)
     };
 
     // 요구사항 표시 업데이트
@@ -484,10 +487,9 @@ function validatePassword(password) {
     return Object.values(requirements).every(req => req);
 }
 
-function resendCode() {
-    const email = document.getElementById('email').value;
-    // AJAX 요청으로 인증번호 재발송
-    fetch('' + pageContextPath + '/member/resendVerificationCode.do', {
+function sendVerificationCode(email) {
+    // 인증번호 발송 공통 로직
+    fetch('' + pageContextPath + '/member/mail.do', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -498,33 +500,7 @@ function resendCode() {
     .then(data => {
         if (data.success) {
             startTimer();
-            showError('인증번호가 재발송되었습니다.');
-        } else {
-            showError(data.message || '인증번호 재발송에 실패했습니다.');
-        }
-    })
-    .catch(error => {
-        showError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-    });
-}
-
-// 이메일 폼 제출
-document.getElementById('emailForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-
-    fetch('' + pageContextPath + '/member/sendVerificationCode.do', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showStep('verificationStep');
-            startTimer();
+            showError('인증번호가 발송되었습니다.');
         } else {
             showError(data.message || '인증번호 발송에 실패했습니다.');
         }
@@ -532,6 +508,19 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
     .catch(error => {
         showError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     });
+}
+
+// 재발송 버튼 클릭 시 호출
+function resendCode() {
+    const email = document.getElementById('email').value;
+    sendVerificationCode(email); // 인증번호 발송 로직 호출
+}
+
+// 이메일 폼 제출
+document.getElementById('emailForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    sendVerificationCode(email); // 인증번호 발송 로직 호출
 });
 
 // 인증번호 확인 폼 제출
@@ -539,7 +528,7 @@ document.getElementById('verificationForm').addEventListener('submit', function(
     e.preventDefault();
     const code = document.getElementById('verificationCode').value;
 
-    fetch('' + pageContextPath + '/member/verifyCode.do', {
+    fetch('' + pageContextPath + '/member/confirmCheckNumber.do', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -562,6 +551,7 @@ document.getElementById('verificationForm').addEventListener('submit', function(
         showError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     });
 });
+
 
 // 비밀번호 변경 폼 제출
 document.getElementById('passwordForm').addEventListener('submit', function(e) {
