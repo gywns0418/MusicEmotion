@@ -29,4 +29,8 @@ public class MemberDAO {
 	 public String findPasswordByUserId(String user_id){
 		 return sqlSession.selectOne("findPasswordByUserId", user_id);
 	 }
+	 
+	 public MemberDTO findByEmail(String email) {
+		 return sqlSession.selectOne("findByEmail", email);
+	 }
 }

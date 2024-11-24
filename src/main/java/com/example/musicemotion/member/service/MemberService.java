@@ -35,6 +35,11 @@ public class MemberService implements UserDetailsService{
         memberDAO.signupPro(member);
     }
     
+    public String encodePassword(String newPassword) {
+    	String encodedPassword = bcryptPasswordEncoder.encode(newPassword);
+		return encodedPassword;
+    }
+    
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 	    System.out.println("Trying to load user by userId: " + userId);

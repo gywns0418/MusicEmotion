@@ -183,7 +183,7 @@ public class MemberController {
 
 	        try {
 	            // 이메일을 통해 사용자를 조회
-	            MemberDTO member = memberService.findByEmail(email);
+	            MemberDTO member = memberDAO.findByEmail(email);
 
 	            if (member == null) {
 	                response.put("success", false);
