@@ -33,4 +33,8 @@ public class MemberDAO {
 	 public MemberDTO findByEmail(String email) {
 		 return sqlSession.selectOne("findByEmail", email);
 	 }
+	 
+	 public void updatePw(MemberDTO member) {
+		 sqlSession.update("updatePw", member);
+	 }
 }

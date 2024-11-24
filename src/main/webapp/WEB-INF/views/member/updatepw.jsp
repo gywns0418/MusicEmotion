@@ -148,7 +148,7 @@
             color: #dc2626;
             font-size: 14px;
             margin-top: 8px;
-            text-align: right;
+            text-align: center;
         }
 
         .password-requirements {
@@ -488,26 +488,37 @@ function validatePassword(password) {
 }
 
 function sendVerificationCode(email) {
+	const id = document.getElementById('id').value;
+	
+	sessionStorage.setItem('id', id);
+	
     // 인증번호 발송 공통 로직
-    fetch('' + pageContextPath + '/member/mail.do', {
+    fetch('/member/mail.do', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({
+            id: id,
+            email: email,
+        }),
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            startTimer();
-            showError('인증번호가 발송되었습니다.');
-        } else {
-            showError(data.message || '인증번호 발송에 실패했습니다.');
-        }
-    })
-    .catch(error => {
-        showError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                // 인증번호 발송 성공 시 다음 단계로 이동
+                alert('인증번호가 이메일로 발송되었습니다.');
+                showStep('verificationStep'); // 인증번호 입력 단계로 이동
+                startTimer(); // 타이머 시작
+            } else {
+                // 실패 시 메시지 표시
+                showError(data.message || '인증번호 발송에 실패했습니다.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            showError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        });
 }
 
 // 재발송 버튼 클릭 시 호출
@@ -558,6 +569,7 @@ document.getElementById('passwordForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const id = sessionStorage.getItem('id');
 
     if (!validatePassword(newPassword)) {
         showError('비밀번호가 요구사항을 충족하지 않습니다.');
@@ -575,6 +587,7 @@ document.getElementById('passwordForm').addEventListener('submit', function(e) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+        	id: id,
             email: document.getElementById('email').value,
             password: newPassword
         })

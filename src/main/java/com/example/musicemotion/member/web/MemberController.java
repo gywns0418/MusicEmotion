@@ -139,40 +139,66 @@ public class MemberController {
 
 	 @PostMapping("/confirmCheckNumber.do")
 	 public ResponseEntity<Map<String, Object>> confirmCheckNumber(@RequestBody Map<String, Object> requestData, HttpServletRequest req) {
-	     int checkNumber = (int) requestData.get("code");
-	     HttpSession session = req.getSession();
-	     Integer sessionCheckNumber = (Integer) session.getAttribute("randomNum"); // Integer로 가져오기
-	     Long timestamp = (Long) session.getAttribute("timestamp"); // 타임스탬프 가져오기
-
 	     Map<String, Object> response = new HashMap<>();
-
-	     // 세션에 값이 없는 경우
-	     if (sessionCheckNumber == null || timestamp == null) {
-	         response.put("success", false);
-	         response.put("message", "인증번호가 유효하지 않습니다.");
-	         return new ResponseEntity<>(response, HttpStatus.OK);
-	     }
-
-	     long currentTime = System.currentTimeMillis();
-	     long elapsedTime = currentTime - timestamp; // 현재 시간과 저장된 시간의 차이
-
-	     if (sessionCheckNumber == checkNumber) {
-	         if (elapsedTime > 300000) { // 3분이 경과한 경우
+	     try {
+	         // 요청 데이터에서 인증번호 가져오기
+	         if (!requestData.containsKey("code")) {
 	             response.put("success", false);
-	             response.put("message", "인증번호가 만료되었습니다.");
-	             return new ResponseEntity<>(response, HttpStatus.OK);
-	         } else {
-	             session.removeAttribute("randomNum");
-	             session.removeAttribute("timestamp");
-	             response.put("success", true);
+	             response.put("message", "인증번호가 요청에 포함되지 않았습니다.");
+	             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	         }
+
+	         int checkNumber;
+	         try {
+	             checkNumber = Integer.parseInt(requestData.get("code").toString());
+	         } catch (NumberFormatException e) {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 올바른 형식이 아닙니다.");
+	             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	         }
+
+	         // 세션에서 저장된 인증번호와 타임스탬프 가져오기
+	         HttpSession session = req.getSession();
+	         Integer sessionCheckNumber = (Integer) session.getAttribute("randomNum");
+	         Long timestamp = (Long) session.getAttribute("timestamp");
+
+	         if (sessionCheckNumber == null || timestamp == null) {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 유효하지 않습니다. 다시 요청해주세요.");
 	             return new ResponseEntity<>(response, HttpStatus.OK);
 	         }
-	     } else {
+
+	         long currentTime = System.currentTimeMillis();
+	         long elapsedTime = currentTime - timestamp;
+
+	         // 인증번호 확인 로직
+	         if (sessionCheckNumber.equals(checkNumber)) {
+	             if (elapsedTime > 300000) { // 5분(300,000ms)이 초과된 경우
+	                 response.put("success", false);
+	                 response.put("message", "인증번호가 만료되었습니다.");
+	                 return new ResponseEntity<>(response, HttpStatus.OK);
+	             } else {
+	                 // 인증 성공 시 세션 데이터 제거
+	                 session.removeAttribute("randomNum");
+	                 session.removeAttribute("timestamp");
+	                 response.put("success", true);
+	                 response.put("message", "인증번호가 확인되었습니다.");
+	                 return new ResponseEntity<>(response, HttpStatus.OK);
+	             }
+	         } else {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 일치하지 않습니다.");
+	             return new ResponseEntity<>(response, HttpStatus.OK);
+	         }
+	     } catch (Exception e) {
+	         // 예외 발생 시 처리
 	         response.put("success", false);
-	         response.put("message", "인증번호가 일치하지 않습니다.");
-	         return new ResponseEntity<>(response, HttpStatus.OK);
+	         response.put("message", "서버 오류가 발생했습니다. 관리자에게 문의하세요.");
+	         e.printStackTrace(); // 로그에 예외 출력
+	         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	     }
 	 }
+
 
 	    @PostMapping("/resetPassword.do")
 	    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> requestData) {
@@ -180,6 +206,7 @@ public class MemberController {
 
 	        String email = requestData.get("email");
 	        String newPassword = requestData.get("password");
+	        String id = requestData.get("id");
 
 	        try {
 	            // 이메일을 통해 사용자를 조회
@@ -194,7 +221,9 @@ public class MemberController {
 	            // 비밀번호 암호화 및 저장
 	            String encodedPassword = memberService.encodePassword(newPassword);
 	            member.setPassword(encodedPassword);
-	            memberService.updateMember(member);
+	            member.setUser_id(id);
+	            System.out.println("newPassword : "+newPassword+" id : "+id);
+	            memberDAO.updatePw(member);
 
 	            response.put("success", true);
 	            return new ResponseEntity<>(response, HttpStatus.OK);

@@ -33,4 +33,10 @@
 		select * from member
 		where email = #{email}
 	</select>
+	
+	<update id="updatePw" parameterType="MemberDTO">
+		UPDATE MEMBER
+	    SET password = #{password}
+	    WHERE user_id = #{user_id}
+	</update>
  </mapper>
