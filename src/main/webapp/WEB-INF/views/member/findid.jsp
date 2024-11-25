@@ -263,153 +263,186 @@
     </div>
 </main>
 
-<!DOCTYPE html>
-<!-- 이전 HTML 헤더와 스타일은 동일하게 유지 -->
-
 <script>
-let timerInterval;
-let timeLeft; // timeLeft를 전역 변수로 선언
-const VERIFICATION_TIME = 300; // 5분 (300초)
+	let timer;
+	let timeLeft; // timeLeft를 전역 변수로 선언
+	const VERIFICATION_TIME = 300; // 5분 (300초)
+	
+	// 타이머 시작 함수
+	function startTimer() {
+	    clearInterval(timer); // 기존 타이머가 있다면 제거
+	    
+	    timeLeft = VERIFICATION_TIME; // timeLeft 초기화
+	    const timerElement = document.getElementById('timer');
+	    const resendButton = document.getElementById('resendButton');
+	    
+	    // 타이머 초기화
+	    updateTimerDisplay();
+	    
+	    // 재발송 버튼 숨기기
+	    resendButton.style.display = 'none';
+	    
+	    timer = setInterval(() => {
+	        timeLeft--;
+	        
+	        if (timeLeft <= 0) {
+	            clearInterval(timer);
+	            timerElement.textContent = '인증시간 만료';
+	            resendButton.style.display = 'block'; // 재발송 버튼 표시
+	            document.getElementById('verificationCode').disabled = true;
+	            document.getElementById('verifyCodeButton').disabled = true;
+	        } else {
+	            updateTimerDisplay();
+	        }
+	    }, 1000);
+	}
+	
+	// 타이머 업데이트 함수
+	function updateTimerDisplay() {
+	    const timerElement = document.getElementById('timer');
+	    const minutes = Math.floor(timeLeft / 60);
+	    const seconds = timeLeft % 60;
+	    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+	}
+	
+	// 오류 메시지 표시 함수
+	function showError(message, type = 'error') {
+	    const errorMessage = document.getElementById('errorMessage');
+	    const errorText = document.getElementById('errorText');
+	    
+	    errorMessage.style.display = 'block';
+	    errorText.textContent = message;
+	    
+	    if (type === 'success') {
+	        errorMessage.style.backgroundColor = '#ecfdf5';
+	        errorMessage.style.borderColor = '#6ee7b7';
+	        errorMessage.style.color = '#047857';
+	    } else {
+	        errorMessage.style.backgroundColor = '#fef2f2';
+	        errorMessage.style.borderColor = '#fee2e2';
+	        errorMessage.style.color = '#dc2626';
+	    }
+	}
+	
+	// "인증번호 받기" 버튼 클릭 이벤트
+	document.getElementById('sendVerificationButton').addEventListener('click', function() {
+	    const name = document.getElementById('name').value;
+	    const email = document.getElementById('email').value;
+	
+	    // 입력 검증
+	    if (!name) {
+	        showError('이름을 입력해주세요.');
+	        return;
+	    }
+	
+	    if (!email) {
+	        showError('이메일을 입력해주세요.');
+	        return;
+	    }
+	
+	    if (!email.includes('@')) {
+	        showError('올바른 이메일 형식이 아닙니다.');
+	        return;
+	    }
+	
+	    // 서버로 이름과 이메일 전송
+	    fetch('/member/findId', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({ name, email })
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            document.getElementById('step1').classList.remove('active');
+	            document.getElementById('step2').classList.add('active');
+	            document.getElementById('verificationCode').disabled = false;
+	            document.getElementById('verifyCodeButton').disabled = false;
+	            startTimer(); // 타이머 시작
+	            alert('인증번호가 이메일로 발송되었습니다.');
+	        } else {
+	            showError(data.message);
+	        }
+	    })
+	    .catch(error => {
+	        showError('서버 오류가 발생했습니다.');
+	    });
+	});
+	
+	// "재발송" 버튼 클릭 이벤트
+	document.getElementById('resendButton').addEventListener('click', function() {
+	    const name = document.getElementById('name').value; // 이름 정보 추가
+	    const email = document.getElementById('email').value;
 
-function startTimer() {
-    clearInterval(timerInterval); // 기존 타이머가 있다면 제거
-    
-    timeLeft = VERIFICATION_TIME; // timeLeft 초기화
-    const timerElement = document.getElementById('timer');
-    const resendButton = document.getElementById('resendButton');
-    
-    
-    // 타이머 초기화
-    updateTimerDisplay();
-    
-    // 재발송 버튼 숨기기
-    resendButton.style.display = 'none';
-    
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            timerElement.textContent = '인증시간 만료';
-            resendButton.style.display = 'block'; // 재발송 버튼 표시
-            document.getElementById('verificationCode').disabled = true;
-            document.getElementById('verifyCodeButton').disabled = true;
-        } else {
-            updateTimerDisplay();
-        }
-    }, 1000);
-}
+	    // 서버에 재발송 요청
+	    fetch('/member/findId', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({ name, email }) // 이름과 이메일 포함
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            document.getElementById('verificationCode').disabled = false;
+	            document.getElementById('verifyCodeButton').disabled = false;
+	            document.getElementById('verificationCode').value = '';
+	            startTimer(); // 타이머 시작
+	            showError('인증번호가 재발송되었습니다.', 'success');
+	        } else {
+	            showError(data.message);
+	        }
+	    })
+	    .catch(error => {
+	        showError('서버 오류가 발생했습니다.');
+	    });
+	});
 
-function updateTimerDisplay() {
-    const timerElement = document.getElementById('timer');
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
+	
+	// "인증번호 확인" 버튼 클릭 이벤트
+	document.getElementById('verifyCodeButton').addEventListener('click', function() {
+	    const code = document.getElementById('verificationCode').value;
+	
+	    if (!code) {
+	        showError('인증번호를 입력해주세요.');
+	        return;
+	    }
+	
+	    if (code.length !== 6) {
+	        showError('인증번호는 6자리여야 합니다.');
+	        return;
+	    }
+	
+	    // 서버에 인증번호 확인 요청
+	    fetch('/member/checkNumber.do', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({ 
+	            email: document.getElementById('email').value,
+	            code: code 
+	        })
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            clearInterval(timer);
+	            document.getElementById('step2').classList.remove('active');
+	            document.getElementById('errorMessage').style.display = 'none';
+	            document.getElementById('successMessage').style.display = 'block';
+	        } else {
+	            showError(data.message);
+	        }
+	    })
+	    .catch(error => {
+	        showError('서버 오류가 발생했습니다.');
+	    });
+	});
 
-document.getElementById('sendVerificationButton').addEventListener('click', function() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    
-    // 입력 검증
-    if (!name) {
-        showError('이름을 입력해주세요.');
-        return;
-    }
-
-    if (!email) {
-        showError('이메일을 입력해주세요.');
-        return;
-    }
-
-    if (!email.includes('@')) {
-        showError('올바른 이메일 형식이 아닙니다.');
-        return;
-    }
-
-    // 서버 확인 시뮬레이션
-    simulateServerCheck(name, email).then(isValid => {
-        if (isValid) {
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            document.getElementById('verificationCode').disabled = false;
-            document.getElementById('verifyCodeButton').disabled = false;
-            startTimer(); // 타이머 시작
-            showError('인증번호가 이메일로 발송되었습니다.', 'success');
-        } else {
-            showError('입력하신 정보와 일치하는 계정이 없습니다.');
-        }
-    });
-});
-
-// 나머지 이벤트 리스너들은 그대로 유지
-document.getElementById('resendButton').addEventListener('click', function() {
-    document.getElementById('verificationCode').disabled = false;
-    document.getElementById('verifyCodeButton').disabled = false;
-    document.getElementById('verificationCode').value = '';
-    startTimer();
-    showError('인증번호가 재발송되었습니다.', 'success');
-});
-
-document.getElementById('verifyCodeButton').addEventListener('click', function() {
-    const code = document.getElementById('verificationCode').value;
-
-    if (!code) {
-        showError('인증번호를 입력해주세요.');
-        return;
-    }
-
-    if (code.length !== 6) {
-        showError('인증번호는 6자리여야 합니다.');
-        return;
-    }
-
-    verifyCode(code).then(isValid => {
-        if (isValid) {
-            clearInterval(timerInterval);
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
-        } else {
-            showError('잘못된 인증번호입니다.');
-        }
-    });
-});
-
-function showError(message, type = 'error') {
-    const errorMessage = document.getElementById('errorMessage');
-    const errorText = document.getElementById('errorText');
-    
-    errorMessage.style.display = 'block';
-    errorText.textContent = message;
-    
-    if (type === 'success') {
-        errorMessage.style.backgroundColor = '#ecfdf5';
-        errorMessage.style.borderColor = '#6ee7b7';
-        errorMessage.style.color = '#047857';
-    } else {
-        errorMessage.style.backgroundColor = '#fef2f2';
-        errorMessage.style.borderColor = '#fee2e2';
-        errorMessage.style.color = '#dc2626';
-    }
-}
-
-// 서버 통신 시뮬레이션 함수들
-function simulateServerCheck(name, email) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(true);
-        }, 1000);
-    });
-}
-
-function verifyCode(code) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(code === '123456');
-        }, 1000);
-    });
-}
 </script>
 
 </body>

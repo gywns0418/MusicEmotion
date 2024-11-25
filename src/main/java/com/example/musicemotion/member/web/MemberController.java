@@ -110,7 +110,116 @@ public class MemberController {
 		 return "member/updatepw"; 
 	 }
 	 
-    
+	 @PostMapping("/findId")
+	    public ResponseEntity<?> findId(@RequestBody Map<String, String> request,HttpServletRequest req) {
+	        String name = request.get("name");
+	        String email = request.get("email");
+	        
+	        MemberDTO dto = new MemberDTO();
+	        dto.setUser_name(name);
+	        dto.setEmail(email);
+	        
+		     Random rand = new Random();
+		     int randomNum = rand.nextInt(900000) + 100000;
+		     
+		     HttpSession session = req.getSession();
+
+	        try {
+	            String userId = memberDAO.findIdByNameAndEmail(dto);
+	            if (userId != null) {
+	       	     	session.setAttribute("randomNum", randomNum);
+	       	     	session.setAttribute("timestamp", System.currentTimeMillis());
+	                memberService.sendSimpleEmail(email, "인증번호", "인증번호 : " + randomNum + "입니다.");
+	                return ResponseEntity.ok(Map.of(
+	                    "success", true,
+	                    "message", "인증번호가 발송되었습니다."
+	                ));
+	            } else {
+	                return ResponseEntity.ok(Map.of("success", false, "message", "해당 정보로 등록된 아이디가 없습니다."));
+	            }
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                    .body(Map.of("success", false, "message", "서버 오류가 발생했습니다."));
+	        }
+	    }
+     
+	 @PostMapping("/checkNumber.do")
+	 public ResponseEntity<Map<String, Object>> checkNumber(@RequestBody Map<String, Object> requestData, HttpServletRequest req) {
+	     Map<String, Object> response = new HashMap<>();
+
+	     try {
+	         // 요청 데이터에서 인증번호 가져오기
+	         if (!requestData.containsKey("code") || !requestData.containsKey("email")) {
+	             response.put("success", false);
+	             response.put("message", "이메일 또는 인증번호가 누락되었습니다.");
+	             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	         }
+
+	         String email = requestData.get("email").toString();
+	         int checkNumber;
+	         try {
+	             checkNumber = Integer.parseInt(requestData.get("code").toString());
+	         } catch (NumberFormatException e) {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 올바른 형식이 아닙니다.");
+	             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	         }
+
+	         // 세션에서 저장된 인증번호 가져오기
+	         HttpSession session = req.getSession();
+	         Integer sessionCheckNumber = (Integer) session.getAttribute("randomNum");
+	         Long timestamp = (Long) session.getAttribute("timestamp");
+
+	         if (sessionCheckNumber == null || timestamp == null) {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 유효하지 않습니다. 다시 요청해주세요.");
+	             return new ResponseEntity<>(response, HttpStatus.OK);
+	         }
+
+	         long currentTime = System.currentTimeMillis();
+	         long elapsedTime = currentTime - timestamp;
+
+	         // 인증번호 확인
+	         if (sessionCheckNumber.equals(checkNumber)) {
+	             if (elapsedTime > 300000) { // 5분(300,000ms) 초과
+	                 response.put("success", false);
+	                 response.put("message", "인증번호가 만료되었습니다.");
+	                 return new ResponseEntity<>(response, HttpStatus.OK);
+	             } else {
+	                 // 인증 성공: 세션 데이터 제거
+	                 session.removeAttribute("randomNum");
+	                 session.removeAttribute("timestamp");
+
+	                 // 아이디 조회
+	                 MemberDTO member = memberDAO.findByEmail(email);
+	                 if (member == null) {
+	                     response.put("success", false);
+	                     response.put("message", "해당 이메일로 등록된 아이디가 없습니다.");
+	                     return new ResponseEntity<>(response, HttpStatus.OK);
+	                 }
+
+	                 // 이메일로 아이디 발송
+	                 String userId = member.getUser_id();
+	                 memberService.sendSimpleEmail(email, "아이디 정보", "회원님의 아이디는: " + userId + " 입니다.");
+
+	                 response.put("success", true);
+	                 response.put("message", "인증이 완료되었습니다. 아이디를 이메일로 발송했습니다.");
+	                 return new ResponseEntity<>(response, HttpStatus.OK);
+	             }
+	         } else {
+	             response.put("success", false);
+	             response.put("message", "인증번호가 일치하지 않습니다.");
+	             return new ResponseEntity<>(response, HttpStatus.OK);
+	         }
+	     } catch (Exception e) {
+	         response.put("success", false);
+	         response.put("message", "서버 오류가 발생했습니다. 관리자에게 문의하세요.");
+	         e.printStackTrace();
+	         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	     }
+	 }
+
+	 
 	 @PostMapping("/mail.do")
 	 public ResponseEntity<Map<String, Object>> sendMail(@RequestBody Map<String, String> requestData, HttpServletRequest req) {
 	     String email = requestData.get("email");

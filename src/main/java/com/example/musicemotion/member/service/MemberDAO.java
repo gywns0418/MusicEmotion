@@ -37,4 +37,8 @@ public class MemberDAO {
 	 public void updatePw(MemberDTO member) {
 		 sqlSession.update("updatePw", member);
 	 }
+	 
+	 public String findIdByNameAndEmail(MemberDTO dto) {
+		 return sqlSession.selectOne("findIdByNameAndEmail", dto);
+	 }
 }

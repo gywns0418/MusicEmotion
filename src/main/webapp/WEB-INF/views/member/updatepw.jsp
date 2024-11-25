@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<script>
-    const pageContextPath ="";
-</script>
-
 
 <!DOCTYPE html>
 <html>
@@ -539,7 +535,7 @@ document.getElementById('verificationForm').addEventListener('submit', function(
     e.preventDefault();
     const code = document.getElementById('verificationCode').value;
 
-    fetch('' + pageContextPath + '/member/confirmCheckNumber.do', {
+    fetch('/member/confirmCheckNumber.do', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
