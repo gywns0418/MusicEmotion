@@ -63,7 +63,7 @@
 	    // 검색 함수
 	    function searchArtists() {
 	        const artistName = document.getElementById('artistSearch').value;
-	
+			console.log(artistName)
 	        // 입력값 검증
 	        if (!artistName) {
 	            alert('아티스트 이름을 입력하세요.');
@@ -71,7 +71,7 @@
 	        }
 	
 	        // 서버로 검색 요청
-	        fetch(`/artist/search?name=${encodeURIComponent(artistName)}`)
+	        fetch(`/artist/search?name=artistName`)
 	            .then(response => response.json())
 	            .then(data => {
 	                const resultsContainer = document.getElementById('searchResults');
