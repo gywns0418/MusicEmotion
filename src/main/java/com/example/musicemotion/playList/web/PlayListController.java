@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -121,6 +122,23 @@ public class PlayListController {
         }
 
         return ResponseEntity.ok(dto); // 성공 시 DTO 반환
+    }
+    
+    @PostMapping("/deletePlaylistAjax")
+    public ResponseEntity<String> deletePlaylistAjax(@RequestParam("playlist_id") int playlistId) {
+        try {
+            boolean isDeleted = playlistService.deletePlaylist(playlistId);
+            if (isDeleted) {
+                return ResponseEntity.ok("플레이리스트가 성공적으로 삭제되었습니다.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("플레이리스트 삭제에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("서버 오류로 인해 플레이리스트를 삭제하지 못했습니다.");
+        }
     }
 
 }

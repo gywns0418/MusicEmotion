@@ -45,14 +45,15 @@
 	        contentType: false,
 	        success: function(playlist) {
 	        	console.log("playlist", playlist)
-	            const newCard = 
-	                '<div class="playlist-card" data-playlist-id="' + playlist.playlist_id + '">' +
-	                    '<a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=' + playlist.playlist_id + '">' +
-	                        '<img src="${pageContext.request.contextPath}/uploads/' + playlist.image + '" alt="' + playlist.title + '">' +
-	                        '<div class="playlist-title">' + playlist.title + '</div>' +
-	                        '<div class="playlist-description">' + playlist.description + '</div>' +
-	                    '</a>' +
-	                '</div>';
+				const newCard = 
+				    '<div class="playlist-card" data-playlist-id="' + playlist.playlist_id + '">' +
+				        '<button class="delete-btn" onclick="deletePlaylist(' + playlist.playlist_id + ')">&times;</button>' +
+				        '<a href="${pageContext.request.contextPath}/playlist/playListMain.do?playlist_id=' + playlist.playlist_id + '">' +
+				            '<img src="${pageContext.request.contextPath}/uploads/' + playlist.image + '" alt="' + playlist.title + '">' +
+				            '<div class="playlist-title">' + playlist.title + '</div>' +
+				            '<div class="playlist-description">' + playlist.description + '</div>' +
+				        '</a>' +
+				    '</div>';
 	            $('#playlistGrid').append(newCard);
 	            resetForm();
 	            closePlaylistModal();
@@ -72,6 +73,26 @@
         $('#playlistImage').val('');
         $('#imagePreview').hide();
     }
+    
+    function deletePlaylist(playlistId) {
+        if (confirm('플레이리스트를 삭제하시겠습니까?')) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/playlist/deletePlaylistAjax",
+                type: 'POST',
+                data: { playlist_id: playlistId },
+                success: function(response) {
+                    // 성공적으로 삭제되면 페이지 리로드
+                    alert('플레이리스트가 성공적으로 삭제되었습니다.');
+                    location.reload(); // 페이지를 리로드합니다.
+                },
+                error: function(error) {
+                    console.error(error);
+                    alert('플레이리스트 삭제 실패');
+                }
+            });
+        }
+    }
+
 </script>
 
 </head>
@@ -124,17 +145,18 @@
         <h2>내 플레이리스트</h2>
         <button class="cta-button" onclick="showPlaylistModal()">새 플레이리스트 만들기</button><br><br>
 
-        <div id="playlistGrid" class="playlist-grid">
-			<c:forEach var="playlist" items="${plist}">
-			    <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=${playlist.playlist_id}">
-			        <div class="playlist-card">
-			            <img src="${pageContext.request.contextPath}/uploads/${playlist.image}" alt="${playlist.title}">
-			            <div class="playlist-title">${playlist.title}</div>
-			            <div class="playlist-description">${playlist.description}</div>
-			        </div>
-			    </a>
-			</c:forEach>
-        </div>
+		<div id="playlistGrid" class="playlist-grid">
+		    <c:forEach var="playlist" items="${plist}">
+		        <div class="playlist-card">
+		            <button class="delete-btn" onclick="deletePlaylist(${playlist.playlist_id})">&times;</button>
+		            <a href="${pageContext.request.contextPath}/playlist/myPlayList.do?playlist_id=${playlist.playlist_id}">
+		                <img src="${pageContext.request.contextPath}/uploads/${playlist.image}" alt="${playlist.title}">
+		                <div class="playlist-title">${playlist.title}</div>
+		                <div class="playlist-description">${playlist.description}</div>
+		            </a>
+		        </div>
+		    </c:forEach>
+		</div>
     </div>
 
 	<div id="playlistModal" class="modal">

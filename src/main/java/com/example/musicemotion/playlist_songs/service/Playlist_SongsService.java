@@ -29,7 +29,8 @@ public class Playlist_SongsService {
 		return sqlSession.selectList("playlist_songsAll", playlist_id);
 	}
 	 
-	public void deletePlaylist_songs(String song_id) {
-		sqlSession.delete("deletePlaylist_songs",song_id);
+	public boolean deletePlaylist_songs(Playlist_SongsDTO dto) {
+		int rowsAffected = sqlSession.delete("deletePlaylist_songs",dto);
+		return rowsAffected > 0;
 	}
 }

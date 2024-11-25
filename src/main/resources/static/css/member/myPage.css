@@ -1,163 +1,221 @@
 @charset "UTF-8";
 
-        .main-content {
-            padding: 20px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-        .nav-menu {
-            list-style-type: none;
-            padding: 0;
-        }
-        .nav-menu li {
-            margin-bottom: 15px;
-        }
+.main-content {
+    padding: 20px;
+}
 
-        .section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            color: #191414;
-        }
-        .playlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .playlist-card {
-            background-color: #f7f7f7;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        .playlist-card:hover {
-            transform: translateY(-5px);
-        }
-        .playlist-card img {
-            width: 100%;
-            height: auto;
-        }
-        .playlist-title {
-            font-weight: bold;
-            padding: 10px;
-        }
-        .playlist-description {
-            font-size: 14px;
-            color: #666;
-            padding: 0 10px 10px;
-        }
-        .button {
-            background-color: #1db954;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.2s;
-        }
-        .button:hover {
-            background-color: #1ed760;
-        }
-        
-		/* 모달 스타일 수정 */
-		.modal {
-		    display: none;
-		    position: fixed;
-		    z-index: 1000;
-		    left: 0;
-		    top: 0;
-		    width: 100%;
-		    height: 100%;
-		    overflow: auto;
-		    background-color: rgba(0, 0, 0, 0.4);
-		}
-		
-		.modal-content {
-		    background-color: #fefefe;
-		    margin: 10% auto;
-		    padding: 20px;
-		    border: 1px solid #888;
-		    width: 50%;
-		    max-width: 500px;
-		    border-radius: 8px;
-		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		}
-		
-		.close {
-		    color: #aaa;
-		    float: right;
-		    font-size: 28px;
-		    font-weight: bold;
-		    cursor: pointer;
-		}
-		
-		.close:hover,
-		.close:focus {
-		    color: #000;
-		    text-decoration: none;
-		}
-		
-		/* 폼 스타일 추가 */
-		.modal-content h2 {
-		    margin-bottom: 20px;
-		}
-		
-		.modal-content label {
-		    display: block;
-		    margin-bottom: 5px;
-		}
-		
-		.modal-content input[type="text"],
-		.modal-content textarea {
-		    width: 100%;
-		    padding: 8px;
-		    margin-bottom: 15px;
-		    border: 1px solid #ddd;
-		    border-radius: 4px;
-		}
-		
-		.modal-content textarea {
-		    height: 100px;
-		    resize: vertical;
-		}
-		
-		.modal-content .button {
-		    width: 100%;
-		    padding: 10px;
-		    background-color: #1db954;
-		    color: white;
-		    border: none;
-		    border-radius: 20px;
-		    cursor: pointer;
-		    font-size: 16px;
-		}
-		
-		.modal-content .button:hover {
-		    background-color: #1ed760;
-		}
-		
-		.edit-profile-btn {
-	      background-color: #1db954;
-	      color: white;
-	      border: none;
-	      padding: 10px 20px;
-	      border-radius: 20px;
-	      cursor: pointer;
-	      font-size: 16px;
-	      transition: background-color 0.2s;
-	      display: block;
-	      margin: 0 auto;
-	    }
-	    
-	    .edit-profile-btn:hover {
-	      background-color: #1ed760;
-	    }
-        
+/* 섹션 스타일 */
+.section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* 제목 스타일 */
+h1, h2 {
+    color: #191414;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* 플레이리스트 그리드 */
+.playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 10px 0;
+}
+
+/* 플레이리스트 카드 */
+.playlist-card {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.playlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.playlist-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.playlist-card:hover img {
+    transform: scale(1.05);
+}
+
+.playlist-title {
+    font-weight: 600;
+    padding: 15px 15px 5px 15px;
+    font-size: 16px;
+    color: #191414;
+}
+
+.playlist-description {
+    font-size: 14px;
+    color: #666;
+    padding: 0 15px 15px 15px;
+    line-height: 1.4;
+}
+
+/* 버튼 스타일 */
+.button, .edit-profile-btn, .cta-button {
+    background-color: #1db954;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+}
+
+.button:hover, .edit-profile-btn:hover, .cta-button:hover {
+    background-color: #1ed760;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(29, 185, 84, 0.3);
+}
+
+/* 삭제 버튼 스타일 */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #ff4757;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-card:hover .delete-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.delete-btn:hover {
+    background-color: #ff4757;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 8% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.modal-content h2 {
+    color: #191414;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #191414;
+}
+
+/* 폼 요소 스타일 */
+.modal-content label {
+    display: block;
+    margin-bottom: 8px;
+    color: #191414;
+    font-weight: 500;
+}
+
+.modal-content input[type="text"],
+.modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+    border-color: #1db954;
+    outline: none;
+}
+
+.modal-content textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* 이미지 미리보기 */
+#imagePreview {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .playlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 20px;
+    }
+}

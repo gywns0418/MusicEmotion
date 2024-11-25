@@ -36,7 +36,8 @@ public class PlaylistService {
 		 sqlSession.update("updatePlaylist", dto);
 	 }
 	 
-	 public void deletePlaylist(int playlist_id) {
-		 sqlSession.delete("deletePlaylist",playlist_id);
+	 public boolean deletePlaylist(int playlist_id) {
+	     int rowsAffected = sqlSession.delete("deletePlaylist", playlist_id);
+	     return rowsAffected > 0; 
 	 }
 }
