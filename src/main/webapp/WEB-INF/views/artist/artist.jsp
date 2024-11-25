@@ -10,269 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
-    <style>
-        .artist-container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/artist/artist.css">
 
-        .hero-section {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 0;
-            background: linear-gradient(to right, var(--highlight-color), #4a90e2);
-            border-radius: 16px;
-            color: white;
-        }
-
-        .hero-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-
-        .hero-section p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .artist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .artist-card {
-            background-color: var(--card-color);
-            border-radius: 16px;
-            height: 400px; /* 고정된 높이 */
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 24px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 6px var(--shadow-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .artist-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 160px;
-            background: linear-gradient(45deg, var(--highlight-color), #4a90e2);
-            opacity: 0.1;
-            transition: opacity 0.3s;
-        }
-
-        .artist-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-
-        .artist-card:hover::before {
-            opacity: 0.2;
-        }
-
-        .artist-image-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 24px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        .artist-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .artist-card:hover .artist-image {
-            transform: scale(1.1);
-        }
-
-        .artist-name {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-color);
-            text-align: center;
-            width: 100%;
-        }
-
-        .artist-genre {
-            font-size: 0.95em;
-            color: var(--text-color);
-            opacity: 0.8;
-            text-align: center;
-            max-width: 90%;
-            margin: 0 auto;
-            line-height: 1.4;
-        }
-
-        .artist-stats {
-            display: flex;
-            gap: 20px;
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 1px solid var(--hover-color);
-            width: 100%;
-            justify-content: center;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .stat-value {
-            font-weight: 700;
-            color: var(--highlight-color);
-        }
-
-        .stat-label {
-            font-size: 0.85em;
-            color: var(--text-color);
-            opacity: 0.7;
-        }
-
-        /* 반응형 디자인 개선 */
-        @media (max-width: 768px) {
-            .artist-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 20px;
-            }
-
-            .artist-card {
-                height: 380px;
-            }
-
-            .artist-image-container {
-                width: 180px;
-                height: 180px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .artist-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .hero-section {
-                padding: 30px 20px;
-            }
-        }
-        
-/* 검색바 스타일링 */
-.search {
-    max-width: 600px;
-    margin: 2rem auto 3rem;
-    padding: 0 1rem;
-}
-
-.search-bar {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 1rem 3.5rem 1rem 1.5rem; /* 오른쪽 패딩 증가 */
-    font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--card-color);
-    border: 2px solid transparent;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.search-bar input:focus {
-    outline: none;
-    border-color: var(--highlight-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-}
-
-.search-bar input::placeholder {
-    color: var(--text-color);
-    opacity: 0.5;
-}
-
-.search-icon {
-    position: absolute;
-    right: 1.2rem; /* 왼쪽에서 오른쪽으로 위치 변경 */
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-color);
-    opacity: 0.5;
-    transition: all 0.3s ease;
-    font-size: 1.1rem; /* 아이콘 크기 약간 증가 */
-    cursor: pointer; /* 클릭 가능함을 표시 */
-}
-
-.search-icon:hover {
-    opacity: 0.8;
-    color: var(--highlight-color);
-}
-
-.search-bar input:focus ~ .search-icon {
-    opacity: 1;
-    color: var(--highlight-color);
-}
-
-/* 검색 결과가 없을 때 보여줄 스타일 */
-.no-results {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-color);
-    opacity: 0.7;
-    font-size: 1.1rem;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .search-container {
-        max-width: 100%;
-        padding: 0 1.5rem;
-    }
-    
-    .search-bar input {
-        font-size: 0.95rem;
-        padding: 0.9rem 3rem 0.9rem 1.3rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .search-container {
-        padding: 0 1rem;
-        margin: 1.5rem auto 2rem;
-    }
-    
-    .search-bar input {
-        font-size: 0.9rem;
-        padding: 0.8rem 2.8rem 0.8rem 1.2rem;
-    }
-    
-    .search-icon {
-        right: 1rem;
-    }
-}
-    </style>
 </head>
 <body>
     <jsp:include page="../header.jsp" />
@@ -286,7 +25,7 @@
 	         <div class="search">
 			    <div class="search-bar">
 			        <input type="text" id="artistSearch" placeholder="아티스트 이름으로 검색하기...">
-			        <i class="fas fa-search search-icon"></i>
+			        <i class="fas fa-search search-icon" id="searchIcon"></i>
 			    </div>
 			</div>
             
@@ -319,5 +58,68 @@
 	        </div>
 	    </div>
     </main>
+    
+	<script>
+	    // 검색 함수
+	    function searchArtists() {
+	        const artistName = document.getElementById('artistSearch').value;
+	
+	        // 입력값 검증
+	        if (!artistName) {
+	            alert('아티스트 이름을 입력하세요.');
+	            return;
+	        }
+	
+	        // 서버로 검색 요청
+	        fetch(`/artist/search?name=${encodeURIComponent(artistName)}`)
+	            .then(response => response.json())
+	            .then(data => {
+	                const resultsContainer = document.getElementById('searchResults');
+	                resultsContainer.innerHTML = '';
+	
+	                if (data.success && data.artists.length > 0) {
+	                    data.artists.forEach(artist => {
+	                        const artistElement = document.createElement('div');
+	                        artistElement.classList.add('artist-card');
+	                        artistElement.innerHTML = `
+	                            <div class="artist-image-container">
+	                                <img src="${artist.images[0].url}" alt="${artist.name}" class="artist-image">
+	                            </div>
+	                            <div class="artist-name">${artist.name}</div>
+	                            <div class="artist-genre">${artist.genres?.join(', ') || '장르 없음'}</div>
+	                            <div class="artist-stats">
+	                                <div class="stat-item">
+	                                    <span class="stat-value">${artist.followers?.total || 0}</span>
+	                                    <span class="stat-label">팔로워</span>
+	                                </div>
+	                                <div class="stat-item">
+	                                    <span class="stat-value">${artist.popularity || 0}</span>
+	                                    <span class="stat-label">인기도</span>
+	                                </div>
+	                            </div>
+	                        `;
+	                        resultsContainer.appendChild(artistElement);
+	                    });
+	                } else {
+	                    resultsContainer.innerHTML = `<p>검색 결과가 없습니다.</p>`;
+	                }
+	            })
+	            .catch(error => {
+	                alert('검색 중 오류가 발생했습니다.');
+	                console.error(error);
+	            });
+	    }
+	
+	    // 버튼 및 아이콘 클릭 이벤트 리스너
+	    document.getElementById('searchButton')?.addEventListener('click', searchArtists);
+	    document.getElementById('searchIcon')?.addEventListener('click', searchArtists);
+	
+	    // Enter 키로도 검색 가능하도록 추가
+	    document.getElementById('artistSearch').addEventListener('keyup', function (event) {
+	        if (event.key === 'Enter') {
+	            searchArtists();
+	        }
+	    });
+	</script>
 </body>
 </html>
