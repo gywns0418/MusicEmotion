@@ -33,4 +33,8 @@
         where user_id = #{user_id} 
         and artist_id = #{artist_id}
     </delete>
+    
+    <select id="getArtistById" parameterType="String" resultType="ArtistDTO">
+    	select * from artist where artist_id = #{artist_id}
+    </select>
 </mapper>

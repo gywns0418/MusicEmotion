@@ -49,4 +49,8 @@ public class ArtistService {
             return false;
         }
     }
+    
+    public ArtistDTO getArtistById(String artist_id) {
+    	return sqlSession.selectOne("getArtistById",artist_id);
+    }
 }

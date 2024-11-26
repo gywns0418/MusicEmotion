@@ -100,133 +100,141 @@
     </div>
 
 	<script>
-	    // 탭 전환 함수
-	    function openTab(evt, tabName) {
-	        const tabContents = document.getElementsByClassName("tab-content");
-	        const tabButtons = document.getElementsByClassName("tab-button");
-	
-	        for (let content of tabContents) {
-	            content.classList.remove("active");
-	        }
-	
-	        for (let button of tabButtons) {
-	            button.classList.remove("active");
-	        }
-	
-	        document.getElementById(tabName).classList.add("active");
-	        evt.currentTarget.classList.add("active");
-	
-	        if (tabName === 'statistics') {
-	            initializeCharts();
-	        }
+	// 초록색 계열과 유사한 색상들로 구성된 팔레트
+	const colorPalettes = [
+	    [
+	        '#005A34',  // 짙은 청록 초록
+	        '#10B981',  // 에메랄드 초록
+	        '#2DD4BF',  // 청록색 (민트)
+	        '#84CC16',  // 라임 그린
+	        '#FDE047'   // 밝은 노란 초록
+	    ]
+	];
+
+	// 탭 전환 함수
+	function openTab(evt, tabName) {
+	    const tabContents = document.getElementsByClassName("tab-content");
+	    const tabButtons = document.getElementsByClassName("tab-button");
+
+	    for (let content of tabContents) {
+	        content.classList.remove("active");
 	    }
-	
-	    // 차트 초기화 변수
-	    let genreChart, artistChart;
-	
-	    // 랜덤 색상 생성 함수
-	    function getRandomColor() {
-	        const letters = '0123456789ABCDEF';
-	        let color = '#';
-	        for (let i = 0; i < 6; i++) {
-	            color += letters[Math.floor(Math.random() * 16)];
-	        }
-	        return color;
+
+	    for (let button of tabButtons) {
+	        button.classList.remove("active");
 	    }
-	
-	    async function initializeCharts() {
-	        try {
-	            // 서버에서 상위 재생 곡 데이터를 가져옴
-	            const response = await fetch('/recentPlayed/topSongs.do');
-	            const topSongsData = await response.json();
-	            
-	            console.log("topSongsData",topSongsData)
-	
-	            // song_id와 play_count를 배열로 나눔
-	            const labels = topSongsData.map(item => item.trackname);
-	            const data = topSongsData.map(item => item.PLAY_COUNT);
-	
-	            console.log("labels : ",labels)
-	            console.log("data : ",data)
-	            
-	            // 데이터 개수만큼 랜덤 색상 생성
-	            const colors = data.map(() => getRandomColor());
-	
-	            // 장르 차트 업데이트 또는 생성
-	            const genreCtx = document.getElementById('genreChart').getContext('2d');
-	            if (!genreChart) {
-	                genreChart = new Chart(genreCtx, {
-	                    type: 'doughnut',
-	                    data: {
-	                        labels: labels,
-	                        datasets: [{
-	                            data: data,
-	                            backgroundColor: colors
-	                        }]
-	                    },
-	                    options: {
-	                        responsive: true,
-	                        plugins: {
-	                            title: {
-	                                display: true,
-	                                text: '상위 재생 곡 비율',
-	                                font: { size: 16 }
-	                            },
-	                            legend: {
-	                                position: 'bottom'
-	                            }
-	                        }
-	                    }
-	                });
-	            } else {
-	                genreChart.data.labels = labels;
-	                genreChart.data.datasets[0].data = data;
-	                genreChart.data.datasets[0].backgroundColor = colors;
-	                genreChart.update();
-	            }
-	
-	            // 아티스트 차트도 비슷한 방식으로 업데이트 또는 생성
-	            const artistCtx = document.getElementById('artistChart').getContext('2d');
-	            if (!artistChart) {
-	                artistChart = new Chart(artistCtx, {
-	                    type: 'bar',
-	                    data: {
-	                        labels: labels,
-	                        datasets: [{
-	                            label: '재생 횟수',
-	                            data: data,
-	                            backgroundColor: colors
-	                        }]
-	                    },
-	                    options: {
-	                        responsive: true,
-	                        plugins: {
-	                            title: {
-	                                display: true,
-	                                text: '아티스트별 재생 횟수',
-	                                font: { size: 16 }
-	                            },
-	                            legend: {
-	                                display: false
-	                            }
+
+	    document.getElementById(tabName).classList.add("active");
+	    evt.currentTarget.classList.add("active");
+
+	    if (tabName === 'statistics') {
+	        initializeCharts();
+	    }
+	}
+
+	// 차트 초기화 변수
+	let genreChart, artistChart;
+
+	// 색상 팔레트 가져오는 함수
+	function getColorPalette() {
+	    // 항상 첫 번째(유일한) 팔레트 반환
+	    return colorPalettes[0];
+	}
+
+	// 차트 초기화 비동기 함수
+	async function initializeCharts() {
+	    try {
+	        // 서버에서 상위 재생 곡 데이터를 가져옴
+	        const response = await fetch('/recentPlayed/topSongs.do');
+	        const topSongsData = await response.json();
+	        
+	        console.log("topSongsData", topSongsData)
+
+	        // song_id와 play_count를 배열로 나눔
+	        const labels = topSongsData.map(item => item.trackname);
+	        const data = topSongsData.map(item => item.PLAY_COUNT);
+
+	        console.log("labels : ", labels)
+	        console.log("data : ", data)
+	        
+	        // 색상 팔레트 가져오기
+	        const colors = getColorPalette();
+
+	        // 장르 차트 업데이트 또는 생성
+	        const genreCtx = document.getElementById('genreChart').getContext('2d');
+	        if (!genreChart) {
+	            genreChart = new Chart(genreCtx, {
+	                type: 'doughnut',
+	                data: {
+	                    labels: labels,
+	                    datasets: [{
+	                        data: data,
+	                        backgroundColor: colors
+	                    }]
+	                },
+	                options: {
+	                    responsive: true,
+	                    plugins: {
+	                        title: {
+	                            display: true,
+	                            text: '상위 재생 곡 비율',
+	                            font: { size: 16 }
 	                        },
-	                        scales: {
-	                            y: {
-	                                beginAtZero: true
-	                            }
+	                        legend: {
+	                            position: 'bottom'
 	                        }
 	                    }
-	                });
-	            } else {
-	                artistChart.data.labels = labels;
-	                artistChart.data.datasets[0].data = data;
-	                artistChart.data.datasets[0].backgroundColor = colors;
-	                artistChart.update();
-	            }
-	        } catch (error) {
-	            console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+	                }
+	            });
+	        } else {
+	            genreChart.data.labels = labels;
+	            genreChart.data.datasets[0].data = data;
+	            genreChart.data.datasets[0].backgroundColor = colors;
+	            genreChart.update();
 	        }
+
+	        // 아티스트 차트도 비슷한 방식으로 업데이트 또는 생성
+	        const artistCtx = document.getElementById('artistChart').getContext('2d');
+	        if (!artistChart) {
+	            artistChart = new Chart(artistCtx, {
+	                type: 'bar',
+	                data: {
+	                    labels: labels,
+	                    datasets: [{
+	                        label: '재생 횟수',
+	                        data: data,
+	                        backgroundColor: colors
+	                    }]
+	                },
+	                options: {
+	                    responsive: true,
+	                    plugins: {
+	                        title: {
+	                            display: true,
+	                            text: '아티스트별 재생 횟수',
+	                            font: { size: 16 }
+	                        },
+	                        legend: {
+	                            display: false
+	                        }
+	                    },
+	                    scales: {
+	                        y: {
+	                            beginAtZero: true
+	                        }
+	                    }
+	                }
+	            });
+	        } else {
+	            artistChart.data.labels = labels;
+	            artistChart.data.datasets[0].data = data;
+	            artistChart.data.datasets[0].backgroundColor = colors;
+	            artistChart.update();
+	        }
+	    } catch (error) {
+	        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
 	    }
+	}
 	</script>
 
 

@@ -208,13 +208,6 @@
             <p>내가 팔로우한 앨범들을 한눈에 보세요</p>
         </div>
 
-        <div class="search">
-            <div class="search-bar">
-                <input type="text" id="albumSearch" placeholder="앨범 또는 아티스트 이름으로 검색하기...">
-                <i class="fas fa-search search-icon"></i>
-            </div>
-        </div>
-        
         <div class="album-grid">
 			<c:forEach items="${albumDetails}" var="album">
 			    <a href="${pageContext.request.contextPath}/album/albumDetail.do?album_id=${album.id}">

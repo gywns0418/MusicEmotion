@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.musicemotion.artist.service.ArtistService;
@@ -132,4 +134,28 @@ public class ArtistController {
 	    return ResponseEntity.ok(response);
 	}
 
+	
+	 @GetMapping("/search")
+	    public ResponseEntity<?> searchArtist(@RequestParam("name") String artistName) {
+	        try {
+	            if (artistName == null || artistName.trim().isEmpty()) {
+	                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "아티스트 이름을 입력하세요."));
+	            }
+
+	            // 이름으로 아티스트 ID 조회
+	            String artistId = spotifyService.getArtistIdByName(artistName);
+
+	            if (artistId == null) {
+	                return ResponseEntity.ok(Map.of("success", false, "message", "해당 아티스트를 찾을 수 없습니다."));
+	            }
+
+	            // ID로 아티스트 정보 조회
+	            ArtistDTO artist = artistService.getArtistById(artistId);
+
+	            return ResponseEntity.ok(Map.of("success", true, "artist", artist));
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                    .body(Map.of("success", false, "message", "검색 중 오류가 발생했습니다.", "error", e.getMessage()));
+	        }
+	    }
 }

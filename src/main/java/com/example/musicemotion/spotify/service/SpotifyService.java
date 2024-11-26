@@ -30,6 +30,7 @@ import se.michaelthelin.spotify.requests.data.browse.miscellaneous.GetAvailableG
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequest;
+import se.michaelthelin.spotify.requests.data.search.simplified.SearchArtistsRequest;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
 import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
@@ -246,6 +247,28 @@ public class SpotifyService {
             return request.execute();
         } catch (SpotifyWebApiException | IOException | ParseException e) {
             System.err.println("Error getting artist detail: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    public String getArtistIdByName(String artistName) throws Exception {
+        // Access Token 갱신 확인
+        ensureAccessToken();
+
+        try {
+            SearchArtistsRequest request = spotifyApi.searchArtists(artistName)
+                    .limit(1) 
+                    .build();
+            Paging<Artist> artistPaging = request.execute();
+
+            if (artistPaging.getItems().length > 0) {
+                return artistPaging.getItems()[0].getId();
+            } else {
+                System.err.println("No artist found for name: " + artistName);
+                return null; 
+            }
+        } catch (SpotifyWebApiException | IOException | ParseException e) {
+            System.err.println("Error searching for artist: " + e.getMessage());
             throw e;
         }
     }

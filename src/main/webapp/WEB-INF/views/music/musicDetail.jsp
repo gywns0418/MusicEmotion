@@ -230,9 +230,6 @@
                     <button class="close-button">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="playlist-search">
-                        <input type="text" id="playlistSearch" placeholder="플레이리스트 검색...">
-                    </div>
                     <div class="playlist-list">
                         <c:forEach items="${userPlaylists}" var="playlist">
                             <div class="playlist-item" data-playlist-id="${playlist.playlist_id}">
