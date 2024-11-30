@@ -17,7 +17,7 @@ public class SpotifyClientConfig {
     @Value("${spotify.client-secret}")
     private String clientSecret;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/callback");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:7070");
 
     @Bean
     public SpotifyApi spotifyApi() {

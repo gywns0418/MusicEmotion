@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.musicemotion.comment.service.CommentService;
+import com.example.musicemotion.dto.CommentsDTO;
 import com.example.musicemotion.dto.CommuDTO;
 import com.example.musicemotion.dto.NoticeDTO;
 import com.example.musicemotion.notice.service.NoticeService;
@@ -25,6 +27,9 @@ public class NoticeController {
 	
 	@Autowired
 	NoticeService noticeService;
+	
+	@Autowired
+	CommentService commentService;
 
 	@GetMapping("/noticeList.do")
 	public String noticeList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search,
@@ -105,6 +110,13 @@ public class NoticeController {
 	
 	@GetMapping("/noticeContent.do")
 	public String noticeContent(HttpServletRequest req, @RequestParam int notice_id) {
+		CommentsDTO cdto = new CommentsDTO();
+		cdto.setReference_id(notice_id);
+		cdto.setType("NOTICE");
+		
+		List<CommentsDTO> list = commentService.commentsAll(cdto);
+		req.setAttribute("comment", list);
+		
 		NoticeDTO dto = noticeService.getNoticeId(notice_id);
 		req.setAttribute("noticeId", dto);
 		

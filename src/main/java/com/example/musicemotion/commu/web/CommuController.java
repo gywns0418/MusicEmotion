@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.musicemotion.comment.service.CommentService;
 import com.example.musicemotion.commu.service.CommuService;
+import com.example.musicemotion.dto.CommentsDTO;
 import com.example.musicemotion.dto.CommuDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ public class CommuController {
 
 	@Autowired
 	CommuService commuService;
+	
+	@Autowired
+	CommentService commentService;
 
 	@GetMapping("/commuList.do")
 	public String commuList(HttpServletRequest req, @RequestParam(value = "search", required = false) String search,
@@ -105,6 +110,13 @@ public class CommuController {
 
 	@GetMapping("/commuContent.do")
 	public String commuContent(HttpServletRequest req, @RequestParam int post_id) {
+		CommentsDTO cdto = new CommentsDTO();
+		cdto.setReference_id(post_id);
+		cdto.setType("COMMUNITY");
+		
+		List<CommentsDTO> list = commentService.commentsAll(cdto);
+		req.setAttribute("comment", list);
+		
 		CommuDTO dto = commuService.getCommuId(post_id);
 		req.setAttribute("postId", dto);
 

@@ -43,22 +43,6 @@
         </div>
         
         <ul class="post-list">
-            <li class="post-item">
-                <a href="commuContent.do?post_id=1" class="post-title">이번 주 최고의 플레이리스트를 공유합니다!</a>
-                <div class="post-meta">
-                    <span class="author">작성자: 음악매니아</span>
-                    <span class="date">2024-09-23</span>
-                    <span class="comments">댓글: 15</span>
-                </div>
-            </li>
-            <li class="post-item">
-                <a href="#" class="post-title">AI 추천 시스템에 대한 의견을 들려주세요</a>
-                <div class="post-meta">
-                    <span class="author">작성자: AI연구원</span>
-                    <span class="date">2024-09-22</span>
-                    <span class="comments">댓글: 32</span>
-                </div>
-            </li>
             <c:forEach var="postList" items="${commuList}">
                 <li class="post-item">
                     <a href="commuContent.do?post_id=${postList.post_id}" class="post-title">${postList.title}</a>

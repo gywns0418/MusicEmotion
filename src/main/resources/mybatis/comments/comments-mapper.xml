@@ -5,12 +5,20 @@
   
 <mapper namespace="comments">
 	<insert id="addComments" parameterType="CommentsDTO">
-		insert into comments
-		values(seq_comment_id.nextval, #{post_id}, #{member_name}, #{content}, sysdate)
+	    INSERT INTO Comments (
+	        comment_id, reference_id, type,
+	        member_name, content, created_at
+	    ) VALUES (
+	        seq_comment_id.nextval, #{reference_id}, #{type},
+	        #{member_name}, #{content}, sysdate
+	    )
 	</insert>
 	
-	<select id="commentsAll" parameterType="int" resultType="CommentsDTO">
-		select * from comments where post_id = #{post_id}
+	<select id="commentsAll" parameterType="CommentsDTO" resultType="CommentsDTO">
+		SELECT * FROM Comments
+	    WHERE reference_id = #{reference_id} 
+	    AND type = #{type}
+	    ORDER BY created_at DESC
 	</select>
 	
 	<update id="updateComments" parameterType="CommentsDTO">

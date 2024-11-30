@@ -22,13 +22,13 @@
     	from community
     	where 
     	<if test="searchType == 'subject'">
-        	subject LIKE '%' || #{search} || '%'
+        	title LIKE '%' || #{search} || '%'
     	</if>
     	<if test="searchType == 'author'">
-    	    author LIKE '%' || #{search} || '%'
+    	    member_name LIKE '%' || #{search} || '%'
     	</if>
     	<if test="searchType == 'all'">
-    	    (subject LIKE '%' || #{search} || '%' OR author LIKE '%' || #{search} || '%')
+    	    (title LIKE '%' || #{search} || '%' OR member_name LIKE '%' || #{search} || '%')
     	</if>
 	</select>
  	

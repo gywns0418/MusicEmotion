@@ -56,11 +56,24 @@
                 <span class="comment-date">2024-09-23 16:45</span>
                 <p>The Weeknd의 노래들이 두 곡이나 있네요. 역시 인기가 많아요!</p>
             </li>
+            <c:forEach var="comment" items="${comment}">
+	           <li class="comment-item">
+	                <span class="comment-author">${comment.member_name}</span>
+	                <span class="comment-date">${comment.created_at}</span>
+	                <p>${comment.content}</p>
+	            </li>
+            </c:forEach>
         </ul>
-        <form class="comment-form">
-            <textarea class="comment-input" placeholder="댓글을 입력하세요" rows="3"></textarea>
-            <button type="submit" class="comment-submit">댓글 작성</button>
-        </form>
+        <form id="comment-form">
+		    <input type="hidden" id="referenceId" value="${postId.post_id}">
+		    <input type="hidden" id="type" value="COMMUNITY"> 
+			<c:if test="${not empty sessionScope['SPRING_SECURITY_CONTEXT']}">
+			    <input type="hidden" id="memberName" value="<sec:authentication property='principal.username'/>">
+			</c:if>
+		    
+		    <textarea class="comment-input" id="content" placeholder="댓글 내용을 입력하세요" rows="3"></textarea>
+		    <button type="button" onclick="addComment()">댓글 작성</button>
+		</form>
     </div>
 </div>
 
@@ -97,6 +110,52 @@
                 .catch(error => console.error('Error:', error));
         }
     }
+    
+    function addComment() {
+        const referenceId = document.getElementById('referenceId');
+        const type = document.getElementById('type');
+        const memberName = document.getElementById('memberName');
+        const content = document.getElementById('content');
+
+        // 요소가 존재하는지 확인
+        if (!referenceId || !type || !memberName || !content) {
+            console.log("referenceId:", referenceId?.value, "type:", type?.value, "memberName:", memberName?.value, "content:", content?.value);
+            alert('필수 요소가 누락되었습니다.');
+            return;
+        }
+
+        if (!memberName.value) {
+            alert('로그인을 먼저 해주세요');
+            return;
+        }
+
+        // AJAX 요청
+        fetch('/comment/addCommu.do', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                referenceId: referenceId.value,
+                type: type.value,
+                memberName: memberName.value,
+                content: content.value
+            })
+        })
+        .then(response => response.text())
+        .then(result => {
+            if (result === 'success') {
+                alert('댓글이 작성되었습니다.');
+                location.reload(); // 페이지 리로드
+            } else {
+                alert('댓글 작성에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('서버와 통신 중 문제가 발생했습니다.');
+        });
+    }
+
+
 </script>
 
 </body>

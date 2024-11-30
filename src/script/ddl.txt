@@ -40,12 +40,11 @@ INCREMENT BY 1;
 -- 댓글 게시판
 CREATE TABLE Comments (
     comment_id NUMBER PRIMARY KEY,       -- 댓글 고유 ID
-    post_id NUMBER,                      -- 게시글 ID (Community 테이블의 post_id)
+    reference_id NUMBER NOT NULL, 		-- 커뮤니티나 공지의 ID
+    type VARCHAR2(20) NOT NULL, 		-- 'COMMUNITY' 또는 'NOTICE'
     member_name VARCHAR2(25),            -- 작성자 이름
     content VARCHAR2(1000),              -- 댓글 내용
-    created_at DATE DEFAULT SYSDATE,                     -- 작성일
-    CONSTRAINT fk_post
-        FOREIGN KEY (post_id) REFERENCES Community(post_id)  -- Community 테이블의 post_id를 참조하는 외래키
+    created_at DATE DEFAULT SYSDATE
 );
 
 CREATE SEQUENCE seq_comment_id

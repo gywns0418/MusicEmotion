@@ -15,12 +15,12 @@ public class CommentService {
 	@Autowired
 	private  SqlSession sqlSession;
 	
-	 public void addComments(CommentsDTO dto) {
+	 public void addComments(CommentsDTO dto) { 
 		 sqlSession.insert("addComments", dto);
 	 }
 	 
-	 public List<CommentsDTO> commentsAll(String post_id) {
-		 return  sqlSession.selectList("commentsAll", post_id);
+	 public List<CommentsDTO> commentsAll(CommentsDTO dto) {
+		 return  sqlSession.selectList("commentsAll", dto);
 	 }
 	 
 	 public void updateComments(CommentsDTO dto) {
