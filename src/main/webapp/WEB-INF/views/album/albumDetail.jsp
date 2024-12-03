@@ -83,17 +83,12 @@
                                 <td class="track-title" data-tooltip="${track.name} - ${track.artist}">${track.name}</td>
                                 <td class="track-duration">${track.duration}</td>
                                 <td class="track-actions">
-                                    <button class="play-button" onclick="playTrack('${track.id}')">
-                                        <i class="fas fa-play"></i>
-                                    </button>
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
-                <button class="play-all-button" onclick="playAll()">
-                    <i class="fas fa-play"></i> 전체 재생
-                </button>
+
             </div>
         </div>
 

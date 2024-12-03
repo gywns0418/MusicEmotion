@@ -577,7 +577,7 @@ document.getElementById('passwordForm').addEventListener('submit', function(e) {
         return;
     }
 
-    fetch('' + pageContextPath + '/member/resetPassword.do', {
+    fetch('/member/resetPassword.do', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
