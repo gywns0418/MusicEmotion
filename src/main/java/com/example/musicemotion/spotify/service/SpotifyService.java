@@ -357,23 +357,33 @@ public class SpotifyService {
     }
 
 
-
     //main에서 플레이리스트 가져올때
     public List<Playlist> getPopularPlaylists() throws Exception {
-    	ensureAccessToken();
-    	
-        GetListOfFeaturedPlaylistsRequest request = spotifyApi.getListOfFeaturedPlaylists()
-                .limit(6)
-                .build();
-        FeaturedPlaylists featuredPlaylists = request.execute();
+        ensureAccessToken();
 
-        // 각 PlaylistSimplified ID를 통해 Playlist 상세 정보를 가져옴
+        // 지정된 플레이리스트 ID 배열
+        String[] playlistIds = {
+                "1kaeyJkIkECBKR5uq2qi4D", // Lofi Fruits Music
+                "4vvz8ZtxTvSej8GGNdvovv", // Lofi Hip Hop Music
+                "1N9ssad8D7nG9KigVEqTd1", // Deep House 2022
+                "6zllNrP9Qiygqyr2miF2Kb", // 80s Smash Hits
+                "3jmqPjstAowLP2SymRhzLX", // 90s Hits
+                "3lOwaRgxpvjkNpBPKNYuRR"  // Guardians of the Galaxy
+        };
+
         List<Playlist> playlists = new ArrayList<>();
-        for (PlaylistSimplified playlistSimplified : featuredPlaylists.getPlaylists().getItems()) {
-            Playlist playlist = spotifyApi.getPlaylist(playlistSimplified.getId()).build().execute();
-            playlists.add(playlist);
+
+        // 각 ID로 Playlist 상세 정보 가져오기
+        for (String playlistId : playlistIds) {
+            try {
+                GetPlaylistRequest request = spotifyApi.getPlaylist(playlistId).build();
+                Playlist playlist = request.execute();
+                playlists.add(playlist);
+            } catch (SpotifyWebApiException | IOException e) {
+                System.err.println("Error fetching playlist with ID: " + playlistId + ", Message: " + e.getMessage());
+            }
         }
-        
+
         return playlists;
     }
 

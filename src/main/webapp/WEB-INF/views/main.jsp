@@ -131,7 +131,7 @@ input[type="radio"]:checked + .emotion-item {
 	                    <label for="genre">선호 장르:</label>
 							<select id="genre" name="genre">
 							    <c:forEach var="genre" items="${genres}">
-							        <option value="${genre}">${genre}</option>
+							        <option value="${genre.genres}">${genre.genres}</option>
 							    </c:forEach>
 							</select>
 	                </div>

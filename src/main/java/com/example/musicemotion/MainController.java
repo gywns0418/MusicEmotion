@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.musicemotion.dto.EmotionDTO;
+import com.example.musicemotion.dto.RecomendDTO;
 import com.example.musicemotion.emotion.service.EmotionService;
+import com.example.musicemotion.recomend.service.RecomendService;
 import com.example.musicemotion.spotify.service.SpotifyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,13 +28,16 @@ public class MainController {
 	@Autowired
 	SpotifyService spotifyService;
 	
+	@Autowired
+	RecomendService recomendService;
+	
     @RequestMapping(value="/")
     public String Home(HttpServletRequest req) {
     	List<EmotionDTO> emotion = emotionService.emotionAll();
     	req.setAttribute("emotion", emotion);
     	
         try {
-        	List<String> genres = spotifyService.getAvailableGenres();
+        	List<RecomendDTO> genres = recomendService.selectAllGenres();
         	req.setAttribute("genres", genres);
             // 인기 플레이리스트를 가져와서 모델에 추가
             List<Playlist> popularPlaylists = spotifyService.getPopularPlaylists();
