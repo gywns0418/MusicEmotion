@@ -46,16 +46,7 @@
     <div class="comment-section">
         <h3>댓글</h3>
         <ul class="comment-list">
-            <li class="comment-item">
-                <span class="comment-author">음악애호가</span>
-                <span class="comment-date">2024-09-23 15:30</span>
-                <p>와우, 정말 좋은 선곡이네요! 특히 BTS의 Dynamite는 제 최애곡이에요.</p>
-            </li>
-            <li class="comment-item">
-                <span class="comment-author">팝뮤직팬</span>
-                <span class="comment-date">2024-09-23 16:45</span>
-                <p>The Weeknd의 노래들이 두 곡이나 있네요. 역시 인기가 많아요!</p>
-            </li>
+
             <c:forEach var="comment" items="${comment}">
 	           <li class="comment-item">
 	                <span class="comment-author">${comment.member_name}</span>

@@ -90,7 +90,6 @@
         <div class="section-header">
             <h2>앨범</h2>
             <div class="album-filters">
-                <button class="filter-button active">전체</button>
             </div>
         </div>
         <div class="album-grid">

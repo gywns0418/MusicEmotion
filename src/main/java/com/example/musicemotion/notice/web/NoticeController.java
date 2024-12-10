@@ -83,7 +83,7 @@ public class NoticeController {
 
 		noticeService.noticeWrite(dto);
 
-		return "notice/noticeList";
+		return "redirect:noticeList.do";
 	}
 	
 	@GetMapping("/editNotice.do")

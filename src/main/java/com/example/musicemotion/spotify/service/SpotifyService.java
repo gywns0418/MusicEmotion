@@ -294,7 +294,7 @@ public class SpotifyService {
 
         try {
             GetArtistsAlbumsRequest getArtistsAlbumsRequest = spotifyApi.getArtistsAlbums(artistId)
-                .limit(9) // 원하는 만큼의 앨범 수 제한
+                .limit(5) // 원하는 만큼의 앨범 수 제한
                 .build();
 
             Paging<AlbumSimplified> albumPaging = getArtistsAlbumsRequest.execute();

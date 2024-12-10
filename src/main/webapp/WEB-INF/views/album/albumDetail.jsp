@@ -91,39 +91,9 @@
 
             </div>
         </div>
-
-<!--  
-        <div class="section" id="album-description">
-            <h2>앨범 소개</h2>
-            <p>${album.description}</p>
-        </div>
-
-        <div class="section" id="related-albums">
-            <h2>관련 앨범</h2>
-            <div class="playlist-grid">
-                <c:forEach items="${relatedAlbums}" var="related">
-                    <div class="playlist-card">
-                        <img src="${related.coverUrl}" alt="${related.title}">
-                        <div class="playlist-title">${related.title}</div>
-                        <div class="playlist-description">${related.artist}</div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-        
--->
     </div>
 
     <script>
-        function playAll() {
-            // 전체 재생 로직 구현
-            console.log("전체 재생");
-        }
-
-        function playTrack(trackId) {
-            // 개별 트랙 재생 로직 구현
-            console.log("트랙 재생:", trackId);
-        }
 
         function toggleLike(button, trackId) {
             button.classList.toggle('active');
