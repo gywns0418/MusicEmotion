@@ -66,9 +66,13 @@
 - 사용자가 현재 감정과 선호 장르 선택  
 - 선택 정보 기반 음악 추천 결과 제공  
 
+**메인화면**
 <p align="center">
   <img width="949" height="795" src="https://github.com/user-attachments/assets/b7ecbfad-8e09-4f38-82b8-16b7c94c66af" />
-  <br>
+</p>
+
+**감정 기반 음악 추천**
+<p align="center"> 
   <img width="1076" height="744" src="https://github.com/user-attachments/assets/5151e0da-d03a-4ea5-85ad-78ff61387865" />
 </p>
 
