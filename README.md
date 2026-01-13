@@ -67,7 +67,11 @@ M.E (Music Emotion) 는 사용자의 감정과 음악 장르를 기반으로 개
 * 키워드를 통한 음악 검색 기능 제공
 * 곡 선택 시 아티스트, 앨범 등 상세 정보 확인 가능
 
-![음악 검색 화면](./images/music_search.png)
+음악 검색 목록
+<img width="1258" height="737" alt="image" src="https://github.com/user-attachments/assets/588c2422-bab6-45f7-a9fc-246023fb00ea" />
+
+음악 세부 정보
+<img width="665" height="880" alt="image" src="https://github.com/user-attachments/assets/becc5aa3-f530-49ea-aeaa-2998cf8d4601" />
 
 ---
 
