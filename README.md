@@ -46,16 +46,19 @@ M.E (Music Emotion) 는 사용자의 감정과 음악 장르를 기반으로 개
 * 좋아요 / 아티스트·앨범 팔로우
 * 커뮤니티 게시판 및 댓글 기능
 
+<img width="849" height="323" alt="image" src="https://github.com/user-attachments/assets/04ff976f-6158-4b7f-a5a1-74e668bee18e" />
+
 ---
 
 ## 📸 화면 구성 및 주요 기능 설명
 
-### 1. 감정 기반 음악 추천 화면
+### 1. 메인화면 및 감정 기반 음악 추천 화면
 
 * 사용자가 현재 감정을 선택하고 선호 장르를 함께 선택
 * 선택한 감정과 장르를 기준으로 음악 추천 결과 제공
 
-![감정 기반 음악 추천 화면](./images/emotion_recommend.png)
+<img width="949" height="795" alt="image" src="https://github.com/user-attachments/assets/b7ecbfad-8e09-4f38-82b8-16b7c94c66af" />
+<img width="1076" height="744" alt="image" src="https://github.com/user-attachments/assets/5151e0da-d03a-4ea5-85ad-78ff61387865" />
 
 ---
 
@@ -88,7 +91,13 @@ M.E (Music Emotion) 는 사용자의 감정과 음악 장르를 기반으로 개
 
 ## 🧱 시스템 아키텍처
 
-![시스템 아키텍처](./images/architecture.png)
+ERD (Entity Relationship Diagram)
+<img width="940" height="373" alt="image" src="https://github.com/user-attachments/assets/81bc8b3a-1a11-4c12-8569-22c0e6bf2c9c" />
+<img width="940" height="435" alt="image" src="https://github.com/user-attachments/assets/281cf5a6-5df9-4a1a-80be-c4f45710b1b4" />
+
+DFD (Data Flow Diagram)
+<img width="940" height="348" alt="image" src="https://github.com/user-attachments/assets/27a9df24-b6b0-4860-bc1c-7d8a37975556" />
+<img width="940" height="341" alt="image" src="https://github.com/user-attachments/assets/68f214d9-66f0-460b-8876-d028d6611504" />
 
 ---
 
