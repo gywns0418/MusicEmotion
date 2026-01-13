@@ -168,11 +168,9 @@
 
 ## 🗂 데이터베이스
 
-- Member, Emotion  
-- Playlist / Playlist_Songs  
-- Community / Notice / Comments  
-- Likes, Artist, Album  
-- Recent_Played, Recommend  
+<img width="1309" height="636" alt="image" src="https://github.com/user-attachments/assets/6d6eb325-7aef-4c49-bfe1-ad191aa42c7a" />
+<img width="1150" height="486" alt="image" src="https://github.com/user-attachments/assets/9300fd81-0f63-4734-84fc-55c044c9a620" />
+
 
 ---
 
