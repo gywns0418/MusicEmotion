@@ -89,7 +89,8 @@ M.E (Music Emotion) 는 사용자의 감정과 음악 장르를 기반으로 개
 * 음악 추천 및 정보 공유를 위한 게시판 제공
 * 게시글 및 댓글 작성 기능
 
-![커뮤니티 화면](./images/community.png)
+<img width="1557" height="832" alt="image" src="https://github.com/user-attachments/assets/d4230c01-5b36-4e67-bf69-f5590e40cd86" />
+
 
 ---
 
@@ -129,7 +130,5 @@ DFD (Data Flow Diagram)
 ## 👨‍💻 개발자
 
 김효준 | 소프트웨어과
-
----
 
 > 학부 졸업작품으로 진행한 감정 기반 음악 추천 웹 서비스입니다.
