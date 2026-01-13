@@ -99,22 +99,27 @@
 - 플레이리스트 생성·수정·삭제  
 - 최근 재생 목록 및 청취 통계 시각화  
 
+**마이 페이지&플레이리스트**
 <p align="center">
   <img width="937" height="819" src="https://github.com/user-attachments/assets/2237dc8e-e280-4469-a80c-6aedc79cbd53" />
 </p>
 
+**최근 재생 기록**
 <p align="center">
   <img width="1024" height="600" src="https://github.com/user-attachments/assets/1fe4785c-3909-4f0a-87ca-2643fe19cd95" />
 </p>
 
+**청취 통계**
 <p align="center">
   <img width="721" height="571" src="https://github.com/user-attachments/assets/da93f672-7add-4164-a660-52be55c17bba" />
 </p>
 
+**좋아요 표시 음악**
 <p align="center">
   <img width="1171" height="796" src="https://github.com/user-attachments/assets/d359cb22-e80c-4132-9a78-b3c41e0149b7" />
 </p>
 
+**아티스트**
 <p align="center">
   <img width="669" height="797" src="https://github.com/user-attachments/assets/d4dd1b9c-8c14-4af7-bce3-d8a75200376e" />
 </p>
