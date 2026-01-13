@@ -53,7 +53,7 @@
 - 커뮤니티 게시판 및 댓글 기능  
 
 <p align="center">
-  <img width="849" height="323" src="https://github.com/user-attachments/assets/04ff976f-6158-4b7f-a5a1-74e668bee18e" />
+  <img width="940" height="430" alt="image" src="https://github.com/user-attachments/assets/aa172460-c442-42c5-bc48-9381c53b86d0" />
 </p>
 
 ---
